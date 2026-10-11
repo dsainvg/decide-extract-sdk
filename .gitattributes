@@ -1,0 +1,22 @@
+* text=auto eol=lf
+
+*.md text diff=markdown
+*.yml text
+*.yaml text
+*.json text
+*.mjs text
+*.py text
+*.ts text
+
+*.png binary
+*.jpg binary
+*.gif binary
+*.ico binary
+*.whl binary
+*.tgz binary
+
+# Windows checkouts must not rewrite the lockfile or workflow files
+package-lock.json text eol=lf
+.github/workflows/*.yml text eol=lf
+*.bat text eol=crlf
+*.ps1 text eol=crlf

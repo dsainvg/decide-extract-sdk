@@ -1,0 +1,30 @@
+version: 2
+
+updates:
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: "chore(deps)"
+
+  - package-ecosystem: npm
+    directory: "/packages/sdk-ts"
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: "chore(deps:ts)"
+
+  - package-ecosystem: pip
+    directory: "/packages/sdk-py"
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: "chore(deps:py)"
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: "chore(ci)"

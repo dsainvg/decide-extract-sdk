@@ -1,0 +1,41 @@
+{
+  "name": "decide-extract-sdk",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Contract-first, Fern-powered monorepo that generates the TypeScript, Python, Ruby, Rust, Java and .NET SDKs for the Decider-Extractor API.",
+  "license": "Apache-2.0",
+  "author": "Durga Sai",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dsainvg/decide-extract-sdk.git"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "fern:check": "cd fern && fern check --local --warnings",
+    "fern:generate": "node scripts/generate.mjs",
+    "fern:check:drift": "node scripts/generate.mjs --check",
+    "fern:upgrade": "cd fern && fern upgrade",
+    "version:print": "node scripts/generate.mjs --print-version",
+    "version:bump": "node scripts/bump.mjs",
+    "build": "npm run fern:check && npm run fern:generate",
+    "test": "node scripts/test.mjs",
+    "test:ts": "node scripts/test.mjs --ts",
+    "test:py": "node scripts/test.mjs --py",
+    "test:rb": "node scripts/test.mjs --rb",
+    "test:rs": "node scripts/test.mjs --rs",
+    "test:java": "node scripts/test.mjs --java",
+    "test:cs": "node scripts/test.mjs --cs",
+    "ci": "npm run fern:check && npm run fern:check:drift && npm test",
+    "release:check": "node scripts/prepublish-check.mjs",
+    "build:artifacts": "node scripts/build-artifacts.mjs",
+    "docs:build": "node scripts/build-docs.mjs",
+    "docs:serve": "node scripts/serve-docs.mjs"
+  },
+  "devDependencies": {
+    "fern-api": "5.152.2",
+    "highlight.js": "^11.12.0",
+    "marked": "^18.1.0"
+  }
+}

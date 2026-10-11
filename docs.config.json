@@ -1,0 +1,28 @@
+{
+  "name": "Decider-Extractor API",
+  "tagline": "Contract-first decider and extractor API for LLM workloads",
+  "version": "0.3.0",
+  "description": "Run many decider and extractor tasks in a single, compact, non-streaming request. SDKs for TypeScript, Python, Ruby, Rust, Java and .NET.",
+  "basePath": "/",
+  "repo": "https://github.com/dsainvg/decide-extract-sdk",
+  "editablePages": true,
+  "packages": {
+    "typescript": { "name": "@dsainvg/decide-extractor-sdk", "registry": "npm", "install": "npm install @dsainvg/decide-extractor-sdk", "dir": "packages/sdk-ts", "client": "DeciderExtractorClient" },
+    "python": { "name": "dsainvg-decide-extractor-sdk", "registry": "PyPI", "install": "pip install dsainvg-decide-extractor-sdk", "dir": "packages/sdk-py", "client": "DeciderExtractorClient" },
+    "ruby": { "name": "(from packages/sdk-ruby/*.gemspec)", "registry": "RubyGems", "install": "gem install decide_extractor", "dir": "packages/sdk-ruby" },
+    "rust": { "name": "(from packages/sdk-rust/Cargo.toml)", "registry": "crates.io", "install": "cargo add decide-extractor", "dir": "packages/sdk-rust" },
+    "java": { "name": "(from packages/sdk-java/pom.xml)", "registry": "Maven Central", "install": "implementation(\"org.example:decide-extractor\")", "dir": "packages/sdk-java" },
+    "csharp": { "name": "(from packages/sdk-csharp/*.csproj)", "registry": "NuGet", "install": "dotnet add package DecideExtractor", "dir": "packages/sdk-csharp" }
+  },
+  "api": {
+    "title": "Decider-Extractor API",
+    "baseUrl": "http://localhost:8080",
+    "spec": "fern/openapi/openapi.yml"
+  },
+  "sections": [
+    { "title": "Getting started", "match": "getting-started" },
+    { "title": "Guides", "match": "guides" },
+    { "title": "API reference", "match": "api-reference" },
+    { "title": "Operations", "match": "operations" }
+  ]
+}

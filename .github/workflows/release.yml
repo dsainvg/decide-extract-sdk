@@ -1,0 +1,197 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to publish, e.g. 0.3.0 (must match info.version in the contract)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify version
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.resolve.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci
+      - id: resolve
+        name: Tag must match the contract version
+        shell: bash
+        run: |
+          set -euo pipefail
+          contract="$(npm run --silent version:print)"
+          requested="${INPUT_VERSION:-${GITHUB_REF_NAME}}"
+          requested="${requested#v}"
+          echo "contract version: ${contract}"
+          echo "requested version: ${requested}"
+          if [ "${contract}" != "${requested}" ]; then
+            echo "::error::requested ${requested} does not match contract version ${contract}"
+            echo "::error::run 'npm run version:bump -- ${requested}', regenerate and commit before tagging"
+            exit 1
+          fi
+          echo "version=${contract}" >> "$GITHUB_OUTPUT"
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+
+  gate:
+    name: Pre-publish checks
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - uses: astral-sh/setup-uv@v6
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: false
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - run: npm ci
+      - name: Everything that must hold before publishing
+        run: node scripts/prepublish-check.mjs --tag v${{ needs.verify.outputs.version }} --registry all
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+
+  npm:
+    name: Publish to npm
+    needs: [verify, gate]
+    runs-on: ubuntu-latest
+    if: ${{ needs.verify.outputs.version != '' && secrets.NPM_TOKEN != '' }}
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          registry-url: https://registry.npmjs.org
+      - run: npm ci
+      - run: npm run fern:generate
+      - name: Install, build, publish
+        working-directory: packages/sdk-ts
+        run: |
+          npm install --no-audit --no-fund
+          npm run build
+          npm publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  pypi:
+    name: Publish to PyPI
+    needs: [verify, gate]
+    runs-on: ubuntu-latest
+    if: ${{ needs.verify.outputs.version != '' }}
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - uses: astral-sh/setup-uv@v6
+      - run: npm ci
+      - run: npm run fern:generate
+      - name: Build
+        working-directory: packages/sdk-py
+        run: uv build
+      - name: Publish with a token
+        if: ${{ secrets.PYPI_API_TOKEN != '' }}
+        working-directory: packages/sdk-py
+        run: uv publish --token "${{ secrets.PYPI_API_TOKEN }}"
+      - name: Publish with trusted publishing
+        if: ${{ secrets.PYPI_API_TOKEN == '' }}
+        working-directory: packages/sdk-py
+        run: uv publish --trusted-publishing always
+
+  artifacts:
+    name: Build release artifacts
+    needs: [verify, gate]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - uses: astral-sh/setup-uv@v6
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: false
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - run: npm ci
+      - run: npm run fern:generate
+      - name: Build every package and collect artifacts
+        run: npm run build:artifacts
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-artifacts
+          path: release-artifacts/
+          if-no-files-found: error
+          retention-days: 30
+
+  github-release:
+    name: GitHub Release
+    needs: [verify, npm, pypi, artifacts]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-artifacts
+          path: release-artifacts
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ needs.verify.outputs.version }}
+          name: v${{ needs.verify.outputs.version }}
+          generate_release_notes: true
+          files: release-artifacts/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
