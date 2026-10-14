@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C++ and other clients - Decider-Extractor API</title>
+<meta name="description" content="Using the API from C++, and from anything else without a generated client.">
+<link rel="stylesheet" href="../../assets/hljs.css">
+<link rel="stylesheet" href="../../assets/site.css">
+<script>var basePath = "../../";</script>
+</head>
+<body data-path="/operations/clients/">
+<header class="site">
+  <button class="icon-button nav-toggle" aria-label="Menu">&#9776;</button>
+  <a class="brand" href="../../"><span class="dot"></span>Decider-Extractor API<span class="version">v0.3.0</span></a>
+  <div class="search">
+    <input id="search-input" type="search" placeholder="Search docs" aria-label="Search docs">
+    <kbd>Ctrl K</kbd>
+    <div class="search-results" id="search-results"></div>
+  </div>
+  <button class="icon-button" id="theme-toggle" aria-label="Toggle theme">&#9789;</button>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+<div class="section">
+  <div class="section-title">Overview</div>
+  <a href="../../">Decider-Extractor API</a>
+</div>
+<div class="section">
+  <div class="section-title">Getting started</div>
+  <a href="../../getting-started/installation/">Installation</a>
+  <a href="../../getting-started/quickstart/">Quickstart</a>
+  <a href="../../getting-started/authentication/">Authentication</a>
+  <a href="../../getting-started/configuration/">Configuration</a>
+</div>
+<div class="section">
+  <div class="section-title">Guides</div>
+  <a href="../../guides/task-types/">Task types</a>
+  <a href="../../guides/single-tasks/">Single tasks</a>
+  <a href="../../guides/multimodal-input/">Multimodal input</a>
+  <a href="../../guides/structured-output/">Structured output</a>
+  <a href="../../guides/errors/">Errors</a>
+  <a href="../../guides/versioning/">Versioning and migration</a>
+  <a href="../../guides/troubleshooting/">Troubleshooting</a>
+</div>
+<div class="section">
+  <div class="section-title">API reference</div>
+  <a href="../../api-reference/overview/">API overview</a>
+  <a href="../../api-reference/run-tasks/">POST /v1/tasks</a>
+  <a href="../../api-reference/decide-extract/">POST /v1/decide-extract</a>
+  <a href="../../api-reference/decide/">POST /decide</a>
+  <a href="../../api-reference/extract/">POST /extract</a>
+  <a href="../../api-reference/types/">Types</a>
+</div>
+<div class="section">
+  <div class="section-title">Operations</div>
+  <a href="../../operations/repository/">Repository</a>
+  <a href="../../operations/clients/">C++ and other clients</a>
+  <a href="../../operations/publishing/">Publishing</a>
+  <a href="../../operations/sdk-development/">Developing the SDKs</a>
+  <a href="../../operations/deploying-docs/">Deploying the docs</a>
+  <a href="../../operations/naming/">Naming</a>
+</div>
+  </nav>
+  <main class="content">
+    <h1>C++ and other clients</h1>
+    <p class="lede">Using the API from C++, and from anything else without a generated client.</p>
+<p>Fern has no C++ generator, so there is no <code>sdk-cpp</code>. The API is plain JSON over HTTP, so any
+HTTP library works and the example below is complete.</p>
+<h2 id="c-with-cpr-and-nlohmann-json">C++ with cpr and nlohmann/json<a class="anchor" href="#c-with-cpr-and-nlohmann-json" aria-label="Link to C++ with cpr and nlohmann/json">#</a></h2>
+<pre data-lang="cpp"><span class="lang">cpp</span><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cpr/cpr.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;nlohmann/json.hpp&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+
+<span class="hljs-keyword">using</span> json = nlohmann::json;
+
+<span class="hljs-function">json <span class="hljs-title">decide_extract</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string&amp; base_url,
+                    <span class="hljs-type">const</span> std::string&amp; token,
+                    <span class="hljs-type">const</span> json&amp; request)</span> </span>{
+    <span class="hljs-keyword">auto</span> response = cpr::<span class="hljs-built_in">Post</span>(
+        cpr::Url{base_url + <span class="hljs-string">&quot;/v1/tasks&quot;</span>},
+        cpr::Header{{<span class="hljs-string">&quot;Authorization&quot;</span>, <span class="hljs-string">&quot;Bearer &quot;</span> + token}},
+        cpr::Body{request.<span class="hljs-built_in">dump</span>()}
+    );
+
+    <span class="hljs-keyword">if</span> (response.status_code != <span class="hljs-number">200</span>) {
+        <span class="hljs-keyword">throw</span> std::<span class="hljs-built_in">runtime_error</span>(
+            <span class="hljs-string">&quot;decide-extractor: &quot;</span> + std::<span class="hljs-built_in">to_string</span>(response.status_code) +
+            <span class="hljs-string">&quot; &quot;</span> + response.text);
+    }
+
+    <span class="hljs-keyword">return</span> json::<span class="hljs-built_in">parse</span>(response.text);
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    json request = {
+        {<span class="hljs-string">&quot;model&quot;</span>, <span class="hljs-string">&quot;decider-extractor-v1&quot;</span>},
+        {<span class="hljs-string">&quot;context&quot;</span>, <span class="hljs-string">&quot;User says: renew subscription for 2 years.&quot;</span>},
+        {<span class="hljs-string">&quot;tasks&quot;</span>, json::<span class="hljs-built_in">array</span>({
+            {
+                {<span class="hljs-string">&quot;type&quot;</span>, <span class="hljs-string">&quot;decide&quot;</span>},
+                {<span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-string">&quot;should_renew&quot;</span>},
+                {<span class="hljs-string">&quot;question&quot;</span>, <span class="hljs-string">&quot;Should we offer a renewal discount?&quot;</span>},
+                {<span class="hljs-string">&quot;options&quot;</span>, json::<span class="hljs-built_in">array</span>({<span class="hljs-string">&quot;yes&quot;</span>, <span class="hljs-string">&quot;no&quot;</span>})}
+            },
+            {
+                {<span class="hljs-string">&quot;type&quot;</span>, <span class="hljs-string">&quot;extract&quot;</span>},
+                {<span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-string">&quot;renew_term&quot;</span>},
+                {<span class="hljs-string">&quot;instruction&quot;</span>, <span class="hljs-string">&quot;Extract the renewal term in months&quot;</span>},
+                {<span class="hljs-string">&quot;keys&quot;</span>, json::<span class="hljs-built_in">array</span>({<span class="hljs-string">&quot;months&quot;</span>})}
+            }
+        })}
+    };
+
+    <span class="hljs-keyword">auto</span> response = <span class="hljs-built_in">decide_extract</span>(<span class="hljs-string">&quot;http://localhost:8080&quot;</span>, std::<span class="hljs-built_in">getenv</span>(<span class="hljs-string">&quot;DECIDE_EXTRACTOR_TOKEN&quot;</span>), request);
+
+    <span class="hljs-keyword">if</span> (response.<span class="hljs-built_in">contains</span>(<span class="hljs-string">&quot;results&quot;</span>)) {
+        std::cout &lt;&lt; response[<span class="hljs-string">&quot;results&quot;</span>].<span class="hljs-built_in">dump</span>(<span class="hljs-number">2</span>) &lt;&lt; <span class="hljs-string">&quot;\n&quot;</span>;
+    }
+}
+</code></pre>
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash"><span class="hljs-comment"># vcpkg.json</span>
+{ <span class="hljs-string">&quot;dependencies&quot;</span>: [ <span class="hljs-string">&quot;cpr&quot;</span>, <span class="hljs-string">&quot;nlohmann-json&quot;</span> ] }
+
+cmake -B build &amp;&amp; cmake --build build
+./build/decide_extract
+</code></pre>
+<p>The same shape works with libcurl, Boost.Beast or any other HTTP client, and with any JSON
+library. Only two things matter: send <code>Authorization: Bearer &lt;token&gt;</code> and read the answers
+from <code>results</code>.</p>
+<h2 id="generating-your-own-client">Generating your own client<a class="anchor" href="#generating-your-own-client" aria-label="Link to Generating your own client">#</a></h2>
+<p>If your language has an OpenAPI generator, point it at the published contract:</p>
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">curl -O https://raw.githubusercontent.com/dsainvg/decide-extractor-sdk/main/fern/openapi/openapi.yml
+</code></pre>
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">openapi-generator generate -i openapi.yml -g cpp-httplib -o ./client
+</code></pre>
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">openapi-generator generate -i openapi.yml -g typescript-fetch -o ./client
+</code></pre>
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">openapi-generator generate -i openapi.yml -g python -o ./client
+</code></pre>
+<p>Treat the output as you would treat the Fern clients: generated, regenerable, never edited.</p>
+<h2 id="the-contract-is-the-interface">The contract is the interface<a class="anchor" href="#the-contract-is-the-interface" aria-label="Link to The contract is the interface">#</a></h2>
+<p>Whatever language you use, the contract in <code>fern/openapi/openapi.yml</code> is what you code
+against. If your generator cannot produce something sensible from it, that is a contract
+problem worth fixing in the OpenAPI rather than working around in every client.</p>
+
+    <div class="pager"><a class="prev" href="../../operations/repository/"><small>Previous</small>Repository</a><a class="next" href="../../operations/publishing/"><small>Next</small>Publishing</a></div>
+  </main>
+  <aside class="toc">
+<div class="toc-title">On this page</div>
+<a class="depth-2" href="#c-with-cpr-and-nlohmann-json">C++ with cpr and nlohmann/json#</a>
+<a class="depth-2" href="#generating-your-own-client">Generating your own client#</a>
+<a class="depth-2" href="#the-contract-is-the-interface">The contract is the interface#</a>
+  </aside>
+</div>
+<footer class="site"><div class="inner">
+  <span>Decider-Extractor API v0.3.0</span>
+  <a href="../../llms.txt">llms.txt</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk">Repository</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md">Changelog</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/PUBLISHING.md">Publishing</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/fern/openapi/openapi.yml">OpenAPI</a>
+</div></footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Decider-Extractor API - Decider-Extractor API</title>
+<meta name="description" content="Run many decider and extractor tasks in one compact, non-streaming request. Official SDKs for TypeScript, Python, Ruby, Rust, Java and .NET.">
+<link rel="stylesheet" href="assets/hljs.css">
+<link rel="stylesheet" href="assets/site.css">
+<script>var basePath = "";</script>
+</head>
+<body data-path="/">
+<header class="site">
+  <button class="icon-button nav-toggle" aria-label="Menu">&#9776;</button>
+  <a class="brand" href=""><span class="dot"></span>Decider-Extractor API<span class="version">v0.3.0</span></a>
+  <div class="search">
+    <input id="search-input" type="search" placeholder="Search docs" aria-label="Search docs">
+    <kbd>Ctrl K</kbd>
+    <div class="search-results" id="search-results"></div>
+  </div>
+  <button class="icon-button" id="theme-toggle" aria-label="Toggle theme">&#9789;</button>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+<div class="section">
+  <div class="section-title">Overview</div>
+  <a href="">Decider-Extractor API</a>
+</div>
+<div class="section">
+  <div class="section-title">Getting started</div>
+  <a href="getting-started/installation/">Installation</a>
+  <a href="getting-started/quickstart/">Quickstart</a>
+  <a href="getting-started/authentication/">Authentication</a>
+  <a href="getting-started/configuration/">Configuration</a>
+</div>
+<div class="section">
+  <div class="section-title">Guides</div>
+  <a href="guides/task-types/">Task types</a>
+  <a href="guides/single-tasks/">Single tasks</a>
+  <a href="guides/multimodal-input/">Multimodal input</a>
+  <a href="guides/structured-output/">Structured output</a>
+  <a href="guides/errors/">Errors</a>
+  <a href="guides/versioning/">Versioning and migration</a>
+  <a href="guides/troubleshooting/">Troubleshooting</a>
+</div>
+<div class="section">
+  <div class="section-title">API reference</div>
+  <a href="api-reference/overview/">API overview</a>
+  <a href="api-reference/run-tasks/">POST /v1/tasks</a>
+  <a href="api-reference/decide-extract/">POST /v1/decide-extract</a>
+  <a href="api-reference/decide/">POST /decide</a>
+  <a href="api-reference/extract/">POST /extract</a>
+  <a href="api-reference/types/">Types</a>
+</div>
+<div class="section">
+  <div class="section-title">Operations</div>
+  <a href="operations/repository/">Repository</a>
+  <a href="operations/clients/">C++ and other clients</a>
+  <a href="operations/publishing/">Publishing</a>
+  <a href="operations/sdk-development/">Developing the SDKs</a>
+  <a href="operations/deploying-docs/">Deploying the docs</a>
+  <a href="operations/naming/">Naming</a>
+</div>
+  </nav>
+  <main class="content">
+    <h1>Decider-Extractor API</h1>
+    <p class="lede">Run many decider and extractor tasks in one compact, non-streaming request. Official SDKs for TypeScript, Python, Ruby, Rust, Java and .NET.</p>
+<p>The Decider-Extractor API runs many small judgement tasks against the same context in a
+single request. Instead of paying for one completion per question, you send a list of
+tasks and get back every answer in one response.</p>
+<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;decider-extractor-v1&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;context&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;User says: renew subscription for 2 years. Previous plan expired 3 months ago.&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;tasks&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;decide&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;should_renew&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;question&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Should we offer a renewal discount?&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;options&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;yes&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;no&quot;</span><span class="hljs-punctuation">]</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;extract&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;renew_term&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;instruction&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Extract the renewal term in months&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;keys&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;months&quot;</span><span class="hljs-punctuation">]</span> <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;req_9X2kFvTnQpR4w&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;decider-extractor-v1&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;results&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;should_renew&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;yes&quot;</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;renew_term&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;months&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">24</span> <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;usage&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;prompt_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">61</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;completion_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">9</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;total_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">70</span> <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<h2 id="what-it-is-built-for">What it is built for<a class="anchor" href="#what-it-is-built-for" aria-label="Link to What it is built for">#</a></h2>
+<ul>
+<li><strong>One call, many answers.</strong> Ten questions about one document cost one round trip, not ten.</li>
+<li><strong>Tiny outputs.</strong> Decisions are short strings, extractions are small objects. Pure decisions
+are designed to stay under ten completion tokens.</li>
+<li><strong>Deterministic by default.</strong> <code>temperature</code> defaults to <code>0</code>.</li>
+<li><strong>OpenAI-shaped.</strong> <code>model</code>, <code>messages</code>, <code>choices</code>, <code>usage</code> mean existing OpenAI tooling and
+mental models carry over.</li>
+</ul>
+<p><div class="callout"><div class="callout-title">Note</div><p>The API is non-streaming by design. There is no SSE endpoint and none is planned for the
+current version.</p>
+</div></p>
+<h2 id="start-here">Start here<a class="anchor" href="#start-here" aria-label="Link to Start here">#</a></h2>
+<ul>
+<li><a href="/getting-started/installation/">Installation</a> - add an SDK to your project</li>
+<li><a href="/getting-started/quickstart/">Quickstart</a> - first request in five minutes</li>
+<li><a href="/getting-started/authentication/">Authentication</a> - tokens and base URLs</li>
+<li><a href="/guides/task-types/">Task types</a> - deciders and extractors in depth</li>
+<li><a href="/api-reference/overview/">API reference</a> - every endpoint and field</li>
+</ul>
+<h2 id="endpoints">Endpoints<a class="anchor" href="#endpoints" aria-label="Link to Endpoints">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Endpoint</th>
+<th>Use it for</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>POST /v1/tasks</code></td>
+<td>Any mix of decider and extractor tasks</td>
+</tr>
+<tr>
+<td><code>POST /v1/decide-extract</code></td>
+<td>Backwards-compatible alias of <code>/v1/tasks</code></td>
+</tr>
+<tr>
+<td><code>POST /decide</code></td>
+<td>A single decider task, without wrapping it in a list</td>
+</tr>
+<tr>
+<td><code>POST /extract</code></td>
+<td>A single extractor task, without wrapping it in a list</td>
+</tr>
+</tbody></table>
+<p>Prefer <code>/v1/tasks</code>. The other three exist so that simple calls stay simple and so that
+clients written against the first version of the contract keep working.</p>
+<h2 id="client-libraries">Client libraries<a class="anchor" href="#client-libraries" aria-label="Link to Client libraries">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Language</th>
+<th>Package</th>
+<th>Client class</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TypeScript</td>
+<td><code>@dsainvg/decide-extractor-sdk</code></td>
+<td><code>DsainvgApiClient</code></td>
+</tr>
+<tr>
+<td>Python</td>
+<td><code>dsainvg-decide-extractor-sdk</code></td>
+<td><code>DsainvgApi</code></td>
+</tr>
+<tr>
+<td>Ruby</td>
+<td>gem</td>
+<td><code>DsainvgApi</code></td>
+</tr>
+<tr>
+<td>Rust</td>
+<td><code>dsainvg_api</code> crate</td>
+<td><code>DsainvgApi</code></td>
+</tr>
+<tr>
+<td>Java</td>
+<td>Maven artifact</td>
+<td><code>DsainvgApi</code></td>
+</tr>
+<tr>
+<td>.NET</td>
+<td><code>DsainvgApi</code> package</td>
+<td><code>DsainvgApiClient</code></td>
+</tr>
+</tbody></table>
+<p>C++ has no generated client. Call the HTTP API directly from any HTTP library, the payloads
+are plain JSON. See <a href="/operations/clients/">clients</a> for a worked C++ example.</p>
+
+    <div class="pager"><a class="next" href="getting-started/installation/"><small>Next</small>Installation</a></div>
+  </main>
+  <aside class="toc">
+<div class="toc-title">On this page</div>
+<a class="depth-2" href="#what-it-is-built-for">What it is built for#</a>
+<a class="depth-2" href="#start-here">Start here#</a>
+<a class="depth-2" href="#endpoints">Endpoints#</a>
+<a class="depth-2" href="#client-libraries">Client libraries#</a>
+  </aside>
+</div>
+<footer class="site"><div class="inner">
+  <span>Decider-Extractor API v0.3.0</span>
+  <a href="llms.txt">llms.txt</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk">Repository</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md">Changelog</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/PUBLISHING.md">Publishing</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/fern/openapi/openapi.yml">OpenAPI</a>
+</div></footer>
+<script src="assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>POST /v1/decide-extract - Decider-Extractor API</title>
+<meta name="description" content="The original batched endpoint, kept as an alias of /v1/tasks.">
+<link rel="stylesheet" href="../../assets/hljs.css">
+<link rel="stylesheet" href="../../assets/site.css">
+<script>var basePath = "../../";</script>
+</head>
+<body data-path="/api-reference/decide-extract/">
+<header class="site">
+  <button class="icon-button nav-toggle" aria-label="Menu">&#9776;</button>
+  <a class="brand" href="../../"><span class="dot"></span>Decider-Extractor API<span class="version">v0.3.0</span></a>
+  <div class="search">
+    <input id="search-input" type="search" placeholder="Search docs" aria-label="Search docs">
+    <kbd>Ctrl K</kbd>
+    <div class="search-results" id="search-results"></div>
+  </div>
+  <button class="icon-button" id="theme-toggle" aria-label="Toggle theme">&#9789;</button>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+<div class="section">
+  <div class="section-title">Overview</div>
+  <a href="../../">Decider-Extractor API</a>
+</div>
+<div class="section">
+  <div class="section-title">Getting started</div>
+  <a href="../../getting-started/installation/">Installation</a>
+  <a href="../../getting-started/quickstart/">Quickstart</a>
+  <a href="../../getting-started/authentication/">Authentication</a>
+  <a href="../../getting-started/configuration/">Configuration</a>
+</div>
+<div class="section">
+  <div class="section-title">Guides</div>
+  <a href="../../guides/task-types/">Task types</a>
+  <a href="../../guides/single-tasks/">Single tasks</a>
+  <a href="../../guides/multimodal-input/">Multimodal input</a>
+  <a href="../../guides/structured-output/">Structured output</a>
+  <a href="../../guides/errors/">Errors</a>
+  <a href="../../guides/versioning/">Versioning and migration</a>
+  <a href="../../guides/troubleshooting/">Troubleshooting</a>
+</div>
+<div class="section">
+  <div class="section-title">API reference</div>
+  <a href="../../api-reference/overview/">API overview</a>
+  <a href="../../api-reference/run-tasks/">POST /v1/tasks</a>
+  <a href="../../api-reference/decide-extract/">POST /v1/decide-extract</a>
+  <a href="../../api-reference/decide/">POST /decide</a>
+  <a href="../../api-reference/extract/">POST /extract</a>
+  <a href="../../api-reference/types/">Types</a>
+</div>
+<div class="section">
+  <div class="section-title">Operations</div>
+  <a href="../../operations/repository/">Repository</a>
+  <a href="../../operations/clients/">C++ and other clients</a>
+  <a href="../../operations/publishing/">Publishing</a>
+  <a href="../../operations/sdk-development/">Developing the SDKs</a>
+  <a href="../../operations/deploying-docs/">Deploying the docs</a>
+  <a href="../../operations/naming/">Naming</a>
+</div>
+  </nav>
+  <main class="content">
+    <h1>POST /v1/decide-extract</h1>
+    <p class="lede">The original batched endpoint, kept as an alias of /v1/tasks.</p>
+<pre data-lang="http"><span class="lang">http</span><code class="hljs language-http">POST /v1/decide-extract
+</code></pre>
+<p>This endpoint takes exactly the same request and returns exactly the same response as
+<code>POST /v1/tasks</code>. It is the original name, kept so that clients written against <code>0.1.0</code> and
+<code>0.2.0</code> keep working without a flag day.</p>
+<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;decider-extractor-v1&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;context&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;User says: renew subscription for 2 years.&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;tasks&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;decide&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;should_renew&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;question&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Should we offer a renewal discount?&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;options&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;yes&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;no&quot;</span><span class="hljs-punctuation">]</span> <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<h2 id="new-code">New code<a class="anchor" href="#new-code" aria-label="Link to New code">#</a></h2>
+<p>Use <code>/v1/tasks</code>. The name says what the endpoint does, and it leaves room for task types that
+are neither a decision nor an extraction.</p>
+<pre data-lang="diff"><span class="lang">diff</span><code class="hljs language-diff"><span class="hljs-deletion">-client.tasks.decideExtract(request);</span>
+<span class="hljs-addition">+client.tasks.runTasks(request);</span>
+</code></pre>
+<h2 id="behaviour">Behaviour<a class="anchor" href="#behaviour" aria-label="Link to Behaviour">#</a></h2>
+<p>Identical to <code>/v1/tasks</code>: same request schema, same response schema, same validation, same
+errors, same token usage. The two paths are served by the same handler, so there is no
+behavioural difference to reason about and no feature is available on one and not the other.</p>
+<h2 id="deprecation">Deprecation<a class="anchor" href="#deprecation" aria-label="Link to Deprecation">#</a></h2>
+<p>Not deprecated. It is supported for the foreseeable future, and it is the path used by the
+<code>decideExtract</code> method in every client. It will only be removed in a major version, and a
+major version will keep it available behind an explicit opt-out first.</p>
+
+    <div class="pager"><a class="prev" href="../../api-reference/run-tasks/"><small>Previous</small>POST /v1/tasks</a><a class="next" href="../../api-reference/decide/"><small>Next</small>POST /decide</a></div>
+  </main>
+  <aside class="toc">
+<div class="toc-title">On this page</div>
+<a class="depth-2" href="#new-code">New code#</a>
+<a class="depth-2" href="#behaviour">Behaviour#</a>
+<a class="depth-2" href="#deprecation">Deprecation#</a>
+  </aside>
+</div>
+<footer class="site"><div class="inner">
+  <span>Decider-Extractor API v0.3.0</span>
+  <a href="../../llms.txt">llms.txt</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk">Repository</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md">Changelog</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/PUBLISHING.md">Publishing</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/fern/openapi/openapi.yml">OpenAPI</a>
+</div></footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

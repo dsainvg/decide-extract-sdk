@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Naming - Decider-Extractor API</title>
+<meta name="description" content="Why the generated packages are named after the organization, and how to fix it.">
+<link rel="stylesheet" href="../../assets/hljs.css">
+<link rel="stylesheet" href="../../assets/site.css">
+<script>var basePath = "../../";</script>
+</head>
+<body data-path="/operations/naming/">
+<header class="site">
+  <button class="icon-button nav-toggle" aria-label="Menu">&#9776;</button>
+  <a class="brand" href="../../"><span class="dot"></span>Decider-Extractor API<span class="version">v0.3.0</span></a>
+  <div class="search">
+    <input id="search-input" type="search" placeholder="Search docs" aria-label="Search docs">
+    <kbd>Ctrl K</kbd>
+    <div class="search-results" id="search-results"></div>
+  </div>
+  <button class="icon-button" id="theme-toggle" aria-label="Toggle theme">&#9789;</button>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+<div class="section">
+  <div class="section-title">Overview</div>
+  <a href="../../">Decider-Extractor API</a>
+</div>
+<div class="section">
+  <div class="section-title">Getting started</div>
+  <a href="../../getting-started/installation/">Installation</a>
+  <a href="../../getting-started/quickstart/">Quickstart</a>
+  <a href="../../getting-started/authentication/">Authentication</a>
+  <a href="../../getting-started/configuration/">Configuration</a>
+</div>
+<div class="section">
+  <div class="section-title">Guides</div>
+  <a href="../../guides/task-types/">Task types</a>
+  <a href="../../guides/single-tasks/">Single tasks</a>
+  <a href="../../guides/multimodal-input/">Multimodal input</a>
+  <a href="../../guides/structured-output/">Structured output</a>
+  <a href="../../guides/errors/">Errors</a>
+  <a href="../../guides/versioning/">Versioning and migration</a>
+  <a href="../../guides/troubleshooting/">Troubleshooting</a>
+</div>
+<div class="section">
+  <div class="section-title">API reference</div>
+  <a href="../../api-reference/overview/">API overview</a>
+  <a href="../../api-reference/run-tasks/">POST /v1/tasks</a>
+  <a href="../../api-reference/decide-extract/">POST /v1/decide-extract</a>
+  <a href="../../api-reference/decide/">POST /decide</a>
+  <a href="../../api-reference/extract/">POST /extract</a>
+  <a href="../../api-reference/types/">Types</a>
+</div>
+<div class="section">
+  <div class="section-title">Operations</div>
+  <a href="../../operations/repository/">Repository</a>
+  <a href="../../operations/clients/">C++ and other clients</a>
+  <a href="../../operations/publishing/">Publishing</a>
+  <a href="../../operations/sdk-development/">Developing the SDKs</a>
+  <a href="../../operations/deploying-docs/">Deploying the docs</a>
+  <a href="../../operations/naming/">Naming</a>
+</div>
+  </nav>
+  <main class="content">
+    <h1>Naming</h1>
+    <p class="lede">Why the generated packages are named after the organization, and how to fix it.</p>
+<h2 id="what-the-generators-produce-today">What the generators produce today<a class="anchor" href="#what-the-generators-produce-today" aria-label="Link to What the generators produce today">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Language</th>
+<th>Package name</th>
+<th>Manifest</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TypeScript</td>
+<td>sources only, no <code>package.json</code></td>
+<td>missing</td>
+</tr>
+<tr>
+<td>Python</td>
+<td>sources only, no <code>pyproject.toml</code></td>
+<td>missing</td>
+</tr>
+<tr>
+<td>Ruby</td>
+<td><code>dsainvg</code></td>
+<td><code>dsainvg.gemspec</code></td>
+</tr>
+<tr>
+<td>Rust</td>
+<td><code>dsainvg_api</code></td>
+<td><code>Cargo.toml</code></td>
+</tr>
+<tr>
+<td>Java</td>
+<td><code>org.dsainvg</code></td>
+<td>maintained in <code>templates/sdk-java/pom.xml</code></td>
+</tr>
+<tr>
+<td>.NET</td>
+<td><code>DsainvgApi</code></td>
+<td><code>DsainvgApi.csproj</code></td>
+</tr>
+</tbody></table>
+<h2 id="why">Why<a class="anchor" href="#why" aria-label="Link to Why">#</a></h2>
+<p>Fern derives the SDK&#39;s package identity from the <strong>API name</strong>. This project was created with</p>
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">fern init --api --org dsainvg --openapi contracts/openapi.yaml
+</code></pre>
+<p>which registers the API under the organization and leaves it without a name of its own, so
+every generator falls back to the organization identifier. <code>dsainvg</code>, <code>dsainvg_api</code> and
+<code>DsainvgApi</code> are all that fallback.</p>
+<p>The three generators that need a package name to emit a manifest at all, TypeScript, Python
+and Java, fail differently as a result: they write sources and skip the manifest. The Python
+generator refuses to start if handed a key it does not recognise, so a wrong key such as
+<code>package-name</code> fails the generator outright, while <code>package_name</code> is accepted and still leaves
+the output without a manifest.</p>
+<p><code>fern.config.json</code> cannot fix this. It accepts only <code>organization</code> and <code>version</code>; <code>projectId</code>,
+<code>name</code>, <code>apiId</code>, <code>api-id</code>, <code>project-id</code>, <code>project</code>, <code>apiName</code> and <code>api-name</code> are all rejected
+as unrecognized keys.</p>
+<h2 id="the-fix">The fix<a class="anchor" href="#the-fix" aria-label="Link to The fix">#</a></h2>
+<p>Give the API a name in Fern, which means signing in and creating or renaming the API in the
+Fern dashboard, or re-running <code>fern init</code> against a named API:</p>
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">fern login
+fern init --api --org dsainvg --openapi fern/openapi/openapi.yml
+</code></pre>
+<p>Once the API is named, set the package name for each generator in <code>fern/generators.yml</code> and
+regenerate. The manifests and the names follow from the contract&#39;s <code>info.title</code>,
+<code>Decider-Extractor API</code>.</p>
+<h2 id="what-this-does-not-affect">What this does not affect<a class="anchor" href="#what-this-does-not-affect" aria-label="Link to What this does not affect">#</a></h2>
+<ul>
+<li>The API surface itself. Endpoints, schemas and request and response shapes come from the
+contract and are correct in every generated client.</li>
+<li>The TypeScript, Python and Java clients as source. The generated code is complete and
+correct; only the packaging metadata is missing, which is what makes them unbuildable and
+unpublishable.</li>
+<li>Ruby, Rust and .NET, which build and test today under their organization-derived names.</li>
+</ul>
+<h2 id="working-around-it">Working around it<a class="anchor" href="#working-around-it" aria-label="Link to Working around it">#</a></h2>
+<p>The three clients are still published and usable. Their package manifests are maintained
+here rather than in <code>packages/</code>, because Fern wipes each output directory before it
+generates, so anything written inside <code>packages/</code> by hand is deleted on the next run.</p>
+<p>The manifests live in <code>templates/sdk-ts/</code> and <code>templates/sdk-py/</code>, with <code>__VERSION__</code> where
+the version goes, and <code>scripts/write-manifests.mjs</code> renders them into <code>packages/</code> after
+generation with <code>info.version</code> from the contract. <code>npm run fern:generate</code> calls it
+automatically, so the manifests can never drift from the contract version.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>templates/sdk-ts/package.json</code></td>
+<td>npm package: name, version, exports, build scripts</td>
+</tr>
+<tr>
+<td><code>templates/sdk-ts/tsconfig.json</code></td>
+<td>compiler options for the generated sources</td>
+</tr>
+<tr>
+<td><code>templates/sdk-ts/tsconfig.build.json</code></td>
+<td>build config emitting <code>dist/</code> with declarations</td>
+</tr>
+<tr>
+<td><code>templates/sdk-py/pyproject.toml</code></td>
+<td>PyPI package: name, version, dependencies, packaging</td>
+</tr>
+</tbody></table>
+<p>Because Python&#39;s generated tree is flat, <code>pyproject.toml</code> maps the whole directory to one
+package and lists each subpackage, otherwise setuptools builds a wheel with only the
+top-level modules. The import name is <code>dsainvg_decide_extractor_sdk</code>, which is what the
+generator&#39;s own docstrings, User-Agent header and tests reference.</p>
+<p>The Ruby gem needs no equivalent: Fern generates <code>custom.gemspec.rb</code> as a documented hook
+for exactly this, so the gem&#39;s name and metadata are set there and protected with
+<code>.fernignore</code>.</p>
+<p>Do not add <code>.fernignore</code> to <code>packages/sdk-ts</code> or <code>packages/sdk-py</code>: Fern runs
+<code>git reset --</code> on the ignored paths with NUL-separated arguments, which fails on Linux
+runners with <code>ERR_INVALID_ARG_VALUE</code>.</p>
+
+    <div class="pager"><a class="prev" href="../../operations/deploying-docs/"><small>Previous</small>Deploying the docs</a></div>
+  </main>
+  <aside class="toc">
+<div class="toc-title">On this page</div>
+<a class="depth-2" href="#what-the-generators-produce-today">What the generators produce today#</a>
+<a class="depth-2" href="#why">Why#</a>
+<a class="depth-2" href="#the-fix">The fix#</a>
+<a class="depth-2" href="#what-this-does-not-affect">What this does not affect#</a>
+<a class="depth-2" href="#working-around-it">Working around it#</a>
+  </aside>
+</div>
+<footer class="site"><div class="inner">
+  <span>Decider-Extractor API v0.3.0</span>
+  <a href="../../llms.txt">llms.txt</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk">Repository</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md">Changelog</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/PUBLISHING.md">Publishing</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/fern/openapi/openapi.yml">OpenAPI</a>
+</div></footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

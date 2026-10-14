@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Structured output - Decider-Extractor API</title>
+<meta name="description" content="How results are shaped, keyed, and repeated for OpenAI compatibility.">
+<link rel="stylesheet" href="../../assets/hljs.css">
+<link rel="stylesheet" href="../../assets/site.css">
+<script>var basePath = "../../";</script>
+</head>
+<body data-path="/guides/structured-output/">
+<header class="site">
+  <button class="icon-button nav-toggle" aria-label="Menu">&#9776;</button>
+  <a class="brand" href="../../"><span class="dot"></span>Decider-Extractor API<span class="version">v0.3.0</span></a>
+  <div class="search">
+    <input id="search-input" type="search" placeholder="Search docs" aria-label="Search docs">
+    <kbd>Ctrl K</kbd>
+    <div class="search-results" id="search-results"></div>
+  </div>
+  <button class="icon-button" id="theme-toggle" aria-label="Toggle theme">&#9789;</button>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+<div class="section">
+  <div class="section-title">Overview</div>
+  <a href="../../">Decider-Extractor API</a>
+</div>
+<div class="section">
+  <div class="section-title">Getting started</div>
+  <a href="../../getting-started/installation/">Installation</a>
+  <a href="../../getting-started/quickstart/">Quickstart</a>
+  <a href="../../getting-started/authentication/">Authentication</a>
+  <a href="../../getting-started/configuration/">Configuration</a>
+</div>
+<div class="section">
+  <div class="section-title">Guides</div>
+  <a href="../../guides/task-types/">Task types</a>
+  <a href="../../guides/single-tasks/">Single tasks</a>
+  <a href="../../guides/multimodal-input/">Multimodal input</a>
+  <a href="../../guides/structured-output/">Structured output</a>
+  <a href="../../guides/errors/">Errors</a>
+  <a href="../../guides/versioning/">Versioning and migration</a>
+  <a href="../../guides/troubleshooting/">Troubleshooting</a>
+</div>
+<div class="section">
+  <div class="section-title">API reference</div>
+  <a href="../../api-reference/overview/">API overview</a>
+  <a href="../../api-reference/run-tasks/">POST /v1/tasks</a>
+  <a href="../../api-reference/decide-extract/">POST /v1/decide-extract</a>
+  <a href="../../api-reference/decide/">POST /decide</a>
+  <a href="../../api-reference/extract/">POST /extract</a>
+  <a href="../../api-reference/types/">Types</a>
+</div>
+<div class="section">
+  <div class="section-title">Operations</div>
+  <a href="../../operations/repository/">Repository</a>
+  <a href="../../operations/clients/">C++ and other clients</a>
+  <a href="../../operations/publishing/">Publishing</a>
+  <a href="../../operations/sdk-development/">Developing the SDKs</a>
+  <a href="../../operations/deploying-docs/">Deploying the docs</a>
+  <a href="../../operations/naming/">Naming</a>
+</div>
+  </nav>
+  <main class="content">
+    <h1>Structured output</h1>
+    <p class="lede">How results are shaped, keyed, and repeated for OpenAI compatibility.</p>
+<h2 id="results">results<a class="anchor" href="#results" aria-label="Link to results">#</a></h2>
+<p>The canonical answer is <code>results</code>, an object keyed by each task&#39;s <code>name</code>:</p>
+<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;results&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;should_renew&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;yes&quot;</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;renew_term&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;months&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">24</span> <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>It is a free-form object, so decider answers are <code>{ value, reason? }</code> objects and extractor
+answers are whatever the task asked for. Generated clients type the known paths and let you
+index the rest.</p>
+<p><div class="callout callout-tip"><div class="callout-title">Tip</div><p>Iterate over the keys you sent rather than the keys you got back. A model asked for
+<code>should_renew</code> will return <code>should_renew</code>, but do not let a missing key crash the caller.</p>
+</div></p>
+<h2 id="tasks-the-alias">tasks, the alias<a class="anchor" href="#tasks-the-alias" aria-label="Link to tasks, the alias">#</a></h2>
+<p><code>tasks</code> carries the same object as <code>results</code>, kept for clients written against the first
+version of the contract. Exactly one of the two is populated in practice; read <code>results</code>
+unless you are maintaining an old client.</p>
+<h2 id="choices">choices<a class="anchor" href="#choices" aria-label="Link to choices">#</a></h2>
+<p>The OpenAI-shaped part of the response:</p>
+<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;choices&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;role&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;assistant&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;content&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;{\&quot;should_renew\&quot;:{\&quot;value\&quot;:\&quot;yes\&quot;},\&quot;renew_term\&quot;:{\&quot;months\&quot;:24}}&quot;</span>
+      <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;finish_reason&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;stop&quot;</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p><code>content</code> is the whole <code>results</code> object encoded as a JSON string. You never need it if you
+read <code>results</code>, but it is what makes the response usable by generic OpenAI tooling.</p>
+<p><code>finish_reason</code> is one of:</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>stop</code></td>
+<td>Finished normally. The normal case</td>
+</tr>
+<tr>
+<td><code>length</code></td>
+<td>Hit <code>max_output_tokens</code> before finishing</td>
+</tr>
+<tr>
+<td><code>reason</code>: <code>content_filter</code></td>
+<td>Stopped by a safety filter</td>
+</tr>
+</tbody></table>
+<p><code>length</code> on a batch means at least one task was truncated, usually an extractor that wanted
+more room. Raise <code>max_output_tokens</code> and retry. <code>content_filter</code> is not retryable with the
+same input; change the context.</p>
+<h2 id="usage">usage<a class="anchor" href="#usage" aria-label="Link to usage">#</a></h2>
+<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;usage&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;prompt_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">61</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;completion_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">9</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;total_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">70</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>All three are always present and never negative. <code>total_tokens</code> is
+<code>prompt_tokens + completion_tokens</code>.</p>
+<h2 id="what-a-batch-costs">What a batch costs<a class="anchor" href="#what-a-batch-costs" aria-label="Link to What a batch costs">#</a></h2>
+<p>Everything is billed on one prompt that contains the context, the images, the audio and
+every task, plus one completion holding every answer.</p>
+<table>
+<thead>
+<tr>
+<th>Tasks</th>
+<th>Context</th>
+<th>prompt_tokens (approx.)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1 decide</td>
+<td>one sentence</td>
+<td>~40</td>
+</tr>
+<tr>
+<td>5 mixed tasks</td>
+<td>one paragraph</td>
+<td>~90</td>
+</tr>
+<tr>
+<td>10 mixed tasks + image</td>
+<td>a page and a screenshot</td>
+<td>~1200</td>
+</tr>
+</tbody></table>
+<p>One request with ten tasks costs a little more than a single call, and far less than ten.
+That trade is the point of the API.</p>
+
+    <div class="pager"><a class="prev" href="../../guides/multimodal-input/"><small>Previous</small>Multimodal input</a><a class="next" href="../../guides/errors/"><small>Next</small>Errors</a></div>
+  </main>
+  <aside class="toc">
+<div class="toc-title">On this page</div>
+<a class="depth-2" href="#results">results#</a>
+<a class="depth-2" href="#tasks-the-alias">tasks, the alias#</a>
+<a class="depth-2" href="#choices">choices#</a>
+<a class="depth-2" href="#usage">usage#</a>
+<a class="depth-2" href="#what-a-batch-costs">What a batch costs#</a>
+  </aside>
+</div>
+<footer class="site"><div class="inner">
+  <span>Decider-Extractor API v0.3.0</span>
+  <a href="../../llms.txt">llms.txt</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk">Repository</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md">Changelog</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/PUBLISHING.md">Publishing</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/fern/openapi/openapi.yml">OpenAPI</a>
+</div></footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

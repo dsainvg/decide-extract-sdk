@@ -1,0 +1,275 @@
+# Decider-Extractor API
+
+> Contract-first decider and extractor API for LLM workloads. Run many small judgement
+> tasks against one context in a single, compact, non-streaming request.
+
+Official SDKs exist for TypeScript, Python, Ruby, Rust, Java and .NET. The OpenAPI 3.1
+contract is the source of truth and every client is generated from it. C++ has no
+generated client; call the HTTP API directly.
+
+- Contract (OpenAPI 3.1): https://raw.githubusercontent.com/dsainvg/decide-extract-sdk/main/fern/openapi/openapi.yml
+- Repository: https://github.com/dsainvg/decide-extract-sdk
+- Base URL in development: http://localhost:8080
+
+## What it is for
+
+- One request, many answers: ten questions about one document cost one round trip.
+- Small outputs: decisions are short strings, extractions are small objects.
+- Deterministic by default: `temperature` defaults to `0`.
+- OpenAI-shaped: `model`, `messages`, `choices`, `usage`.
+- Non-streaming by design. There is no SSE endpoint.
+
+## Authentication
+
+Send a bearer token on every request:
+
+```
+Authorization: Bearer <API_KEY>
+```
+
+A missing or invalid key returns `401` before any model runs, so a bad key costs nothing.
+
+## Install
+
+| Language | Package | Install |
+| --- | --- | --- |
+| TypeScript | `@dsainvg/decide-extractor-sdk` | `npm install @dsainvg/decide-extractor-sdk` |
+| Python | `dsainvg-decide-extractor-sdk` | `pip install dsainvg-decide-extractor-sdk` |
+| Ruby | `decide_extractor_sdk` | `gem install decide_extractor_sdk` |
+| Rust | `dsainvg_api` | `cargo add dsainvg_api` |
+| Java | Fern Java client | see `packages/sdk-java` |
+| .NET | `DsainvgApi` | `dotnet add package DsainvgApi` |
+
+## First request
+
+```bash
+curl -X POST http://localhost:8080/v1/tasks \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $DECIDE_EXTRACTOR_TOKEN" \
+  -d '{
+    "model": "decider-extractor-v1",
+    "context": "User says: renew subscription for 2 years. Previous plan expired 3 months ago.",
+    "tasks": [
+      { "type": "decide", "name": "should_renew", "question": "Should we offer a renewal discount?", "options": ["yes", "no"] },
+      { "type": "extract", "name": "renew_term", "instruction": "Extract the renewal term in months", "keys": ["months"] }
+    ]
+  }'
+```
+
+```json
+{
+  "id": "req_9X2kFvTnQpR4w",
+  "model": "decider-extractor-v1",
+  "choices": [
+    {
+      "message": {
+        "role": "assistant",
+        "content": "{\"should_renew\":{\"value\":\"yes\"},\"renew_term\":{\"months\":24}}"
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "results": {
+    "should_renew": { "value": "yes" },
+    "renew_term": { "months": 24 }
+  },
+  "usage": { "prompt_tokens": 61, "completion_tokens": 9, "total_tokens": 70 }
+}
+```
+
+TypeScript:
+
+```ts
+import { DsainvgApiClient } from "@dsainvg/decide-extractor-sdk";
+
+const client = new DsainvgApiClient({
+  baseUrl: "http://localhost:8080",
+  token: process.env.DECIDE_EXTRACTOR_TOKEN,
+});
+
+const response = await client.tasks.decideExtract({
+  model: "decider-extractor-v1",
+  context: "User says: renew subscription for 2 years.",
+  tasks: [
+    { type: "decide", name: "should_renew", question: "Should we offer a renewal discount?", options: ["yes", "no"] },
+    { type: "extract", name: "renew_term", instruction: "Extract the renewal term in months", keys: ["months"] },
+  ],
+});
+
+console.log(response.results);
+```
+
+Python:
+
+```python
+from dsainvg_decide_extractor_sdk import DsainvgApi
+
+client = DsainvgApi(base_url="http://localhost:8080", token="...")
+
+response = client.tasks.decide_extract(
+    model="decider-extractor-v1",
+    context="User says: renew subscription for 2 years.",
+    tasks=[
+        {"type": "decide", "name": "should_renew", "question": "Should we offer a renewal discount?", "options": ["yes", "no"]},
+        {"type": "extract", "name": "renew_term", "instruction": "Extract the renewal term in months", "keys": ["months"]},
+    ],
+)
+
+print(response.results)
+```
+
+## Endpoints
+
+| Endpoint | Operation id | Use it for |
+| --- | --- | --- |
+| `POST /v1/tasks` | `runTasks` | Any mix of decider and extractor tasks. Prefer this one |
+| `POST /v1/decide-extract` | `decideExtract` | Backwards-compatible alias of `/v1/tasks` |
+| `POST /decide` | `decide` | A single decider task, without wrapping it in a list |
+| `POST /extract` | `extract` | A single extractor task, without wrapping it in a list |
+
+`/v1/tasks` is a strict superset: if your code can handle a list, it can handle everything.
+
+## Task types
+
+`tasks` is a discriminated union on `type`. Names must match
+`^[a-zA-Z0-9_][a-zA-Z0-9_.-]{0,63}$` and must be unique within a request.
+
+### decide
+
+| Field | Type | Required | Notes |
+| --- | --- | --- | --- |
+| `type` | `"decide"` | yes | Discriminator |
+| `name` | string | yes | Key the answer appears under in `results` |
+| `question` | string | yes | The question to answer |
+| `options` | array of string | no | Allowed answers, constrains the output |
+| `choices` | array of string | no | Alias of `options` |
+| `instruction` | string | no | Extra guidance |
+| `target_language` | enum | no | Per-task language override |
+| `id` | string | no | Legacy alias of `name` |
+
+Answered as `{ "value": "yes" }`, optionally with a `reason`.
+
+### extract
+
+| Field | Type | Required | Notes |
+| --- | --- | --- | --- |
+| `type` | `"extract"` | yes | Discriminator |
+| `name` | string | yes | Key the answer appears under in `results` |
+| `instruction` | string | yes | What to extract |
+| `keys` | array of string | no | Expected field names |
+| `fields` | array of string | no | Alias of `keys` |
+| `schema` | object | no | JSON-Schema-like shape for nested or typed results |
+| `target_language` | enum | no | Per-task language override |
+| `id` | string | no | Legacy alias of `name` |
+
+Answered as a free-form object of the requested fields.
+
+## Shared request fields
+
+| Field | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `model` | string | yes | - | Model identifier |
+| `context` | string | one of | - | Free-form text the tasks read |
+| `messages` | array of `Message` | one of | - | OpenAI-style turns |
+| `images` | array of `ImageInput` | no | - | Images to read |
+| `audio` | array of `AudioInput` | no | - | Audio to read |
+| `temperature` | number | no | `0` | 0 to 2, deterministic by default |
+| `max_output_tokens` | integer | no | `16` | 1 to 4096, room for the whole batch |
+| `response_format` | object | no | `{"type":"json_object"}` | `type` must be `json_object` |
+| `target_language` | enum | no | - | Language for the results |
+| `output_language` | enum | no | - | Alias of `target_language` |
+
+Exactly one of `context` and `messages` must be present.
+
+## Responses
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `id` | string | Request id, for logs and support |
+| `model` | string | Model that ran |
+| `choices` | array | Exactly one `Choice` |
+| `results` | object | Canonical answers, keyed by task name |
+| `tasks` | object | Alias of `results`, kept for older clients |
+| `usage` | object | `prompt_tokens`, `completion_tokens`, `total_tokens` |
+
+`Choice.finish_reason` is `stop` (normal), `length` (hit `max_output_tokens`, raise it and
+retry) or `content_filter` (not retryable with the same input).
+
+`DecideResponse` additionally carries `result` (canonical), `decision` (alias) and `value`
+(the bare string). `ExtractResponse` carries `result` (canonical) and `data` (alias).
+
+## Multimodal input
+
+`ImageInput` and `AudioInput` are `{ "type": "url" | "base64", "url"?, "data"?,
+"mime_type"? }`. Always send `mime_type` with base64 data.
+
+Inside `messages`, `content` is either a string or a list of content parts, each with a
+`type` of `text`, `image_url`, `image`, `audio` or `input_audio`. `image_url` takes
+`{ "url": "...", "detail": "low" | "high" | "auto" }`.
+
+## Language enum
+
+`en`, `es`, `fr`, `de`, `it`, `pt`, `nl`, `ru`, `ja`, `ko`, `zh`, `ar`, `hi`, `tr`, `pl`,
+`sv`, `da`, `no`, `fi`, `cs`
+
+## Errors
+
+Every failure returns `{ "error": { "type", "message", "param"?, "code"? } }`.
+
+| Status | Meaning | Retry |
+| --- | --- | --- |
+| `400` | Malformed JSON, unknown field, or neither `context` nor `messages` | No |
+| `401` | Missing or invalid API key | No |
+| `403` | Key cannot use this model | No |
+| `422` | Valid JSON, invalid values | No |
+| `429` | Rate limited | Yes, honour `Retry-After` |
+| `500` | Server error | Yes, with backoff |
+
+Branch on `error.code`, log `error.message`, show neither to end users. Requests are strict:
+unknown fields are rejected rather than ignored, and `stream` is never valid.
+
+## Conventions and gotchas
+
+- `results` is keyed by each task's `name`; iterate the keys you sent rather than the keys
+  you got back.
+- Keep keys stable and translate only values when using `target_language`.
+- `DecideTask.options` and `ExtractTask.keys` keep their old aliases `choices` and `fields`.
+- `Task.id` is still accepted as an alias of `Task.name`, but `name` is canonical.
+- Batching exists to share context across tasks. One request with ten tasks costs a little
+  more than a single call and far less than ten.
+
+## Documentation index
+
+## Overview
+- [Decider-Extractor API](/): Run many decider and extractor tasks in one compact, non-streaming request. Official SDKs for TypeScript, Python, Ruby, Rust, Java and .NET.
+
+## Getting started
+- [Installation](/getting-started/installation/): Add the TypeScript, Python, Ruby, Rust, Java or .NET client to your project.
+- [Quickstart](/getting-started/quickstart/): Send your first request with the HTTP API and with each client library.
+- [Authentication](/getting-started/authentication/): How tokens are sent, where they come from, and what happens when one is missing.
+- [Configuration](/getting-started/configuration/): Base URLs, model selection, determinism and the controls every request shares.
+
+## Guides
+- [Task types](/guides/task-types/): How decider and extractor tasks are shaped, named, and answered.
+- [Single tasks](/guides/single-tasks/): The /decide and /extract shortcuts for when there is exactly one task.
+- [Multimodal input](/guides/multimodal-input/): Attaching images and audio to a request through messages content parts.
+- [Structured output](/guides/structured-output/): How results are shaped, keyed, and repeated for OpenAI compatibility.
+- [Errors](/guides/errors/): Status codes, the error body, and what to do about each failure.
+- [Versioning and migration](/guides/versioning/): How versions are numbered, what changed between them, and how to upgrade.
+- [Troubleshooting](/guides/troubleshooting/): Symptoms, causes and fixes for the problems that actually come up.
+
+## API reference
+- [API overview](/api-reference/overview/): Endpoints, conventions and shared request fields.
+- [POST /v1/tasks](/api-reference/run-tasks/): Run any mix of decider and extractor tasks in a single request.
+- [POST /v1/decide-extract](/api-reference/decide-extract/): The original batched endpoint, kept as an alias of /v1/tasks.
+- [POST /decide](/api-reference/decide/): Run one decider task without wrapping it in a list.
+- [POST /extract](/api-reference/extract/): Run one extractor task without wrapping it in a list.
+- [Types](/api-reference/types/): Every schema in the contract, field by field.
+
+## Operations
+- [Repository](/operations/repository/): How this SDK repository is laid out, and what each part is for.
+- [C++ and other clients](/operations/clients/): Using the API from C++, and from anything else without a generated client.
+- [Publishing](/operations/publishing/): What goes to a registry, what is attached to the release, and how a release runs.
+- [Developing the SDKs](/operations/sdk-development/): Changing the API, regenerating, and keeping CI green.
+- [Deploying the docs](/operations/deploying-docs/): Building sites/ and publishing it to the sites branch.
+- [Naming](/operations/naming/): Why the generated packages are named after the organization, and how to fix it.

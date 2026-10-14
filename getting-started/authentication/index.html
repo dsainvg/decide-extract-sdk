@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Authentication - Decider-Extractor API</title>
+<meta name="description" content="How tokens are sent, where they come from, and what happens when one is missing.">
+<link rel="stylesheet" href="../../assets/hljs.css">
+<link rel="stylesheet" href="../../assets/site.css">
+<script>var basePath = "../../";</script>
+</head>
+<body data-path="/getting-started/authentication/">
+<header class="site">
+  <button class="icon-button nav-toggle" aria-label="Menu">&#9776;</button>
+  <a class="brand" href="../../"><span class="dot"></span>Decider-Extractor API<span class="version">v0.3.0</span></a>
+  <div class="search">
+    <input id="search-input" type="search" placeholder="Search docs" aria-label="Search docs">
+    <kbd>Ctrl K</kbd>
+    <div class="search-results" id="search-results"></div>
+  </div>
+  <button class="icon-button" id="theme-toggle" aria-label="Toggle theme">&#9789;</button>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+<div class="section">
+  <div class="section-title">Overview</div>
+  <a href="../../">Decider-Extractor API</a>
+</div>
+<div class="section">
+  <div class="section-title">Getting started</div>
+  <a href="../../getting-started/installation/">Installation</a>
+  <a href="../../getting-started/quickstart/">Quickstart</a>
+  <a href="../../getting-started/authentication/">Authentication</a>
+  <a href="../../getting-started/configuration/">Configuration</a>
+</div>
+<div class="section">
+  <div class="section-title">Guides</div>
+  <a href="../../guides/task-types/">Task types</a>
+  <a href="../../guides/single-tasks/">Single tasks</a>
+  <a href="../../guides/multimodal-input/">Multimodal input</a>
+  <a href="../../guides/structured-output/">Structured output</a>
+  <a href="../../guides/errors/">Errors</a>
+  <a href="../../guides/versioning/">Versioning and migration</a>
+  <a href="../../guides/troubleshooting/">Troubleshooting</a>
+</div>
+<div class="section">
+  <div class="section-title">API reference</div>
+  <a href="../../api-reference/overview/">API overview</a>
+  <a href="../../api-reference/run-tasks/">POST /v1/tasks</a>
+  <a href="../../api-reference/decide-extract/">POST /v1/decide-extract</a>
+  <a href="../../api-reference/decide/">POST /decide</a>
+  <a href="../../api-reference/extract/">POST /extract</a>
+  <a href="../../api-reference/types/">Types</a>
+</div>
+<div class="section">
+  <div class="section-title">Operations</div>
+  <a href="../../operations/repository/">Repository</a>
+  <a href="../../operations/clients/">C++ and other clients</a>
+  <a href="../../operations/publishing/">Publishing</a>
+  <a href="../../operations/sdk-development/">Developing the SDKs</a>
+  <a href="../../operations/deploying-docs/">Deploying the docs</a>
+  <a href="../../operations/naming/">Naming</a>
+</div>
+  </nav>
+  <main class="content">
+    <h1>Authentication</h1>
+    <p class="lede">How tokens are sent, where they come from, and what happens when one is missing.</p>
+<h2 id="bearer-tokens">Bearer tokens<a class="anchor" href="#bearer-tokens" aria-label="Link to Bearer tokens">#</a></h2>
+<p>Every request authenticates with an API key in the standard OpenAI-style header:</p>
+<pre data-lang="http"><span class="lang">http</span><code class="hljs language-http"><span class="hljs-keyword">POST</span> <span class="hljs-string">/v1/tasks</span> <span class="hljs-meta">HTTP/1.1</span>
+<span class="hljs-attribute">Host</span><span class="hljs-punctuation">: </span>api.example.com
+<span class="hljs-attribute">Authorization</span><span class="hljs-punctuation">: </span>Bearer sk-xxxxxxxxxxxxxxxx
+<span class="hljs-attribute">Content-Type</span><span class="hljs-punctuation">: </span>application/json
+</code></pre>
+<h2 id="in-the-clients">In the clients<a class="anchor" href="#in-the-clients" aria-label="Link to In the clients">#</a></h2>
+<p>Each generated client takes the token once, at construction, instead of on every call.</p>
+<pre data-lang="ts"><span class="lang">ts</span><code class="hljs language-ts"><span class="hljs-keyword">const</span> client = <span class="hljs-keyword">new</span> <span class="hljs-title class_">DsainvgApiClient</span>({ baseUrl, token });
+</code></pre>
+<pre data-lang="python"><span class="lang">python</span><code class="hljs language-python">client = DsainvgApi(base_url=base_url, token=token)
+</code></pre>
+<pre data-lang="ruby"><span class="lang">ruby</span><code class="hljs language-ruby">client = <span class="hljs-title class_">DsainvgApi</span>.new(<span class="hljs-symbol">base_url:</span> base_url, <span class="hljs-symbol">token:</span> token)
+</code></pre>
+<pre data-lang="rust"><span class="lang">rust</span><code class="hljs language-rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">client</span> = DsainvgApi::<span class="hljs-title function_ invoke__">builder</span>().<span class="hljs-title function_ invoke__">token</span>(token).<span class="hljs-title function_ invoke__">build</span>()?;
+</code></pre>
+<pre data-lang="java"><span class="lang">java</span><code class="hljs language-java"><span class="hljs-type">var</span> <span class="hljs-variable">client</span> <span class="hljs-operator">=</span> DsainvgApiClient.builder().token(token).build();
+</code></pre>
+<pre data-lang="csharp"><span class="lang">csharp</span><code class="hljs language-csharp"><span class="hljs-keyword">var</span> client = <span class="hljs-keyword">new</span> DsainvgApiClient(<span class="hljs-keyword">new</span> DsainvgApiClientOptions { Token = token });
+</code></pre>
+<p>Keep the token in an environment variable or your platform&#39;s secret store. Never commit it,
+and never put it in a URL, since URLs end up in logs.</p>
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash"><span class="hljs-built_in">export</span> DECIDE_EXTRACTOR_TOKEN=<span class="hljs-string">&quot;sk-...&quot;</span>
+</code></pre>
+<h2 id="failures">Failures<a class="anchor" href="#failures" aria-label="Link to Failures">#</a></h2>
+<p>A missing or invalid key is rejected before any model runs, so a bad key costs nothing.</p>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>401</code></td>
+<td>No key, or the key is not recognised</td>
+<td>Check <code>Authorization</code> is present and well-formed</td>
+</tr>
+<tr>
+<td><code>403</code></td>
+<td>Key is valid but not allowed to use this model</td>
+<td>Use a model the key has access to</td>
+</tr>
+</tbody></table>
+<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;error&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;authentication_error&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Invalid API key provided&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;code&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;invalid_api_key&quot;</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>The body always has the same shape, whatever went wrong.
+See <a href="/guides/errors/">errors</a>.</p>
+
+    <div class="pager"><a class="prev" href="../../getting-started/quickstart/"><small>Previous</small>Quickstart</a><a class="next" href="../../getting-started/configuration/"><small>Next</small>Configuration</a></div>
+  </main>
+  <aside class="toc">
+<div class="toc-title">On this page</div>
+<a class="depth-2" href="#bearer-tokens">Bearer tokens#</a>
+<a class="depth-2" href="#in-the-clients">In the clients#</a>
+<a class="depth-2" href="#failures">Failures#</a>
+  </aside>
+</div>
+<footer class="site"><div class="inner">
+  <span>Decider-Extractor API v0.3.0</span>
+  <a href="../../llms.txt">llms.txt</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk">Repository</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md">Changelog</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/PUBLISHING.md">Publishing</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/fern/openapi/openapi.yml">OpenAPI</a>
+</div></footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>
