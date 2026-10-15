@@ -1,0 +1,47 @@
+node_modules/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+dist/
+build/
+fern-dist/
+.docs-publish/
+sites/
+
+coverage/
+*.tsbuildinfo
+
+.env
+.env.*
+!.env.example
+
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
+# Build logs are committed so a failing CI job can be read without an account.
+!fern/java-build.log
+!fern/generation.log
+release-artifacts/
+
+# scratch worktrees used while debugging
+.wt/
+
+# Fern records the commit it ran from in this file, so it changes on every
+# commit and would make the drift check impossible to pass.
+packages/*/.fern/metadata.json
+
+# Produced by the toolchain, not the contract, and churn on every run.
+packages/sdk-ts/package-lock.json
+packages/sdk-py/uv.lock

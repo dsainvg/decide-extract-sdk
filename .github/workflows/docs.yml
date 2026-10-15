@@ -1,0 +1,64 @@
+name: Docs
+
+# Publishing goes to the sites branch and nowhere else. The site is versioned:
+# every release gets /vX-Y-Z/ and the root always holds the newest one, so an
+# older release keeps the documentation it shipped with.
+#
+# This was previously published with actions/deploy-pages, which needs the Pages
+# source set to GitHub Actions in the repository settings and sat at
+# "updating_pages" until it was.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docs-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci
+      - name: Build the site
+        run: npm run docs:build
+      - name: Check links, front matter and version
+        run: node scripts/check-docs.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sites
+          path: sites/
+          retention-days: 7
+
+  publish:
+    name: Publish to the sites branch
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+      - run: npm ci
+      - uses: actions/download-artifact@v8
+        with:
+          name: sites
+          path: sites
+      - name: Publish the built site
+        run: node scripts/publish-docs.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

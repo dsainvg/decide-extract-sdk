@@ -1,0 +1,340 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to publish, e.g. 0.3.0 (must match info.version in the contract)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+# One release at a time. This also stops it competing with the CI, Docs and
+# Regenerate workflows for runners.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      # Required for RubyGems trusted publishing, which exchanges this run's
+      # identity for a short lived push token instead of storing an API key.
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+          registry-url: https://registry.npmjs.org
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - uses: astral-sh/setup-uv@v6
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: false
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: "8.0.x"
+
+      - run: npm ci
+
+      - name: Verify the tag matches the contract version
+        id: resolve
+        shell: bash
+        run: |
+          set -euo pipefail
+          contract="$(npm run --silent version:print)"
+          requested="${INPUT_VERSION:-${GITHUB_REF_NAME}}"
+          requested="${requested#v}"
+
+          if [ "${GITHUB_REF_TYPE}" != "tag" ] && [ -z "${INPUT_VERSION}" ]; then
+            echo "not a tag push and no manual version, nothing to release"
+            exit 0
+          fi
+
+          echo "contract version: ${contract}"
+          echo "requested version: ${requested}"
+          if [ "${contract}" != "${requested}" ]; then
+            echo "::error::requested ${requested} does not match contract version ${contract}"
+            echo "::error::run 'npm run version:bump -- ${requested}', regenerate and commit before tagging"
+            exit 1
+          fi
+          echo "version=${contract}" >> "$GITHUB_OUTPUT"
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+
+      - name: Everything that must hold before publishing
+        run: node scripts/prepublish-check.mjs --tag v${{ steps.resolve.outputs.version }} --registry all
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+          RUBY_API_KEY: ${{ secrets.RUBY_API_KEY }}
+          CRATES_API_KEY: ${{ secrets.CRATES_API_KEY }}
+
+      - name: Generate and collect release artifacts
+        id: artifacts
+        run: |
+          # Recorded rather than fatal: the report step below fails the run if a
+          # language did not build, so one broken SDK still lets the others
+          # publish and the reason stays in the log.
+          set +e
+          exec > >(tee "$RUNNER_TEMP/artifacts.log") 2>&1
+          npm run fern:generate
+          npm run build:artifacts
+          echo "outcome=$?" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: release-artifacts
+          path: release-artifacts/
+          if-no-files-found: warn
+          retention-days: 30
+
+      # continue-on-error keeps one registry from hiding the others. The report
+      # step at the end turns any refusal into a failed run, and these logs are
+      # committed to diagnostics/release so the reason can be read.
+      - name: Publish to npm
+        continue-on-error: true
+        id: npm
+        shell: bash
+        run: |
+          exec > >(tee "$RUNNER_TEMP/npm.log") 2>&1
+          test -f packages/sdk-ts/package.json
+          cd packages/sdk-ts
+          npm install --no-audit --no-fund
+          npm run build
+          # 0.0.0-stage is what the generator writes before the manifest is
+          # rendered. Publishing it once already put a placeholder version on
+          # npm, so refuse it rather than republishing a broken package.
+          version="0.0.0"
+          if [ "" = "0.0.0-stage" ]; then
+            echo "::error::refusing to publish the generator placeholder version"
+            exit 1
+          fi
+          echo "publishing "
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish to PyPI
+        continue-on-error: true
+        id: pypi
+        shell: bash
+        run: |
+          exec > >(tee "$RUNNER_TEMP/pypi.log") 2>&1
+          test -f packages/sdk-py/pyproject.toml
+          cd packages/sdk-py
+          uv build
+          if [ -n "${PYPI_API_TOKEN}" ]; then
+            uv publish --token "${PYPI_API_TOKEN}"
+          else
+            echo "no PYPI_API_TOKEN, using trusted publishing"
+            uv publish --trusted-publishing always
+          fi
+        env:
+          PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+
+      # Exchanges this run's OIDC identity for a short lived push token. Falls
+      # back to RUBY_API_KEY below if no trusted publisher is configured, so a
+      # release is never blocked by which of the two is set up.
+      - name: Authenticate with RubyGems
+        id: rubygems-auth
+        continue-on-error: true
+        uses: rubygems/configure-rubygems-credentials@main
+
+      - name: Publish to RubyGems
+        continue-on-error: true
+        id: rubygems
+        shell: bash
+        run: |
+          set +e
+          exec > >(tee "$RUNNER_TEMP/rubygems.log") 2>&1
+
+          if [ ! -f "${HOME}/.gem/credentials" ]; then
+            echo "no trusted publisher token, falling back to RUBY_API_KEY"
+            key="$(printf "%s" "${RUBY_API_KEY}" | tr -d '[:space:]')"
+            if [ -z "$key" ]; then
+              echo "::warning::no RubyGems credentials and no RUBY_API_KEY, skipping"
+              exit 0
+            fi
+            mkdir -p "${HOME}/.gem"
+            printf -- "---\n:rubygems_api_key: %s\n" "$key" > "${HOME}/.gem/credentials"
+            chmod 600 "${HOME}/.gem/credentials"
+          fi
+          cd packages/sdk-ruby
+          # The generated gemspec requires custom.gemspec, which is where the
+          # real gem name lives, so build the generated one and not the custom.
+          gem build "$(ls -1 ./*.gemspec | head -n 1)"
+
+          gem push "$(ls -1 ./*.gem | head -n 1)"
+        env:
+          RUBY_API_KEY: ${{ secrets.RUBY_API_KEY }}
+
+      - name: Publish to crates.io
+        continue-on-error: true
+        id: crates
+        shell: bash
+        run: |
+          exec > >(tee "$RUNNER_TEMP/crates.log") 2>&1
+          if [ -z "${CRATES_API_KEY}" ]; then
+            echo "::warning::no CRATES_API_KEY, skipping crates.io."
+            exit 0
+          fi
+          cd packages/sdk-rust
+          cargo publish --allow-dirty --token "${CRATES_API_KEY}"
+        env:
+          CRATES_API_KEY: ${{ secrets.CRATES_API_KEY }}
+
+      - name: Create the GitHub Release
+        id: githubRelease
+        shell: bash
+        run: |
+          set -uo pipefail
+          version="${{ steps.resolve.outputs.version }}"
+          echo "gh: $(gh --version | head -n 1)"
+          gh auth status 2>&1 | head -n 5 || true
+          echo "tag: $(git rev-parse "v${version}" 2>&1)"
+          shopt -s nullglob
+          artifacts=(release-artifacts/*)
+          echo "artifacts: ${#artifacts[@]}"
+
+          # Create the release first and attach files afterwards, so one bad file
+          # cannot leave the release unpublished.
+          if ! gh release create "v${version}" --title "v${version}" --generate-notes; then
+            echo "::warning::create failed, trying to update an existing release"
+            gh release edit "v${version}" --title "v${version}" || true
+          fi
+
+          attached=0
+          for file in "${artifacts[@]}"; do
+            if gh release upload "v${version}" "$file" --clobber; then
+              attached=$((attached + 1))
+            else
+              echo "::warning::could not attach $file"
+            fi
+          done
+
+          if ! gh release view "v${version}" >/dev/null 2>&1; then
+            echo "::error::the GitHub Release for v${version} does not exist"
+            exit 1
+          fi
+          echo "attached=${attached}/${#artifacts[@]}" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+
+      # continue-on-error above keeps one registry from hiding the others, but it
+      # also made a refused publish look like a green run. This step turns those
+      # outcomes back into a failure, and records what actually happened.
+      - name: Report what was and was not published
+        if: always()
+        shell: bash
+        run: |
+          version="${{ steps.resolve.outputs.version }}"
+          results=(
+            "npm|${{ steps.npm.outcome }}"
+            "PyPI|${{ steps.pypi.outcome }}"
+            "RubyGems|${{ steps.rubygems.outcome }}"
+            "crates.io|${{ steps.crates.outcome }}"
+            "GitHub Release|${{ steps.githubRelease.outcome }}"
+          )
+          artifacts="${{ steps.artifacts.outcome }}"
+          failed=0
+
+          {
+            echo "## Release v${version}"
+            echo ""
+            echo "| Destination | Result |"
+            echo "| --- | --- |"
+            for entry in "${results[@]}"; do
+              name="${entry%%|*}"
+              outcome="${entry##*|}"
+              if [ "$outcome" = "success" ]; then
+                echo "| ${name} | published |"
+              else
+                echo "| ${name} | **${outcome}** |"
+                failed=1
+              fi
+            done
+            if [ "$artifacts" = "success" ]; then
+              echo ""
+              echo "All languages built. ${{ steps.githubRelease.outputs.attached }} artifact(s) attached."
+            else
+              echo ""
+              echo "**Artifact build did not complete** ($artifacts); see the artifacts step."
+              failed=1
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if [ "$failed" -ne 0 ]; then
+            echo "::error::at least one destination did not publish, see the job summary"
+            exit 1
+          fi
+
+      # 0.0.0-stage got onto npm once, before the publish guard above existed.
+      # Mark it so nobody installs it, and only if it is really there.
+      - name: Deprecate the placeholder version
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          if npm view "@dsainvg/dexa-ai-sdk@0.0.0-stage" version >/dev/null 2>&1; then
+            npm deprecate "@dsainvg/dexa-ai-sdk@0.0.0-stage" \
+              "This version was published by mistake and contains no SDK. Install 0.3.4 or later."
+            echo "deprecated 0.0.0-stage"
+          else
+            echo "no placeholder version to deprecate"
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # A registry refusal is opaque without its output, and a failed job's log
+      # cannot be read from here, so the reasons are committed to a branch.
+      - name: Publish the registry logs
+        if: always()
+        shell: bash
+        run: |
+          rm -rf .log-push
+          mkdir -p .log-push/registry
+          copied=0
+          for log in "${RUNNER_TEMP}"/*.log; do
+            [ -f "$log" ] || continue
+            cp "$log" .log-push/registry/
+            copied=$((copied + 1))
+          done
+          if [ "$copied" -eq 0 ]; then
+            echo "no registry logs to publish"
+            exit 0
+          fi
+
+          cd .log-push
+          git init -q
+          git checkout -q -b diagnostics/release
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A --force
+          git commit -q -m "ci: record the ${GITHUB_REF_NAME} registry output"
+          git push -q --force \
+            "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" \
+            diagnostics/release
+          echo "pushed diagnostics/release with ${copied} log(s)"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=68.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dexa-ai-sdk"
+version = "__VERSION__"
+description = "Dexa is the Python client for the Decide + Extract API. Run decide and extract tasks against one context in a single request."
+readme = "README.md"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Durga Sai" }]
+requires-python = ">=3.9"
+keywords = ["fern", "sdk", "openapi", "llm", "dexa-ai-sdk", "decide", "extract"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Typing :: Typed",
+]
+dependencies = [
+  "httpx>=0.21.0",
+  "pydantic>=2.0.0",
+  "typing-extensions>=4.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/dsainvg/decide-extract-sdk"
+Repository = "https://github.com/dsainvg/decide-extract-sdk"
+Documentation = "https://dsainvg.github.io/decide-extract-sdk/"
+Changelog = "https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md"
+
+[dependency-groups]
+dev = ["pytest>=7.0.0", "pytest-asyncio>=0.21.0", "mypy>=1.5.0", "ruff>=0.1.0"]
+
+# Fern emits the client flat in this directory, so the whole tree is one package
+# and its subpackages have to be listed, otherwise setuptools picks up only the
+# top-level modules and the wheel is broken.
+[tool.setuptools]
+packages = [
+  "dexa_ai_sdk",
+  "dexa_ai_sdk.core",
+  "dexa_ai_sdk.core.http_sse",
+  "dexa_ai_sdk.errors",
+  "dexa_ai_sdk.tasks",
+  "dexa_ai_sdk.tasks.types",
+  "dexa_ai_sdk.types",
+]
+
+[tool.setuptools.package-dir]
+dexa_ai_sdk = "."
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120
+
+[tool.mypy]
+python_version = "3.9"
+ignore_missing_imports = true

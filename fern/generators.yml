@@ -1,0 +1,63 @@
+# yaml-language-server: $schema=https://schema.buildwithfern.dev/generators-yml.json
+#
+# Fern generator configuration.
+#   Source of truth:  openapi/openapi.yml  (contract-first)
+#   Released version: info.version in that spec (see scripts/generate.mjs)
+#   Outputs:          ../packages/sdk-*   (committed to git)
+#
+# Generation requires Docker: `npm run fern:generate` from the repo root.
+#
+# Generator versions are pinned here. SDK Config cannot pin them: it defaults each
+# target to <major>.0.0, and those tags do not exist on Docker Hub. sdkName lives in
+# sdk-config.yml, which is what gives the packages their identity, see
+# docs/operations/naming.md.
+#
+# C++ has no Fern generator, so there is no sdk-cpp target. See
+# docs/operations/clients.md for calling the contract from C++ directly.
+api:
+  specs:
+    - openapi: openapi/openapi.yml
+
+default-group: sdk
+groups:
+  sdk:
+    generators:
+      - name: fern-typescript-sdk
+        version: 3.105.1
+        output:
+          location: local-file-system
+          path: ../packages/sdk-ts
+
+      - name: fern-python-sdk
+        version: 5.41.0
+        output:
+          location: local-file-system
+          path: ../packages/sdk-py
+        config:
+          package_name: "dexa_ai_sdk"
+
+      - name: fern-ruby-sdk
+        version: 1.38.1
+        output:
+          location: local-file-system
+          path: ../packages/sdk-ruby
+
+      - name: fern-rust-sdk
+        version: 0.53.1
+        output:
+          location: local-file-system
+          path: ../packages/sdk-rust
+
+      - name: fern-java-sdk
+        version: 4.32.0
+        output:
+          location: local-file-system
+          path: ../packages/sdk-java
+        config:
+          package_name: "org.dsainvg.dexa_ai_sdk"
+
+      - name: fern-csharp-sdk
+        version: 2.92.1
+        output:
+          location: local-file-system
+          path: ../packages/sdk-csharp

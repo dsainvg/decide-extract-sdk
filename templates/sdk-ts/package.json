@@ -1,0 +1,59 @@
+{
+  "name": "@dsainvg/dexa-ai-sdk",
+  "version": "__VERSION__",
+  "description": "Dexa is the TypeScript client for the Decide + Extract API. Run decide and extract tasks against one context in a single request.",
+  "license": "Apache-2.0",
+  "author": "Durga Sai",
+  "homepage": "https://github.com/dsainvg/decide-extract-sdk",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dsainvg/decide-extract-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dsainvg/decide-extract-sdk/issues"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.d.ts",
+    "dist/**/*.js.map",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "fern",
+    "sdk",
+    "openapi",
+    "typescript",
+    "llm",
+    "dexa-ai-sdk",
+    "decide",
+    "extract"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "tsc --project tsconfig.build.json",
+    "prepublishOnly": "npm run clean && npm run build",
+    "watch": "tsc --project tsconfig.build.json --watch"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.6.0"
+  }
+}

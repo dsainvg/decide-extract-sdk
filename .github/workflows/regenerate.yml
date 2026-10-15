@@ -1,0 +1,122 @@
+name: Regenerate SDKs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "fern/**"
+      - "scripts/**"
+      - ".github/workflows/regenerate.yml"
+  schedule:
+    - cron: "37 5 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: regenerate
+  cancel-in-progress: false
+
+jobs:
+  regenerate:
+    name: Regenerate and open a pull request
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci
+
+      - name: Generate every SDK from the contract
+        run: |
+          status=0
+          npm run fern:generate > fern/generation.log 2>&1 || status=$?
+          echo "fern exit status: ${status}" >> fern/generation.log
+          cat fern/generation.log
+          exit 0
+
+      - name: Every generator must have produced output
+        run: |
+          failed=0
+          for dir in sdk-ts sdk-py sdk-ruby sdk-rust sdk-java sdk-csharp; do
+            if [ -d "packages/$dir" ]; then
+              echo "present  packages/$dir ($(find "packages/$dir" -type f | wc -l) files)"
+            else
+              echo "MISSING  packages/$dir"
+              failed=1
+            fi
+          done
+          exit $failed
+
+      - name: Push the regenerated SDKs and the generator log
+        if: always()
+        run: |
+          mkdir -p .push/packages .push/fern
+
+          if [ -d packages ]; then
+            cp -r packages/. .push/packages/ || echo "cp reported an error, continuing"
+            # Fern records the commit it ran from, which would show up as drift
+            find .push/packages -path "*/.fern/metadata.json" -delete
+          fi
+          if [ -f fern/generation.log ]; then cp fern/generation.log .push/fern/; fi
+
+          {
+            echo "# what the generators actually wrote"
+            find packages -type f 2>/dev/null | sort | head -n 400
+            echo
+            echo "# every .gitignore under packages, which git always honours"
+            for f in $(find packages -name ".gitignore" 2>/dev/null); do
+              echo "--- $f"
+              cat "$f"
+            done
+            echo
+            echo "# untracked files anywhere in the workspace, in case a generator wrote outside packages/"
+            git status --porcelain 2>/dev/null | head -n 60
+            echo
+            echo "# directories in the workspace"
+            find . -maxdepth 4 -type d -not -path "./.git*" -not -path "./node_modules*" 2>/dev/null | sort | head -n 80
+          } > .push/packages-manifest.txt
+
+          cd .push
+          git init -q
+          git checkout -q -b generated/sdks
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A --force
+          if git diff --cached --quiet; then
+            echo "nothing to publish"
+            exit 0
+          fi
+          git commit -q -m "chore: regenerate SDKs from the contract"
+          git push -q --force \
+            "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" \
+            generated/sdks
+          echo "pushed generated/sdks"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Open or update the regeneration pull request
+        if: always()
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -uo pipefail
+          if gh pr view generated/sdks >/dev/null 2>&1; then
+            echo "pull request already open, branch updated"
+          elif [ ! -e .push/.git ]; then
+            echo "nothing was pushed, skipping the pull request"
+          else
+            gh pr create \
+              --base main \
+              --head generated/sdks \
+              --title "chore: regenerate SDKs" \
+              --body "Automated regeneration of \`packages/\` from \`fern/openapi/openapi.yml\`. Merge this to make CI's drift check pass."
+          fi
