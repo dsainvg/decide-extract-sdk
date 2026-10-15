@@ -3,28 +3,29 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Installation - Decider-Extractor API</title>
+<title>Installation - Dexa API</title>
 <meta name="description" content="Add the TypeScript, Python, Ruby, Rust, Java or .NET client to your project.">
 <link rel="stylesheet" href="../../assets/hljs.css">
 <link rel="stylesheet" href="../../assets/site.css">
 <script>var basePath = "../../";</script>
 </head>
-<body data-path="/getting-started/installation/">
+<body data-path="/getting-started/installation/" data-version="0.5.0">
 <header class="site">
   <button class="icon-button nav-toggle" aria-label="Menu">&#9776;</button>
-  <a class="brand" href="../../"><span class="dot"></span>Decider-Extractor API<span class="version">v0.3.0</span></a>
+  <a class="brand" href="../../"><span class="dot"></span>Dexa API<span class="version">v0.5.0</span></a>
   <div class="search">
     <input id="search-input" type="search" placeholder="Search docs" aria-label="Search docs">
     <kbd>Ctrl K</kbd>
     <div class="search-results" id="search-results"></div>
   </div>
+  <select id="version-picker" class="version-picker" aria-label="Documentation version"></select>
   <button class="icon-button" id="theme-toggle" aria-label="Toggle theme">&#9789;</button>
 </header>
 <div class="layout">
   <nav class="sidebar">
 <div class="section">
   <div class="section-title">Overview</div>
-  <a href="../../">Decider-Extractor API</a>
+  <a href="../../">Dexa API</a>
 </div>
 <div class="section">
   <div class="section-title">Getting started</div>
@@ -36,6 +37,7 @@
 <div class="section">
   <div class="section-title">Guides</div>
   <a href="../../guides/task-types/">Task types</a>
+  <a href="../../guides/doc-versions/">Documentation versions</a>
   <a href="../../guides/single-tasks/">Single tasks</a>
   <a href="../../guides/multimodal-input/">Multimodal input</a>
   <a href="../../guides/structured-output/">Structured output</a>
@@ -74,29 +76,29 @@ after your first generation, or in
 <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/PUBLISHING.md">the publishing notes</a>.</p>
 </div></p>
 <h2 id="typescript">TypeScript<a class="anchor" href="#typescript" aria-label="Link to TypeScript">#</a></h2>
-<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">npm install @dsainvg/decide-extractor-sdk
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">npm install @dsainvg/dexa-ai-sdk
 </code></pre>
-<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">pnpm add @dsainvg/decide-extractor-sdk
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">pnpm add @dsainvg/dexa-ai-sdk
 <span class="hljs-comment"># or</span>
-yarn add @dsainvg/decide-extractor-sdk
+yarn add @dsainvg/dexa-ai-sdk
 </code></pre>
 <p>Requires Node 18 or newer. Ships type declarations, no <code>any</code> in sight.</p>
-<pre data-lang="ts"><span class="lang">ts</span><code class="hljs language-ts"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">DsainvgApiClient</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@dsainvg/decide-extractor-sdk&quot;</span>;
+<pre data-lang="ts"><span class="lang">ts</span><code class="hljs language-ts"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">DexaAiSdkClient</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@dsainvg/dexa-ai-sdk&quot;</span>;
 
-<span class="hljs-keyword">const</span> client = <span class="hljs-keyword">new</span> <span class="hljs-title class_">DsainvgApiClient</span>({
+<span class="hljs-keyword">const</span> client = <span class="hljs-keyword">new</span> <span class="hljs-title class_">DexaAiSdkClient</span>({
   <span class="hljs-attr">baseUrl</span>: <span class="hljs-string">&quot;http://localhost:8080&quot;</span>,
-  <span class="hljs-attr">token</span>: process.<span class="hljs-property">env</span>.<span class="hljs-property">DECIDE_EXTRACTOR_TOKEN</span>,
+  <span class="hljs-attr">token</span>: process.<span class="hljs-property">env</span>.<span class="hljs-property">DEXA_TOKEN</span>,
 });
 </code></pre>
 <h2 id="python">Python<a class="anchor" href="#python" aria-label="Link to Python">#</a></h2>
-<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">pip install dsainvg-decide-extractor-sdk
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">pip install dexa-ai-sdk
 </code></pre>
-<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">uv add dsainvg-decide-extractor-sdk
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">uv add dexa-ai-sdk
 </code></pre>
 <p>Requires Python 3.9 or newer. An async client is available alongside the synchronous one.</p>
-<pre data-lang="python"><span class="lang">python</span><code class="hljs language-python"><span class="hljs-keyword">from</span> dsainvg_decide_extractor_sdk <span class="hljs-keyword">import</span> DsainvgApi
+<pre data-lang="python"><span class="lang">python</span><code class="hljs language-python"><span class="hljs-keyword">from</span> dexa_ai_sdk <span class="hljs-keyword">import</span> DexaAiSdk
 
-client = DsainvgApi(
+client = DexaAiSdk(
     base_url=<span class="hljs-string">&quot;http://localhost:8080&quot;</span>,
     token=<span class="hljs-string">&quot;...&quot;</span>,
 )
@@ -106,49 +108,49 @@ client = DsainvgApi(
 </code></pre>
 <pre data-lang="ruby"><span class="lang">ruby</span><code class="hljs language-ruby"><span class="hljs-keyword">require</span> <span class="hljs-string">&quot;decide_extractor&quot;</span>
 
-client = <span class="hljs-title class_">DsainvgApi</span>.new(
+client = <span class="hljs-title class_">DexaAiSdk</span>.new(
   <span class="hljs-symbol">base_url:</span> <span class="hljs-string">&quot;http://localhost:8080&quot;</span>,
-  <span class="hljs-symbol">token:</span> <span class="hljs-variable constant_">ENV</span>.fetch(<span class="hljs-string">&quot;DECIDE_EXTRACTOR_TOKEN&quot;</span>)
+  <span class="hljs-symbol">token:</span> <span class="hljs-variable constant_">ENV</span>.fetch(<span class="hljs-string">&quot;DEXA_TOKEN&quot;</span>)
 )
 </code></pre>
 <h2 id="rust">Rust<a class="anchor" href="#rust" aria-label="Link to Rust">#</a></h2>
 <pre data-lang="toml"><span class="lang">toml</span><code class="hljs language-toml"><span class="hljs-comment"># Cargo.toml</span>
 <span class="hljs-section">[dependencies]</span>
-<span class="hljs-attr">decide-extractor</span> = <span class="hljs-string">&quot;0.3&quot;</span>
+<span class="hljs-attr">dexa-ai-sdk</span> = <span class="hljs-string">&quot;0.3&quot;</span>
 </code></pre>
-<pre data-lang="rust"><span class="lang">rust</span><code class="hljs language-rust"><span class="hljs-keyword">use</span> dsainvg_api::DsainvgApi;
+<pre data-lang="rust"><span class="lang">rust</span><code class="hljs language-rust"><span class="hljs-keyword">use</span> dexa-ai-sdk::DexaAiSdk;
 
-<span class="hljs-keyword">let</span> <span class="hljs-variable">client</span> = DsainvgApi::<span class="hljs-title function_ invoke__">builder</span>()
+<span class="hljs-keyword">let</span> <span class="hljs-variable">client</span> = DexaAiSdk::<span class="hljs-title function_ invoke__">builder</span>()
     .<span class="hljs-title function_ invoke__">base_url</span>(<span class="hljs-string">&quot;http://localhost:8080&quot;</span>)
     .<span class="hljs-title function_ invoke__">build</span>()?;
 </code></pre>
 <h2 id="java">Java<a class="anchor" href="#java" aria-label="Link to Java">#</a></h2>
-<p>Maven coordinates are <code>com.dsainvg:dexa-sdk</code>. The SDK is not on Maven Central, so install
+<p>Maven coordinates are <code>com.dsainvg:dexa-ai-sdk</code>. The SDK is not on Maven Central, so install
 the jar from the release:</p>
-<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">curl -L -o dexa-sdk.jar \
-  https://github.com/dsainvg/decide-extract-sdk/releases/download/v0.3.0/java-dexa-sdk-0.3.0.jar
-mvn install:install-file -Dfile=dexa-sdk.jar -DgroupId=com.dsainvg -DartifactId=dexa-sdk -Dversion=0.3.0
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">curl -L -o dexa-ai-sdk.jar \
+  https://github.com/dsainvg/decide-extract-sdk/releases/download/v0.5.0/java-dexa-ai-sdk-0.5.0.jar
+mvn install:install-file -Dfile=dexa-ai-sdk.jar -DgroupId=com.dsainvg -DartifactId=dexa-ai-sdk -Dversion=0.5.0
 </code></pre>
 <pre data-lang="xml"><span class="lang">xml</span><code class="hljs language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.dsainvg<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>dexa-sdk<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>0.3.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>dexa-ai-sdk<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>0.5.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
 </code></pre>
-<pre data-lang="java"><span class="lang">java</span><code class="hljs language-java"><span class="hljs-type">var</span> <span class="hljs-variable">client</span> <span class="hljs-operator">=</span> DsainvgApiClient.builder()
+<pre data-lang="java"><span class="lang">java</span><code class="hljs language-java"><span class="hljs-type">var</span> <span class="hljs-variable">client</span> <span class="hljs-operator">=</span> DexaAiSdkClient.builder()
     .baseUrl(<span class="hljs-string">&quot;http://localhost:8080&quot;</span>)
-    .token(System.getenv(<span class="hljs-string">&quot;DECIDE_EXTRACTOR_TOKEN&quot;</span>))
+    .token(System.getenv(<span class="hljs-string">&quot;DEXA_TOKEN&quot;</span>))
     .build();
 </code></pre>
 <h2 id="net">.NET<a class="anchor" href="#net" aria-label="Link to .NET">#</a></h2>
-<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">dotnet add package DsainvgApi
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">dotnet add package DexaAiSdk
 </code></pre>
-<pre data-lang="csharp"><span class="lang">csharp</span><code class="hljs language-csharp"><span class="hljs-keyword">using</span> DsainvgApi;
+<pre data-lang="csharp"><span class="lang">csharp</span><code class="hljs language-csharp"><span class="hljs-keyword">using</span> DexaAiSdk;
 
-<span class="hljs-keyword">var</span> client = <span class="hljs-keyword">new</span> DsainvgApiClient(<span class="hljs-keyword">new</span> DsainvgApiClientOptions
+<span class="hljs-keyword">var</span> client = <span class="hljs-keyword">new</span> DexaAiSdkClient(<span class="hljs-keyword">new</span> DexaAiSdkClientOptions
 {
     BaseUrl = <span class="hljs-string">&quot;http://localhost:8080&quot;</span>,
-    Token = Environment.GetEnvironmentVariable(<span class="hljs-string">&quot;DECIDE_EXTRACTOR_TOKEN&quot;</span>),
+    Token = Environment.GetEnvironmentVariable(<span class="hljs-string">&quot;DEXA_TOKEN&quot;</span>),
 });
 </code></pre>
 <h2 id="c">C++<a class="anchor" href="#c" aria-label="Link to C++">#</a></h2>
@@ -157,14 +159,14 @@ works. See <a href="/operations/clients/">clients</a> for a complete example usi
 <h2 id="working-against-the-sources-instead">Working against the sources instead<a class="anchor" href="#working-against-the-sources-instead" aria-label="Link to Working against the sources instead">#</a></h2>
 <p>To use a client before it is published, generate it locally:</p>
 <pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">git <span class="hljs-built_in">clone</span> https://github.com/dsainvg/decide-extract-sdk.git
-<span class="hljs-built_in">cd</span> decide-extractor-sdk
+<span class="hljs-built_in">cd</span> dexa-ai-sdk
 npm install
 npm run fern:generate     <span class="hljs-comment"># requires Docker</span>
 </code></pre>
 <p>Then reference the package from <code>packages/sdk-ts</code> or <code>packages/sdk-py</code> directly.
 <a href="/operations/repository/">Repository layout</a> explains the rest.</p>
 
-    <div class="pager"><a class="prev" href="../../"><small>Previous</small>Decider-Extractor API</a><a class="next" href="../../getting-started/quickstart/"><small>Next</small>Quickstart</a></div>
+    <div class="pager"><a class="prev" href="../../"><small>Previous</small>Dexa API</a><a class="next" href="../../getting-started/quickstart/"><small>Next</small>Quickstart</a></div>
   </main>
   <aside class="toc">
 <div class="toc-title">On this page</div>
@@ -179,7 +181,7 @@ npm run fern:generate     <span class="hljs-comment"># requires Docker</span>
   </aside>
 </div>
 <footer class="site"><div class="inner">
-  <span>Decider-Extractor API v0.3.0</span>
+  <span>Dexa API v0.5.0</span>
   <a href="../../llms.txt">llms.txt</a>
   <a href="https://github.com/dsainvg/decide-extract-sdk">Repository</a>
   <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md">Changelog</a>

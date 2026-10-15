@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Publishing - Dexa API</title>
+<meta name="description" content="What goes to a registry, what is attached to the release, and how a release runs.">
+<link rel="stylesheet" href="../../assets/hljs.css">
+<link rel="stylesheet" href="../../assets/site.css">
+<script>var basePath = "../../";</script>
+</head>
+<body data-path="/operations/publishing/" data-version="0.5.0">
+<header class="site">
+  <button class="icon-button nav-toggle" aria-label="Menu">&#9776;</button>
+  <a class="brand" href="../../"><span class="dot"></span>Dexa API<span class="version">v0.5.0</span></a>
+  <div class="search">
+    <input id="search-input" type="search" placeholder="Search docs" aria-label="Search docs">
+    <kbd>Ctrl K</kbd>
+    <div class="search-results" id="search-results"></div>
+  </div>
+  <select id="version-picker" class="version-picker" aria-label="Documentation version"></select>
+  <button class="icon-button" id="theme-toggle" aria-label="Toggle theme">&#9789;</button>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+<div class="section">
+  <div class="section-title">Overview</div>
+  <a href="../../">Dexa API</a>
+</div>
+<div class="section">
+  <div class="section-title">Getting started</div>
+  <a href="../../getting-started/installation/">Installation</a>
+  <a href="../../getting-started/quickstart/">Quickstart</a>
+  <a href="../../getting-started/authentication/">Authentication</a>
+  <a href="../../getting-started/configuration/">Configuration</a>
+</div>
+<div class="section">
+  <div class="section-title">Guides</div>
+  <a href="../../guides/task-types/">Task types</a>
+  <a href="../../guides/doc-versions/">Documentation versions</a>
+  <a href="../../guides/single-tasks/">Single tasks</a>
+  <a href="../../guides/multimodal-input/">Multimodal input</a>
+  <a href="../../guides/structured-output/">Structured output</a>
+  <a href="../../guides/errors/">Errors</a>
+  <a href="../../guides/versioning/">Versioning and migration</a>
+  <a href="../../guides/troubleshooting/">Troubleshooting</a>
+</div>
+<div class="section">
+  <div class="section-title">API reference</div>
+  <a href="../../api-reference/overview/">API overview</a>
+  <a href="../../api-reference/run-tasks/">POST /v1/tasks</a>
+  <a href="../../api-reference/decide-extract/">POST /v1/decide-extract</a>
+  <a href="../../api-reference/decide/">POST /decide</a>
+  <a href="../../api-reference/extract/">POST /extract</a>
+  <a href="../../api-reference/types/">Types</a>
+</div>
+<div class="section">
+  <div class="section-title">Operations</div>
+  <a href="../../operations/repository/">Repository</a>
+  <a href="../../operations/clients/">C++ and other clients</a>
+  <a href="../../operations/publishing/">Publishing</a>
+  <a href="../../operations/sdk-development/">Developing the SDKs</a>
+  <a href="../../operations/deploying-docs/">Deploying the docs</a>
+  <a href="../../operations/naming/">Naming</a>
+</div>
+  </nav>
+  <main class="content">
+    <h1>Publishing</h1>
+    <p class="lede">What goes to a registry, what is attached to the release, and how a release runs.</p>
+<p>Releases are driven by git tags. Push a <code>v*</code> tag and the release workflow verifies the repo,
+publishes to npm, PyPI, RubyGems and crates.io, attaches every language to the GitHub Release,
+and opens the release itself.</p>
+<p>Four secrets: <code>NPM_TOKEN</code>, <code>PYPI_API_TOKEN</code>, <code>RUBY_API_KEY</code> and <code>CRATES_API_KEY</code>. The docs
+site is published from the <code>sites</code> branch with the automatic <code>GITHUB_TOKEN</code>, so no
+Cloudflare credentials live in this repository.</p>
+<h2 id="where-each-package-goes">Where each package goes<a class="anchor" href="#where-each-package-goes" aria-label="Link to Where each package goes">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Package</th>
+<th>Destination</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TypeScript</td>
+<td>npm, published as <code>@dsainvg/dexa-ai-sdk</code></td>
+</tr>
+<tr>
+<td>Python</td>
+<td>PyPI, published as <code>dexa-ai-sdk</code></td>
+</tr>
+<tr>
+<td>Ruby</td>
+<td>RubyGems, published as <code>dexa-ai-sdk</code></td>
+</tr>
+<tr>
+<td>Rust</td>
+<td>crates.io, published as <code>dexa-ai-sdk</code></td>
+</tr>
+<tr>
+<td>Java</td>
+<td>GitHub Release asset, <code>com.dsainvg:dexa-ai-sdk</code></td>
+</tr>
+<tr>
+<td>.NET</td>
+<td>GitHub Release asset, <code>DexaAiSdk</code></td>
+</tr>
+<tr>
+<td>C++</td>
+<td>none, call the HTTP API directly</td>
+</tr>
+</tbody></table>
+<p>The release also carries one archive per language, so a download
+exists for every language whether or not it has a registry.</p>
+<h2 id="installing-the-release-asset-packages">Installing the release-asset packages<a class="anchor" href="#installing-the-release-asset-packages" aria-label="Link to Installing the release-asset packages">#</a></h2>
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">npm install @dsainvg/dexa-ai-sdk
+pip install dexa-ai-sdk
+gem install dexa-ai-sdk
+cargo add dexa-ai-sdk
+
+dotnet add package --<span class="hljs-built_in">source</span> https://github.com/dsainvg/decide-extract-sdk/releases/download/v0.5.0 DexaAiSdk.0.5.0.nupkg
+</code></pre>
+<p>Maven has no equivalent one-liner. Point your build at the release download, or add it as an
+artifact repository and depend on <code>com.dsainvg:dexa-ai-sdk</code>.</p>
+<h2 id="what-each-branch-is-for">What each branch is for<a class="anchor" href="#what-each-branch-is-for" aria-label="Link to What each branch is for">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Branch</th>
+<th>Written by</th>
+<th>Holds</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>main</td>
+<td>you</td>
+<td>the contract, the generated SDKs, the workflows</td>
+</tr>
+<tr>
+<td>generated/sdks</td>
+<td>Regenerate SDKs</td>
+<td>freshly generated SDKs waiting to be merged</td>
+</tr>
+<tr>
+<td>diagnostics/java-build</td>
+<td>CI</td>
+<td>the Java build log, because a failed job&#39;s log cannot be read otherwise</td>
+</tr>
+<tr>
+<td>sites</td>
+<td>nothing writes to it any more</td>
+<td>the last site published by the old branch deployer</td>
+</tr>
+</tbody></table>
+<p>The docs site is published by the Docs workflow itself, with
+ctions/configure-pages, ctions/upload-pages-artifact and ctions/deploy-pages.</p>
+<h2 id="the-gate">The gate<a class="anchor" href="#the-gate" aria-label="Link to The gate">#</a></h2>
+<p>Before anything is published or attached, one job runs every check that must hold:</p>
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">npm run release:check
+</code></pre>
+<ul>
+<li>the contract exists and parses</li>
+<li>the tag matches <code>info.version</code></li>
+<li><code>fern check</code> passes</li>
+<li>regenerating produces no drift</li>
+<li>every generated package carries the contract version</li>
+<li>every generated package builds and produces its distributable artifact</li>
+<li>the npm and PyPI credentials are present</li>
+</ul>
+<p>If any of it fails, nothing is published and nothing is attached.</p>
+<h2 id="cutting-a-release">Cutting a release<a class="anchor" href="#cutting-a-release" aria-label="Link to Cutting a release">#</a></h2>
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">npm run version:bump -- minor
+
+git add fern/openapi/openapi.yml packages
+git commit -m <span class="hljs-string">&quot;release: v0.4.0&quot;</span>
+
+git tag -a v0.4.0 -m <span class="hljs-string">&quot;v0.4.0&quot;</span>
+git push origin main --tags
+</code></pre>
+<p>The bump script edits the contract, regenerates and prints these commands. If regeneration
+fails because Docker is not running, run it again once Docker is up and commit both changes
+together.</p>
+<h2 id="what-the-workflow-does">What the workflow does<a class="anchor" href="#what-the-workflow-does" aria-label="Link to What the workflow does">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Job</th>
+<th>Does</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>verify</code></td>
+<td>Compares the tag with <code>info.version</code></td>
+</tr>
+<tr>
+<td><code>gate</code></td>
+<td>Runs the full pre-publish check</td>
+</tr>
+<tr>
+<td><code>npm</code></td>
+<td>install, build, publish with provenance</td>
+</tr>
+<tr>
+<td><code>pypi</code></td>
+<td>build, publish by token or trusted publishing</td>
+</tr>
+<tr>
+<td><code>artifacts</code></td>
+<td>builds every package and collects the files</td>
+</tr>
+<tr>
+<td><code>github-release</code></td>
+<td>attaches the files and creates the release with generated notes</td>
+</tr>
+</tbody></table>
+<p>The release is created only after the publishes succeed, so the download list on a release
+always matches what is actually on npm and PyPI.</p>
+<h2 id="publishing-the-other-four-to-real-registries-later">Publishing the other four to real registries later<a class="anchor" href="#publishing-the-other-four-to-real-registries-later" aria-label="Link to Publishing the other four to real registries later">#</a></h2>
+<p>It is a small change: add a publish job, its secret, and a <code>registry</code> entry in
+<code>scripts/prepublish-check.mjs</code>. Until then the release assets are the distribution channel,
+and nothing is lost by switching later, since the same version can be uploaded to a registry
+without republishing to npm or PyPI.</p>
+<h2 id="troubleshooting">Troubleshooting<a class="anchor" href="#troubleshooting" aria-label="Link to Troubleshooting">#</a></h2>
+<p><strong>The gate says a package version does not match the contract.</strong> The generated code is from
+an older contract. Run <code>npm run fern:generate</code> and commit.</p>
+<p><strong>A publish job was skipped.</strong> Its secret is not set. Only npm and PyPI can be skipped this
+way.</p>
+<p><strong>An artifact job failed.</strong> Usually a toolchain issue: <code>cargo package</code> needs <code>description</code> and
+<code>license</code> in <code>Cargo.toml</code>, <code>dotnet pack</code> needs a non-empty <code>PackageId</code>. Set them in
+<code>fern/generators.yml</code> so the fix survives regeneration.</p>
+
+    <div class="pager"><a class="prev" href="../../operations/clients/"><small>Previous</small>C++ and other clients</a><a class="next" href="../../operations/sdk-development/"><small>Next</small>Developing the SDKs</a></div>
+  </main>
+  <aside class="toc">
+<div class="toc-title">On this page</div>
+<a class="depth-2" href="#where-each-package-goes">Where each package goes#</a>
+<a class="depth-2" href="#installing-the-release-asset-packages">Installing the release-asset packages#</a>
+<a class="depth-2" href="#what-each-branch-is-for">What each branch is for#</a>
+<a class="depth-2" href="#the-gate">The gate#</a>
+<a class="depth-2" href="#cutting-a-release">Cutting a release#</a>
+<a class="depth-2" href="#what-the-workflow-does">What the workflow does#</a>
+<a class="depth-2" href="#publishing-the-other-four-to-real-registries-later">Publishing the other four to real registries later#</a>
+<a class="depth-2" href="#troubleshooting">Troubleshooting#</a>
+  </aside>
+</div>
+<footer class="site"><div class="inner">
+  <span>Dexa API v0.5.0</span>
+  <a href="../../llms.txt">llms.txt</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk">Repository</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md">Changelog</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/PUBLISHING.md">Publishing</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/fern/openapi/openapi.yml">OpenAPI</a>
+</div></footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>POST /decide - Dexa API</title>
+<meta name="description" content="Run one decider task without wrapping it in a list.">
+<link rel="stylesheet" href="../../assets/hljs.css">
+<link rel="stylesheet" href="../../assets/site.css">
+<script>var basePath = "../../";</script>
+</head>
+<body data-path="/api-reference/decide/" data-version="0.5.0">
+<header class="site">
+  <button class="icon-button nav-toggle" aria-label="Menu">&#9776;</button>
+  <a class="brand" href="../../"><span class="dot"></span>Dexa API<span class="version">v0.5.0</span></a>
+  <div class="search">
+    <input id="search-input" type="search" placeholder="Search docs" aria-label="Search docs">
+    <kbd>Ctrl K</kbd>
+    <div class="search-results" id="search-results"></div>
+  </div>
+  <select id="version-picker" class="version-picker" aria-label="Documentation version"></select>
+  <button class="icon-button" id="theme-toggle" aria-label="Toggle theme">&#9789;</button>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+<div class="section">
+  <div class="section-title">Overview</div>
+  <a href="../../">Dexa API</a>
+</div>
+<div class="section">
+  <div class="section-title">Getting started</div>
+  <a href="../../getting-started/installation/">Installation</a>
+  <a href="../../getting-started/quickstart/">Quickstart</a>
+  <a href="../../getting-started/authentication/">Authentication</a>
+  <a href="../../getting-started/configuration/">Configuration</a>
+</div>
+<div class="section">
+  <div class="section-title">Guides</div>
+  <a href="../../guides/task-types/">Task types</a>
+  <a href="../../guides/doc-versions/">Documentation versions</a>
+  <a href="../../guides/single-tasks/">Single tasks</a>
+  <a href="../../guides/multimodal-input/">Multimodal input</a>
+  <a href="../../guides/structured-output/">Structured output</a>
+  <a href="../../guides/errors/">Errors</a>
+  <a href="../../guides/versioning/">Versioning and migration</a>
+  <a href="../../guides/troubleshooting/">Troubleshooting</a>
+</div>
+<div class="section">
+  <div class="section-title">API reference</div>
+  <a href="../../api-reference/overview/">API overview</a>
+  <a href="../../api-reference/run-tasks/">POST /v1/tasks</a>
+  <a href="../../api-reference/decide-extract/">POST /v1/decide-extract</a>
+  <a href="../../api-reference/decide/">POST /decide</a>
+  <a href="../../api-reference/extract/">POST /extract</a>
+  <a href="../../api-reference/types/">Types</a>
+</div>
+<div class="section">
+  <div class="section-title">Operations</div>
+  <a href="../../operations/repository/">Repository</a>
+  <a href="../../operations/clients/">C++ and other clients</a>
+  <a href="../../operations/publishing/">Publishing</a>
+  <a href="../../operations/sdk-development/">Developing the SDKs</a>
+  <a href="../../operations/deploying-docs/">Deploying the docs</a>
+  <a href="../../operations/naming/">Naming</a>
+</div>
+  </nav>
+  <main class="content">
+    <h1>POST /decide</h1>
+    <p class="lede">Run one decider task without wrapping it in a list.</p>
+<pre data-lang="http"><span class="lang">http</span><code class="hljs language-http">POST /decide
+</code></pre>
+<p>Use this when there is exactly one decision to make. The task fields move up to the top level
+and the response is flat.</p>
+<h2 id="request">Request<a class="anchor" href="#request" aria-label="Link to Request">#</a></h2>
+<h3 id="deciderequest">DecideRequest<a class="anchor" href="#deciderequest" aria-label="Link to DecideRequest">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>model</code></td>
+<td>string</td>
+<td>yes</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>question</code></td>
+<td>string</td>
+<td>yes</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>context</code></td>
+<td>string</td>
+<td>one of</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>messages</code></td>
+<td>array of <code>Message</code></td>
+<td>one of</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>images</code></td>
+<td>array of <code>ImageInput</code></td>
+<td>no</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>audio</code></td>
+<td>array of <code>AudioInput</code></td>
+<td>no</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td>array of string</td>
+<td>no</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>choices</code></td>
+<td>array of string</td>
+<td>no</td>
+<td>alias of <code>options</code></td>
+</tr>
+<tr>
+<td><code>instruction</code></td>
+<td>string</td>
+<td>no</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>temperature</code></td>
+<td>number, 0-2</td>
+<td>no</td>
+<td><code>0</code></td>
+</tr>
+<tr>
+<td><code>max_output_tokens</code></td>
+<td>integer, 1-4096</td>
+<td>no</td>
+<td><code>16</code></td>
+</tr>
+<tr>
+<td><code>response_format</code></td>
+<td>object</td>
+<td>no</td>
+<td><code>json_object</code></td>
+</tr>
+<tr>
+<td><code>target_language</code></td>
+<td>enum</td>
+<td>no</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>output_language</code></td>
+<td>enum</td>
+<td>no</td>
+<td>alias</td>
+</tr>
+</tbody></table>
+<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;decider-extractor-v1&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;context&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;User says: renew subscription for 2 years. Previous plan expired 3 months ago.&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;question&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Should we offer a renewal discount?&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;options&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;yes&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;no&quot;</span><span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<h2 id="response">Response<a class="anchor" href="#response" aria-label="Link to Response">#</a></h2>
+<h3 id="decideresponse">DecideResponse<a class="anchor" href="#decideresponse" aria-label="Link to DecideResponse">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>id</code></td>
+<td>string</td>
+<td>Request id</td>
+</tr>
+<tr>
+<td><code>model</code></td>
+<td>string</td>
+<td>Model that ran</td>
+</tr>
+<tr>
+<td><code>choices</code></td>
+<td>array of <code>Choice</code></td>
+<td>Exactly one element</td>
+</tr>
+<tr>
+<td><code>result</code></td>
+<td><code>DecideResult</code></td>
+<td>Canonical answer</td>
+</tr>
+<tr>
+<td><code>decision</code></td>
+<td><code>DecideResult</code></td>
+<td>Alias of <code>result</code></td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td>string</td>
+<td>The bare answer</td>
+</tr>
+<tr>
+<td><code>usage</code></td>
+<td><code>Usage</code></td>
+<td>Token counts</td>
+</tr>
+</tbody></table>
+<h3 id="decideresult">DecideResult<a class="anchor" href="#decideresult" aria-label="Link to DecideResult">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>value</code></td>
+<td>string</td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>reason</code></td>
+<td>string</td>
+<td>no</td>
+</tr>
+</tbody></table>
+<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;req_4Kd8PwPq&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;decider-extractor-v1&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;choices&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;role&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;assistant&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;content&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;{\&quot;value\&quot;:\&quot;yes\&quot;}&quot;</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;finish_reason&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;stop&quot;</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;result&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;yes&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;reason&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Two-year term and a three-month lapse&quot;</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;decision&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;yes&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;reason&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Two-year term and a three-month lapse&quot;</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;yes&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;usage&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;prompt_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">44</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;completion_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">6</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;total_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">50</span> <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<h2 id="clients">Clients<a class="anchor" href="#clients" aria-label="Link to Clients">#</a></h2>
+<pre data-lang="ts"><span class="lang">ts</span><code class="hljs language-ts"><span class="hljs-keyword">await</span> client.<span class="hljs-property">tasks</span>.<span class="hljs-title function_">decide</span>(request);
+</code></pre>
+<pre data-lang="python"><span class="lang">python</span><code class="hljs language-python">client.tasks.decide(request)
+</code></pre>
+<pre data-lang="ruby"><span class="lang">ruby</span><code class="hljs language-ruby">client.tasks.decide(request)
+</code></pre>
+<pre data-lang="rust"><span class="lang">rust</span><code class="hljs language-rust">client.<span class="hljs-title function_ invoke__">tasks</span>().<span class="hljs-title function_ invoke__">decide</span>(request).<span class="hljs-keyword">await</span>?;
+</code></pre>
+<pre data-lang="java"><span class="lang">java</span><code class="hljs language-java">client.tasks().decide(request);
+</code></pre>
+<pre data-lang="csharp"><span class="lang">csharp</span><code class="hljs language-csharp"><span class="hljs-keyword">await</span> client.Tasks.DecideAsync(request);
+</code></pre>
+<h2 id="errors">Errors<a class="anchor" href="#errors" aria-label="Link to Errors">#</a></h2>
+<p><code>400</code> without <code>context</code> or <code>messages</code>, <code>422</code> for a bad <code>question</code> or an out-of-range
+<code>temperature</code> or <code>max_output_tokens</code>, plus the standard authentication and rate-limit
+failures. See <a href="/guides/errors/">errors</a>.</p>
+
+    <div class="pager"><a class="prev" href="../../api-reference/decide-extract/"><small>Previous</small>POST /v1/decide-extract</a><a class="next" href="../../api-reference/extract/"><small>Next</small>POST /extract</a></div>
+  </main>
+  <aside class="toc">
+<div class="toc-title">On this page</div>
+<a class="depth-2" href="#request">Request#</a>
+<a class="depth-3" href="#deciderequest">DecideRequest#</a>
+<a class="depth-2" href="#response">Response#</a>
+<a class="depth-3" href="#decideresponse">DecideResponse#</a>
+<a class="depth-3" href="#decideresult">DecideResult#</a>
+<a class="depth-2" href="#clients">Clients#</a>
+<a class="depth-2" href="#errors">Errors#</a>
+  </aside>
+</div>
+<footer class="site"><div class="inner">
+  <span>Dexa API v0.5.0</span>
+  <a href="../../llms.txt">llms.txt</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk">Repository</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md">Changelog</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/PUBLISHING.md">Publishing</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/fern/openapi/openapi.yml">OpenAPI</a>
+</div></footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

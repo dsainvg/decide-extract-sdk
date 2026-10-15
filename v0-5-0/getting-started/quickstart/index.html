@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quickstart - Dexa API</title>
+<meta name="description" content="Send your first request with the HTTP API and with each client library.">
+<link rel="stylesheet" href="../../assets/hljs.css">
+<link rel="stylesheet" href="../../assets/site.css">
+<script>var basePath = "../../";</script>
+</head>
+<body data-path="/getting-started/quickstart/" data-version="0.5.0">
+<header class="site">
+  <button class="icon-button nav-toggle" aria-label="Menu">&#9776;</button>
+  <a class="brand" href="../../"><span class="dot"></span>Dexa API<span class="version">v0.5.0</span></a>
+  <div class="search">
+    <input id="search-input" type="search" placeholder="Search docs" aria-label="Search docs">
+    <kbd>Ctrl K</kbd>
+    <div class="search-results" id="search-results"></div>
+  </div>
+  <select id="version-picker" class="version-picker" aria-label="Documentation version"></select>
+  <button class="icon-button" id="theme-toggle" aria-label="Toggle theme">&#9789;</button>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+<div class="section">
+  <div class="section-title">Overview</div>
+  <a href="../../">Dexa API</a>
+</div>
+<div class="section">
+  <div class="section-title">Getting started</div>
+  <a href="../../getting-started/installation/">Installation</a>
+  <a href="../../getting-started/quickstart/">Quickstart</a>
+  <a href="../../getting-started/authentication/">Authentication</a>
+  <a href="../../getting-started/configuration/">Configuration</a>
+</div>
+<div class="section">
+  <div class="section-title">Guides</div>
+  <a href="../../guides/task-types/">Task types</a>
+  <a href="../../guides/doc-versions/">Documentation versions</a>
+  <a href="../../guides/single-tasks/">Single tasks</a>
+  <a href="../../guides/multimodal-input/">Multimodal input</a>
+  <a href="../../guides/structured-output/">Structured output</a>
+  <a href="../../guides/errors/">Errors</a>
+  <a href="../../guides/versioning/">Versioning and migration</a>
+  <a href="../../guides/troubleshooting/">Troubleshooting</a>
+</div>
+<div class="section">
+  <div class="section-title">API reference</div>
+  <a href="../../api-reference/overview/">API overview</a>
+  <a href="../../api-reference/run-tasks/">POST /v1/tasks</a>
+  <a href="../../api-reference/decide-extract/">POST /v1/decide-extract</a>
+  <a href="../../api-reference/decide/">POST /decide</a>
+  <a href="../../api-reference/extract/">POST /extract</a>
+  <a href="../../api-reference/types/">Types</a>
+</div>
+<div class="section">
+  <div class="section-title">Operations</div>
+  <a href="../../operations/repository/">Repository</a>
+  <a href="../../operations/clients/">C++ and other clients</a>
+  <a href="../../operations/publishing/">Publishing</a>
+  <a href="../../operations/sdk-development/">Developing the SDKs</a>
+  <a href="../../operations/deploying-docs/">Deploying the docs</a>
+  <a href="../../operations/naming/">Naming</a>
+</div>
+  </nav>
+  <main class="content">
+    <h1>Quickstart</h1>
+    <p class="lede">Send your first request with the HTTP API and with each client library.</p>
+<p>This walks through one request end to end: decide whether to renew, and extract the renewal
+term, in a single call.</p>
+<h2 id="with-curl">With curl<a class="anchor" href="#with-curl" aria-label="Link to With curl">#</a></h2>
+<p>The API is plain HTTP and JSON, so anything that can POST works.</p>
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">curl -X POST http://localhost:8080/v1/tasks \
+  -H <span class="hljs-string">&quot;Content-Type: application/json&quot;</span> \
+  -H <span class="hljs-string">&quot;Authorization: Bearer <span class="hljs-variable">$DEXA_TOKEN</span>&quot;</span> \
+  -d <span class="hljs-string">&#x27;{
+    &quot;model&quot;: &quot;decider-extractor-v1&quot;,
+    &quot;context&quot;: &quot;User says: renew subscription for 2 years. Previous plan expired 3 months ago.&quot;,
+    &quot;tasks&quot;: [
+      { &quot;type&quot;: &quot;decide&quot;, &quot;name&quot;: &quot;should_renew&quot;, &quot;question&quot;: &quot;Should we offer a renewal discount?&quot;, &quot;options&quot;: [&quot;yes&quot;, &quot;no&quot;] },
+      { &quot;type&quot;: &quot;extract&quot;, &quot;name&quot;: &quot;renew_term&quot;, &quot;instruction&quot;: &quot;Extract the renewal term in months&quot;, &quot;keys&quot;: [&quot;months&quot;] }
+    ]
+  }&#x27;</span>
+</code></pre>
+<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;req_9X2kFvTnQpR4w&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;decider-extractor-v1&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;choices&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;role&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;assistant&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;content&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;{\&quot;should_renew\&quot;:{\&quot;value\&quot;:\&quot;yes\&quot;},\&quot;renew_term\&quot;:{\&quot;months\&quot;:24}}&quot;</span>
+      <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;finish_reason&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;stop&quot;</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;results&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;should_renew&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;yes&quot;</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;renew_term&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;months&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">24</span> <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;usage&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;prompt_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">61</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;completion_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">9</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;total_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">70</span> <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>Read the answers from <code>results</code>, keyed by each task&#39;s <code>name</code>. <code>choices[0].message.content</code>
+carries the same data as a JSON string, for OpenAI-shaped clients.</p>
+<h2 id="typescript">TypeScript<a class="anchor" href="#typescript" aria-label="Link to TypeScript">#</a></h2>
+<pre data-lang="ts"><span class="lang">ts</span><code class="hljs language-ts"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">DexaAiSdkClient</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@dsainvg/dexa-ai-sdk&quot;</span>;
+
+<span class="hljs-keyword">const</span> client = <span class="hljs-keyword">new</span> <span class="hljs-title class_">DexaAiSdkClient</span>({
+  <span class="hljs-attr">baseUrl</span>: <span class="hljs-string">&quot;http://localhost:8080&quot;</span>,
+  <span class="hljs-attr">token</span>: process.<span class="hljs-property">env</span>.<span class="hljs-property">DEXA_TOKEN</span>,
+});
+
+<span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> client.<span class="hljs-property">tasks</span>.<span class="hljs-title function_">decideExtract</span>({
+  <span class="hljs-attr">model</span>: <span class="hljs-string">&quot;decider-extractor-v1&quot;</span>,
+  <span class="hljs-attr">context</span>: <span class="hljs-string">&quot;User says: renew subscription for 2 years. Previous plan expired 3 months ago.&quot;</span>,
+  <span class="hljs-attr">tasks</span>: [
+    {
+      <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;decide&quot;</span>,
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;should_renew&quot;</span>,
+      <span class="hljs-attr">question</span>: <span class="hljs-string">&quot;Should we offer a renewal discount?&quot;</span>,
+      <span class="hljs-attr">options</span>: [<span class="hljs-string">&quot;yes&quot;</span>, <span class="hljs-string">&quot;no&quot;</span>],
+    },
+    {
+      <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;extract&quot;</span>,
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;renew_term&quot;</span>,
+      <span class="hljs-attr">instruction</span>: <span class="hljs-string">&quot;Extract the renewal term in months&quot;</span>,
+      <span class="hljs-attr">keys</span>: [<span class="hljs-string">&quot;months&quot;</span>],
+    },
+  ],
+});
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(response.<span class="hljs-property">results</span>?.<span class="hljs-property">should_renew</span>);
+</code></pre>
+<h2 id="python">Python<a class="anchor" href="#python" aria-label="Link to Python">#</a></h2>
+<pre data-lang="python"><span class="lang">python</span><code class="hljs language-python"><span class="hljs-keyword">import</span> os
+<span class="hljs-keyword">from</span> dexa_ai_sdk <span class="hljs-keyword">import</span> DexaAiSdk
+
+client = DexaAiSdk(
+    base_url=<span class="hljs-string">&quot;http://localhost:8080&quot;</span>,
+    token=os.environ[<span class="hljs-string">&quot;DEXA_TOKEN&quot;</span>],
+)
+
+response = client.tasks.decide_extract(
+    model=<span class="hljs-string">&quot;decider-extractor-v1&quot;</span>,
+    context=<span class="hljs-string">&quot;User says: renew subscription for 2 years. Previous plan expired 3 months ago.&quot;</span>,
+    tasks=[
+        {
+            <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;decide&quot;</span>,
+            <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;should_renew&quot;</span>,
+            <span class="hljs-string">&quot;question&quot;</span>: <span class="hljs-string">&quot;Should we offer a renewal discount?&quot;</span>,
+            <span class="hljs-string">&quot;options&quot;</span>: [<span class="hljs-string">&quot;yes&quot;</span>, <span class="hljs-string">&quot;no&quot;</span>],
+        },
+        {
+            <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;extract&quot;</span>,
+            <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;renew_term&quot;</span>,
+            <span class="hljs-string">&quot;instruction&quot;</span>: <span class="hljs-string">&quot;Extract the renewal term in months&quot;</span>,
+            <span class="hljs-string">&quot;keys&quot;</span>: [<span class="hljs-string">&quot;months&quot;</span>],
+        },
+    ],
+)
+
+<span class="hljs-built_in">print</span>(response.results)
+</code></pre>
+<h2 id="ruby">Ruby<a class="anchor" href="#ruby" aria-label="Link to Ruby">#</a></h2>
+<pre data-lang="ruby"><span class="lang">ruby</span><code class="hljs language-ruby">response = client.tasks.decide_extract(
+  <span class="hljs-symbol">model:</span> <span class="hljs-string">&quot;decider-extractor-v1&quot;</span>,
+  <span class="hljs-symbol">context:</span> <span class="hljs-string">&quot;User says: renew subscription for 2 years. Previous plan expired 3 months ago.&quot;</span>,
+  <span class="hljs-symbol">tasks:</span> [
+    {
+      <span class="hljs-symbol">type:</span> <span class="hljs-string">&quot;decide&quot;</span>,
+      <span class="hljs-symbol">name:</span> <span class="hljs-string">&quot;should_renew&quot;</span>,
+      <span class="hljs-symbol">question:</span> <span class="hljs-string">&quot;Should we offer a renewal discount?&quot;</span>,
+      <span class="hljs-symbol">options:</span> [<span class="hljs-string">&quot;yes&quot;</span>, <span class="hljs-string">&quot;no&quot;</span>]
+    },
+    {
+      <span class="hljs-symbol">type:</span> <span class="hljs-string">&quot;extract&quot;</span>,
+      <span class="hljs-symbol">name:</span> <span class="hljs-string">&quot;renew_term&quot;</span>,
+      <span class="hljs-symbol">instruction:</span> <span class="hljs-string">&quot;Extract the renewal term in months&quot;</span>,
+      <span class="hljs-symbol">keys:</span> [<span class="hljs-string">&quot;months&quot;</span>]
+    }
+  ]
+)
+
+puts response.results
+</code></pre>
+<h2 id="rust">Rust<a class="anchor" href="#rust" aria-label="Link to Rust">#</a></h2>
+<pre data-lang="rust"><span class="lang">rust</span><code class="hljs language-rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">response</span> = client
+    .<span class="hljs-title function_ invoke__">tasks</span>()
+    .<span class="hljs-title function_ invoke__">decide_extract</span>(decide_extract_request)
+    .<span class="hljs-keyword">await</span>?;
+
+<span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-variable">Some</span>(results) = response.results {
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{:?}&quot;</span>, results);
+}
+</code></pre>
+<h2 id="java">Java<a class="anchor" href="#java" aria-label="Link to Java">#</a></h2>
+<pre data-lang="java"><span class="lang">java</span><code class="hljs language-java"><span class="hljs-type">var</span> <span class="hljs-variable">response</span> <span class="hljs-operator">=</span> client.tasks().decideExtract(request);
+
+<span class="hljs-keyword">if</span> (response.results() != <span class="hljs-literal">null</span>) {
+    System.out.println(response.results());
+}
+</code></pre>
+<h2 id="net">.NET<a class="anchor" href="#net" aria-label="Link to .NET">#</a></h2>
+<pre data-lang="csharp"><span class="lang">csharp</span><code class="hljs language-csharp"><span class="hljs-keyword">var</span> response = <span class="hljs-keyword">await</span> client.Tasks.DecideExtractAsync(request);
+
+<span class="hljs-keyword">if</span> (response.Results != <span class="hljs-literal">null</span>)
+{
+    Console.WriteLine(response.Results);
+}
+</code></pre>
+<p><div class="callout"><div class="callout-title">Note</div><p>Client symbol names follow the generator&#39;s conventions for this contract: <code>tasks</code> groups the
+operations declared under the <code>Tasks</code> tag, and operation ids become method names. After your
+first <code>fern generate</code>, confirm the exact names against <code>packages/sdk-*</code>.</p>
+</div></p>
+<h2 id="next">Next<a class="anchor" href="#next" aria-label="Link to Next">#</a></h2>
+<ul>
+<li><a href="/getting-started/authentication/">Authentication</a></li>
+<li><a href="/guides/task-types/">Task types</a></li>
+<li><a href="/guides/single-tasks/">The <code>/decide</code> and <code>/extract</code> shortcuts</a></li>
+</ul>
+
+    <div class="pager"><a class="prev" href="../../getting-started/installation/"><small>Previous</small>Installation</a><a class="next" href="../../getting-started/authentication/"><small>Next</small>Authentication</a></div>
+  </main>
+  <aside class="toc">
+<div class="toc-title">On this page</div>
+<a class="depth-2" href="#with-curl">With curl#</a>
+<a class="depth-2" href="#typescript">TypeScript#</a>
+<a class="depth-2" href="#python">Python#</a>
+<a class="depth-2" href="#ruby">Ruby#</a>
+<a class="depth-2" href="#rust">Rust#</a>
+<a class="depth-2" href="#java">Java#</a>
+<a class="depth-2" href="#net">.NET#</a>
+<a class="depth-2" href="#next">Next#</a>
+  </aside>
+</div>
+<footer class="site"><div class="inner">
+  <span>Dexa API v0.5.0</span>
+  <a href="../../llms.txt">llms.txt</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk">Repository</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md">Changelog</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/PUBLISHING.md">Publishing</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/fern/openapi/openapi.yml">OpenAPI</a>
+</div></footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

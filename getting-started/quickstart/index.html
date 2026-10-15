@@ -3,28 +3,29 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Quickstart - Decider-Extractor API</title>
+<title>Quickstart - Dexa API</title>
 <meta name="description" content="Send your first request with the HTTP API and with each client library.">
 <link rel="stylesheet" href="../../assets/hljs.css">
 <link rel="stylesheet" href="../../assets/site.css">
 <script>var basePath = "../../";</script>
 </head>
-<body data-path="/getting-started/quickstart/">
+<body data-path="/getting-started/quickstart/" data-version="0.5.0">
 <header class="site">
   <button class="icon-button nav-toggle" aria-label="Menu">&#9776;</button>
-  <a class="brand" href="../../"><span class="dot"></span>Decider-Extractor API<span class="version">v0.3.0</span></a>
+  <a class="brand" href="../../"><span class="dot"></span>Dexa API<span class="version">v0.5.0</span></a>
   <div class="search">
     <input id="search-input" type="search" placeholder="Search docs" aria-label="Search docs">
     <kbd>Ctrl K</kbd>
     <div class="search-results" id="search-results"></div>
   </div>
+  <select id="version-picker" class="version-picker" aria-label="Documentation version"></select>
   <button class="icon-button" id="theme-toggle" aria-label="Toggle theme">&#9789;</button>
 </header>
 <div class="layout">
   <nav class="sidebar">
 <div class="section">
   <div class="section-title">Overview</div>
-  <a href="../../">Decider-Extractor API</a>
+  <a href="../../">Dexa API</a>
 </div>
 <div class="section">
   <div class="section-title">Getting started</div>
@@ -36,6 +37,7 @@
 <div class="section">
   <div class="section-title">Guides</div>
   <a href="../../guides/task-types/">Task types</a>
+  <a href="../../guides/doc-versions/">Documentation versions</a>
   <a href="../../guides/single-tasks/">Single tasks</a>
   <a href="../../guides/multimodal-input/">Multimodal input</a>
   <a href="../../guides/structured-output/">Structured output</a>
@@ -71,7 +73,7 @@ term, in a single call.</p>
 <p>The API is plain HTTP and JSON, so anything that can POST works.</p>
 <pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">curl -X POST http://localhost:8080/v1/tasks \
   -H <span class="hljs-string">&quot;Content-Type: application/json&quot;</span> \
-  -H <span class="hljs-string">&quot;Authorization: Bearer <span class="hljs-variable">$DECIDE_EXTRACTOR_TOKEN</span>&quot;</span> \
+  -H <span class="hljs-string">&quot;Authorization: Bearer <span class="hljs-variable">$DEXA_TOKEN</span>&quot;</span> \
   -d <span class="hljs-string">&#x27;{
     &quot;model&quot;: &quot;decider-extractor-v1&quot;,
     &quot;context&quot;: &quot;User says: renew subscription for 2 years. Previous plan expired 3 months ago.&quot;,
@@ -103,11 +105,11 @@ term, in a single call.</p>
 <p>Read the answers from <code>results</code>, keyed by each task&#39;s <code>name</code>. <code>choices[0].message.content</code>
 carries the same data as a JSON string, for OpenAI-shaped clients.</p>
 <h2 id="typescript">TypeScript<a class="anchor" href="#typescript" aria-label="Link to TypeScript">#</a></h2>
-<pre data-lang="ts"><span class="lang">ts</span><code class="hljs language-ts"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">DsainvgApiClient</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@dsainvg/decide-extractor-sdk&quot;</span>;
+<pre data-lang="ts"><span class="lang">ts</span><code class="hljs language-ts"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">DexaAiSdkClient</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@dsainvg/dexa-ai-sdk&quot;</span>;
 
-<span class="hljs-keyword">const</span> client = <span class="hljs-keyword">new</span> <span class="hljs-title class_">DsainvgApiClient</span>({
+<span class="hljs-keyword">const</span> client = <span class="hljs-keyword">new</span> <span class="hljs-title class_">DexaAiSdkClient</span>({
   <span class="hljs-attr">baseUrl</span>: <span class="hljs-string">&quot;http://localhost:8080&quot;</span>,
-  <span class="hljs-attr">token</span>: process.<span class="hljs-property">env</span>.<span class="hljs-property">DECIDE_EXTRACTOR_TOKEN</span>,
+  <span class="hljs-attr">token</span>: process.<span class="hljs-property">env</span>.<span class="hljs-property">DEXA_TOKEN</span>,
 });
 
 <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> client.<span class="hljs-property">tasks</span>.<span class="hljs-title function_">decideExtract</span>({
@@ -133,11 +135,11 @@ carries the same data as a JSON string, for OpenAI-shaped clients.</p>
 </code></pre>
 <h2 id="python">Python<a class="anchor" href="#python" aria-label="Link to Python">#</a></h2>
 <pre data-lang="python"><span class="lang">python</span><code class="hljs language-python"><span class="hljs-keyword">import</span> os
-<span class="hljs-keyword">from</span> dsainvg_decide_extractor_sdk <span class="hljs-keyword">import</span> DsainvgApi
+<span class="hljs-keyword">from</span> dexa_ai_sdk <span class="hljs-keyword">import</span> DexaAiSdk
 
-client = DsainvgApi(
+client = DexaAiSdk(
     base_url=<span class="hljs-string">&quot;http://localhost:8080&quot;</span>,
-    token=os.environ[<span class="hljs-string">&quot;DECIDE_EXTRACTOR_TOKEN&quot;</span>],
+    token=os.environ[<span class="hljs-string">&quot;DEXA_TOKEN&quot;</span>],
 )
 
 response = client.tasks.decide_extract(
@@ -234,7 +236,7 @@ first <code>fern generate</code>, confirm the exact names against <code>packages
   </aside>
 </div>
 <footer class="site"><div class="inner">
-  <span>Decider-Extractor API v0.3.0</span>
+  <span>Dexa API v0.5.0</span>
   <a href="../../llms.txt">llms.txt</a>
   <a href="https://github.com/dsainvg/decide-extract-sdk">Repository</a>
   <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md">Changelog</a>

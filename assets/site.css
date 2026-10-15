@@ -159,6 +159,20 @@ header.site {
   border-radius: 999px;
 }
 
+.version-picker {
+  flex: 0 0 auto;
+  font: inherit;
+  font-size: 13px;
+  color: var(--fg);
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 8px;
+  cursor: pointer;
+}
+.version-picker:hover {
+  border-color: var(--fg-faint);
+}
 .icon-button {
   flex: 0 0 auto;
   width: 34px;

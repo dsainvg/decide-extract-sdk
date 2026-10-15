@@ -3,28 +3,29 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>C++ and other clients - Decider-Extractor API</title>
+<title>C++ and other clients - Dexa API</title>
 <meta name="description" content="Using the API from C++, and from anything else without a generated client.">
 <link rel="stylesheet" href="../../assets/hljs.css">
 <link rel="stylesheet" href="../../assets/site.css">
 <script>var basePath = "../../";</script>
 </head>
-<body data-path="/operations/clients/">
+<body data-path="/operations/clients/" data-version="0.5.0">
 <header class="site">
   <button class="icon-button nav-toggle" aria-label="Menu">&#9776;</button>
-  <a class="brand" href="../../"><span class="dot"></span>Decider-Extractor API<span class="version">v0.3.0</span></a>
+  <a class="brand" href="../../"><span class="dot"></span>Dexa API<span class="version">v0.5.0</span></a>
   <div class="search">
     <input id="search-input" type="search" placeholder="Search docs" aria-label="Search docs">
     <kbd>Ctrl K</kbd>
     <div class="search-results" id="search-results"></div>
   </div>
+  <select id="version-picker" class="version-picker" aria-label="Documentation version"></select>
   <button class="icon-button" id="theme-toggle" aria-label="Toggle theme">&#9789;</button>
 </header>
 <div class="layout">
   <nav class="sidebar">
 <div class="section">
   <div class="section-title">Overview</div>
-  <a href="../../">Decider-Extractor API</a>
+  <a href="../../">Dexa API</a>
 </div>
 <div class="section">
   <div class="section-title">Getting started</div>
@@ -36,6 +37,7 @@
 <div class="section">
   <div class="section-title">Guides</div>
   <a href="../../guides/task-types/">Task types</a>
+  <a href="../../guides/doc-versions/">Documentation versions</a>
   <a href="../../guides/single-tasks/">Single tasks</a>
   <a href="../../guides/multimodal-input/">Multimodal input</a>
   <a href="../../guides/structured-output/">Structured output</a>
@@ -112,7 +114,7 @@ HTTP library works and the example below is complete.</p>
         })}
     };
 
-    <span class="hljs-keyword">auto</span> response = <span class="hljs-built_in">decide_extract</span>(<span class="hljs-string">&quot;http://localhost:8080&quot;</span>, std::<span class="hljs-built_in">getenv</span>(<span class="hljs-string">&quot;DECIDE_EXTRACTOR_TOKEN&quot;</span>), request);
+    <span class="hljs-keyword">auto</span> response = <span class="hljs-built_in">decide_extract</span>(<span class="hljs-string">&quot;http://localhost:8080&quot;</span>, std::<span class="hljs-built_in">getenv</span>(<span class="hljs-string">&quot;DEXA_TOKEN&quot;</span>), request);
 
     <span class="hljs-keyword">if</span> (response.<span class="hljs-built_in">contains</span>(<span class="hljs-string">&quot;results&quot;</span>)) {
         std::cout &lt;&lt; response[<span class="hljs-string">&quot;results&quot;</span>].<span class="hljs-built_in">dump</span>(<span class="hljs-number">2</span>) &lt;&lt; <span class="hljs-string">&quot;\n&quot;</span>;
@@ -130,7 +132,7 @@ library. Only two things matter: send <code>Authorization: Bearer &lt;token&gt;<
 from <code>results</code>.</p>
 <h2 id="generating-your-own-client">Generating your own client<a class="anchor" href="#generating-your-own-client" aria-label="Link to Generating your own client">#</a></h2>
 <p>If your language has an OpenAPI generator, point it at the published contract:</p>
-<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">curl -O https://raw.githubusercontent.com/dsainvg/decide-extractor-sdk/main/fern/openapi/openapi.yml
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">curl -O https://raw.githubusercontent.com/dsainvg/dexa-ai-sdk/main/fern/openapi/openapi.yml
 </code></pre>
 <pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">openapi-generator generate -i openapi.yml -g cpp-httplib -o ./client
 </code></pre>
@@ -154,7 +156,7 @@ problem worth fixing in the OpenAPI rather than working around in every client.<
   </aside>
 </div>
 <footer class="site"><div class="inner">
-  <span>Decider-Extractor API v0.3.0</span>
+  <span>Dexa API v0.5.0</span>
   <a href="../../llms.txt">llms.txt</a>
   <a href="https://github.com/dsainvg/decide-extract-sdk">Repository</a>
   <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md">Changelog</a>

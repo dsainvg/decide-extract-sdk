@@ -31,6 +31,30 @@
     });
   }
 
+  // Version switcher. versions.json is written into the site root and into
+  // every version folder, so a nested page finds it with the same basePath its
+  // own links use. Absent on a locally served build, so it just does not show.
+  var picker = document.getElementById("version-picker");
+  if (picker) {
+    var here = document.body.getAttribute("data-version");
+    fetch((window.basePath || "") + "versions.json")
+      .then(function (response) { return response.ok ? response.json() : []; })
+      .then(function (versions) {
+        if (!versions.length) { picker.remove(); return; }
+        versions.forEach(function (entry) {
+          var option = document.createElement("option");
+          option.value = entry.path;
+          option.textContent = entry.label || entry.version;
+          if (entry.version === here) option.selected = true;
+          picker.appendChild(option);
+        });
+        picker.addEventListener("change", function () {
+          if (picker.value) window.location.href = picker.value;
+        });
+      })
+      .catch(function () { picker.remove(); });
+  }
+
   document.querySelectorAll("pre").forEach(function (pre) {
     var button = document.createElement("button");
     button.className = "copy";

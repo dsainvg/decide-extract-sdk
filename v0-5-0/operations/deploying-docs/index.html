@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deploying the docs - Dexa API</title>
+<meta name="description" content="Building sites/ and publishing it to the sites branch.">
+<link rel="stylesheet" href="../../assets/hljs.css">
+<link rel="stylesheet" href="../../assets/site.css">
+<script>var basePath = "../../";</script>
+</head>
+<body data-path="/operations/deploying-docs/" data-version="0.5.0">
+<header class="site">
+  <button class="icon-button nav-toggle" aria-label="Menu">&#9776;</button>
+  <a class="brand" href="../../"><span class="dot"></span>Dexa API<span class="version">v0.5.0</span></a>
+  <div class="search">
+    <input id="search-input" type="search" placeholder="Search docs" aria-label="Search docs">
+    <kbd>Ctrl K</kbd>
+    <div class="search-results" id="search-results"></div>
+  </div>
+  <select id="version-picker" class="version-picker" aria-label="Documentation version"></select>
+  <button class="icon-button" id="theme-toggle" aria-label="Toggle theme">&#9789;</button>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+<div class="section">
+  <div class="section-title">Overview</div>
+  <a href="../../">Dexa API</a>
+</div>
+<div class="section">
+  <div class="section-title">Getting started</div>
+  <a href="../../getting-started/installation/">Installation</a>
+  <a href="../../getting-started/quickstart/">Quickstart</a>
+  <a href="../../getting-started/authentication/">Authentication</a>
+  <a href="../../getting-started/configuration/">Configuration</a>
+</div>
+<div class="section">
+  <div class="section-title">Guides</div>
+  <a href="../../guides/task-types/">Task types</a>
+  <a href="../../guides/doc-versions/">Documentation versions</a>
+  <a href="../../guides/single-tasks/">Single tasks</a>
+  <a href="../../guides/multimodal-input/">Multimodal input</a>
+  <a href="../../guides/structured-output/">Structured output</a>
+  <a href="../../guides/errors/">Errors</a>
+  <a href="../../guides/versioning/">Versioning and migration</a>
+  <a href="../../guides/troubleshooting/">Troubleshooting</a>
+</div>
+<div class="section">
+  <div class="section-title">API reference</div>
+  <a href="../../api-reference/overview/">API overview</a>
+  <a href="../../api-reference/run-tasks/">POST /v1/tasks</a>
+  <a href="../../api-reference/decide-extract/">POST /v1/decide-extract</a>
+  <a href="../../api-reference/decide/">POST /decide</a>
+  <a href="../../api-reference/extract/">POST /extract</a>
+  <a href="../../api-reference/types/">Types</a>
+</div>
+<div class="section">
+  <div class="section-title">Operations</div>
+  <a href="../../operations/repository/">Repository</a>
+  <a href="../../operations/clients/">C++ and other clients</a>
+  <a href="../../operations/publishing/">Publishing</a>
+  <a href="../../operations/sdk-development/">Developing the SDKs</a>
+  <a href="../../operations/deploying-docs/">Deploying the docs</a>
+  <a href="../../operations/naming/">Naming</a>
+</div>
+  </nav>
+  <main class="content">
+    <h1>Deploying the docs</h1>
+    <p class="lede">Building sites/ and publishing it to the sites branch.</p>
+<p>The documentation is markdown in <code>docs/</code>. The site in <code>sites/</code> is generated from it and
+pushed to a <code>sites</code> branch in this repository, which is what gets published. Only the
+markdown is committed to <code>main</code>.</p>
+<h2 id="build">Build<a class="anchor" href="#build" aria-label="Link to Build">#</a></h2>
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">npm run docs:build      <span class="hljs-comment"># docs/*.md -&gt; sites/</span>
+npm run docs:serve      <span class="hljs-comment"># preview on http://localhost:4321</span>
+</code></pre>
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">npm run docs:build -- --base /decide-extractor-docs/
+npm run docs:serve -- --base /decide-extractor-docs/
+</code></pre>
+<p><code>--base</code> matters if the site is served from a subpath rather than the root of a domain.</p>
+<h2 id="what-the-build-does">What the build does<a class="anchor" href="#what-the-build-does" aria-label="Link to What the build does">#</a></h2>
+<ul>
+<li>renders every page in <code>docs/</code> that is not marked <code>hidden: true</code></li>
+<li>groups pages into sections from the folder they live in</li>
+<li>adds heading anchors, a table of contents, a sidebar and previous/next links</li>
+<li>resolves <code>.md</code> links to real URLs and fails on broken ones</li>
+<li>highlights code blocks, styles callouts and tables</li>
+<li>emits <code>llms.txt</code> and <code>llm.txt</code>, the machine-readable summary from <code>docs/llms-template.md</code>
+with the page index appended, plus <code>search-index.json</code>, <code>sitemap.xml</code> and <code>robots.txt</code></li>
+</ul>
+<h2 id="llms-txt">llms.txt<a class="anchor" href="#llms-txt" aria-label="Link to llms.txt">#</a></h2>
+<p><code>llms.txt</code> is the summary an assistant reads instead of crawling the site. It carries what
+is needed to call the API: authentication, the four endpoints, both task types with every
+field, the shared request fields, the response envelope, multimodal input, the language
+enum, the error codes and the conventions that bite. It is written by hand in
+<code>docs/llms-template.md</code>; the build appends an index of every page.</p>
+<p>Both <code>llms.txt</code> and <code>llm.txt</code> are published, with identical content, because both names are
+in use. <code>npm run docs:build &amp;&amp; node scripts/check-docs.mjs</code> fails if they drift apart, go
+missing, or lose a required section.</p>
+<h2 id="front-matter">Front matter<a class="anchor" href="#front-matter" aria-label="Link to Front matter">#</a></h2>
+<pre data-lang="markdown"><span class="lang">markdown</span><code class="hljs language-markdown">---
+title: Quickstart
+description: Send your first request.
+<span class="hljs-section">order: 2
+---</span>
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>title</code></td>
+<td>Sidebar label and page heading. Required</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>The one-line summary. Required, also used for meta tags</td>
+</tr>
+<tr>
+<td><code>order</code></td>
+<td>Position within the section</td>
+</tr>
+<tr>
+<td><code>section</code></td>
+<td>Override the section name, which otherwise comes from the folder</td>
+</tr>
+<tr>
+<td><code>hidden</code></td>
+<td><code>true</code> keeps the page out of the site, nav and search</td>
+</tr>
+</tbody></table>
+<p>Design notes and internal documents live in <code>docs/</code> with <code>hidden: true</code>, so they stay in the
+repository without ending up on the website.</p>
+<h2 id="checks">Checks<a class="anchor" href="#checks" aria-label="Link to Checks">#</a></h2>
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">node scripts/check-docs.mjs
+</code></pre>
+<p>Fails on broken internal links, missing front matter, and a <code>docs.config.json</code> version that
+has drifted from the contract.</p>
+<h2 id="how-it-is-published">How it is published<a class="anchor" href="#how-it-is-published" aria-label="Link to How it is published">#</a></h2>
+<p><code>.github/workflows/docs.yml</code> runs on every push to <code>main</code>:</p>
+<ol>
+<li>builds the site into <code>sites/</code></li>
+<li>runs the link and front matter checks</li>
+<li>publishes to the <code>sites</code> branch</li>
+</ol>
+<p>Pull requests only build and check.</p>
+<p>The <code>sites</code> branch is the only branch here that anything but a human writes to.</p>
+<h3 id="the-site-is-versioned">The site is versioned<a class="anchor" href="#the-site-is-versioned" aria-label="Link to The site is versioned">#</a></h3>
+<p>Each release keeps the documentation it shipped with:</p>
+<pre><code>/                the newest published version
+/v0-5-0/         0.5.0 exactly as published
+/v0-3-5/         0.3.5 exactly as published
+/versions.json   the list the version switcher reads
+</code></pre>
+<p>Publishing writes the folder for the current contract version and refreshes the
+root. No other version folder is touched, so rebuilding a version replaces only
+that version, and a new release adds a folder instead of overwriting the last
+one. <code>npm run docs:publish</code> does the same thing locally.</p>
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">git <span class="hljs-built_in">clone</span> --branch sites --depth 1 https://github.com/dsainvg/decide-extract-sdk.git _site
+</code></pre>
+<p>The push uses the automatic <code>GITHUB_TOKEN</code> with <code>contents: write</code>, so there is nothing to
+configure in this repository and no Cloudflare credentials to store.</p>
+<h2 id="pointing-a-host-at-the-branch">Pointing a host at the branch<a class="anchor" href="#pointing-a-host-at-the-branch" aria-label="Link to Pointing a host at the branch">#</a></h2>
+<p>Any static host that can build from a git branch works. Create the project once, then set it
+to watch <code>sites</code> rather than <code>main</code>.</p>
+<p>For a Cloudflare Pages project: connect the repository, then set the production branch to
+<code>sites</code> and leave the build command empty, since the branch already contains the finished
+site. Cloudflare redeploys whenever the branch moves, which is every push to <code>main</code>.</p>
+<p>Add <code>CNAME</code> to <code>docs/</code> if you want a custom domain: the build copies it to the site root, and
+the branch will carry it.</p>
+<h2 id="see-also">See also<a class="anchor" href="#see-also" aria-label="Link to See also">#</a></h2>
+<ul>
+<li><a href="/operations/repository/">Repository layout</a></li>
+<li><a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CONTRIBUTING.md">Contributing to the docs</a></li>
+</ul>
+
+    <div class="pager"><a class="prev" href="../../operations/sdk-development/"><small>Previous</small>Developing the SDKs</a><a class="next" href="../../operations/naming/"><small>Next</small>Naming</a></div>
+  </main>
+  <aside class="toc">
+<div class="toc-title">On this page</div>
+<a class="depth-2" href="#build">Build#</a>
+<a class="depth-2" href="#what-the-build-does">What the build does#</a>
+<a class="depth-2" href="#llms-txt">llms.txt#</a>
+<a class="depth-2" href="#front-matter">Front matter#</a>
+<a class="depth-2" href="#checks">Checks#</a>
+<a class="depth-2" href="#how-it-is-published">How it is published#</a>
+<a class="depth-3" href="#the-site-is-versioned">The site is versioned#</a>
+<a class="depth-2" href="#pointing-a-host-at-the-branch">Pointing a host at the branch#</a>
+<a class="depth-2" href="#see-also">See also#</a>
+  </aside>
+</div>
+<footer class="site"><div class="inner">
+  <span>Dexa API v0.5.0</span>
+  <a href="../../llms.txt">llms.txt</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk">Repository</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md">Changelog</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/PUBLISHING.md">Publishing</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/fern/openapi/openapi.yml">OpenAPI</a>
+</div></footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

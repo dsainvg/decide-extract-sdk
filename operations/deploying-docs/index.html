@@ -3,28 +3,29 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Deploying the docs - Decider-Extractor API</title>
+<title>Deploying the docs - Dexa API</title>
 <meta name="description" content="Building sites/ and publishing it to the sites branch.">
 <link rel="stylesheet" href="../../assets/hljs.css">
 <link rel="stylesheet" href="../../assets/site.css">
 <script>var basePath = "../../";</script>
 </head>
-<body data-path="/operations/deploying-docs/">
+<body data-path="/operations/deploying-docs/" data-version="0.5.0">
 <header class="site">
   <button class="icon-button nav-toggle" aria-label="Menu">&#9776;</button>
-  <a class="brand" href="../../"><span class="dot"></span>Decider-Extractor API<span class="version">v0.3.0</span></a>
+  <a class="brand" href="../../"><span class="dot"></span>Dexa API<span class="version">v0.5.0</span></a>
   <div class="search">
     <input id="search-input" type="search" placeholder="Search docs" aria-label="Search docs">
     <kbd>Ctrl K</kbd>
     <div class="search-results" id="search-results"></div>
   </div>
+  <select id="version-picker" class="version-picker" aria-label="Documentation version"></select>
   <button class="icon-button" id="theme-toggle" aria-label="Toggle theme">&#9789;</button>
 </header>
 <div class="layout">
   <nav class="sidebar">
 <div class="section">
   <div class="section-title">Overview</div>
-  <a href="../../">Decider-Extractor API</a>
+  <a href="../../">Dexa API</a>
 </div>
 <div class="section">
   <div class="section-title">Getting started</div>
@@ -36,6 +37,7 @@
 <div class="section">
   <div class="section-title">Guides</div>
   <a href="../../guides/task-types/">Task types</a>
+  <a href="../../guides/doc-versions/">Documentation versions</a>
   <a href="../../guides/single-tasks/">Single tasks</a>
   <a href="../../guides/multimodal-input/">Multimodal input</a>
   <a href="../../guides/structured-output/">Structured output</a>
@@ -142,9 +144,21 @@ has drifted from the contract.</p>
 <ol>
 <li>builds the site into <code>sites/</code></li>
 <li>runs the link and front matter checks</li>
-<li>force-pushes the built files to the <code>sites</code> branch</li>
+<li>publishes to the <code>sites</code> branch</li>
 </ol>
 <p>Pull requests only build and check.</p>
+<p>The <code>sites</code> branch is the only branch here that anything but a human writes to.</p>
+<h3 id="the-site-is-versioned">The site is versioned<a class="anchor" href="#the-site-is-versioned" aria-label="Link to The site is versioned">#</a></h3>
+<p>Each release keeps the documentation it shipped with:</p>
+<pre><code>/                the newest published version
+/v0-5-0/         0.5.0 exactly as published
+/v0-3-5/         0.3.5 exactly as published
+/versions.json   the list the version switcher reads
+</code></pre>
+<p>Publishing writes the folder for the current contract version and refreshes the
+root. No other version folder is touched, so rebuilding a version replaces only
+that version, and a new release adds a folder instead of overwriting the last
+one. <code>npm run docs:publish</code> does the same thing locally.</p>
 <pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">git <span class="hljs-built_in">clone</span> --branch sites --depth 1 https://github.com/dsainvg/decide-extract-sdk.git _site
 </code></pre>
 <p>The push uses the automatic <code>GITHUB_TOKEN</code> with <code>contents: write</code>, so there is nothing to
@@ -173,12 +187,13 @@ the branch will carry it.</p>
 <a class="depth-2" href="#front-matter">Front matter#</a>
 <a class="depth-2" href="#checks">Checks#</a>
 <a class="depth-2" href="#how-it-is-published">How it is published#</a>
+<a class="depth-3" href="#the-site-is-versioned">The site is versioned#</a>
 <a class="depth-2" href="#pointing-a-host-at-the-branch">Pointing a host at the branch#</a>
 <a class="depth-2" href="#see-also">See also#</a>
   </aside>
 </div>
 <footer class="site"><div class="inner">
-  <span>Decider-Extractor API v0.3.0</span>
+  <span>Dexa API v0.5.0</span>
   <a href="../../llms.txt">llms.txt</a>
   <a href="https://github.com/dsainvg/decide-extract-sdk">Repository</a>
   <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md">Changelog</a>

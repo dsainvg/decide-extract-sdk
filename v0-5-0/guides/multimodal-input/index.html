@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Multimodal input - Dexa API</title>
+<meta name="description" content="Attaching images and audio to a request through messages content parts.">
+<link rel="stylesheet" href="../../assets/hljs.css">
+<link rel="stylesheet" href="../../assets/site.css">
+<script>var basePath = "../../";</script>
+</head>
+<body data-path="/guides/multimodal-input/" data-version="0.5.0">
+<header class="site">
+  <button class="icon-button nav-toggle" aria-label="Menu">&#9776;</button>
+  <a class="brand" href="../../"><span class="dot"></span>Dexa API<span class="version">v0.5.0</span></a>
+  <div class="search">
+    <input id="search-input" type="search" placeholder="Search docs" aria-label="Search docs">
+    <kbd>Ctrl K</kbd>
+    <div class="search-results" id="search-results"></div>
+  </div>
+  <select id="version-picker" class="version-picker" aria-label="Documentation version"></select>
+  <button class="icon-button" id="theme-toggle" aria-label="Toggle theme">&#9789;</button>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+<div class="section">
+  <div class="section-title">Overview</div>
+  <a href="../../">Dexa API</a>
+</div>
+<div class="section">
+  <div class="section-title">Getting started</div>
+  <a href="../../getting-started/installation/">Installation</a>
+  <a href="../../getting-started/quickstart/">Quickstart</a>
+  <a href="../../getting-started/authentication/">Authentication</a>
+  <a href="../../getting-started/configuration/">Configuration</a>
+</div>
+<div class="section">
+  <div class="section-title">Guides</div>
+  <a href="../../guides/task-types/">Task types</a>
+  <a href="../../guides/doc-versions/">Documentation versions</a>
+  <a href="../../guides/single-tasks/">Single tasks</a>
+  <a href="../../guides/multimodal-input/">Multimodal input</a>
+  <a href="../../guides/structured-output/">Structured output</a>
+  <a href="../../guides/errors/">Errors</a>
+  <a href="../../guides/versioning/">Versioning and migration</a>
+  <a href="../../guides/troubleshooting/">Troubleshooting</a>
+</div>
+<div class="section">
+  <div class="section-title">API reference</div>
+  <a href="../../api-reference/overview/">API overview</a>
+  <a href="../../api-reference/run-tasks/">POST /v1/tasks</a>
+  <a href="../../api-reference/decide-extract/">POST /v1/decide-extract</a>
+  <a href="../../api-reference/decide/">POST /decide</a>
+  <a href="../../api-reference/extract/">POST /extract</a>
+  <a href="../../api-reference/types/">Types</a>
+</div>
+<div class="section">
+  <div class="section-title">Operations</div>
+  <a href="../../operations/repository/">Repository</a>
+  <a href="../../operations/clients/">C++ and other clients</a>
+  <a href="../../operations/publishing/">Publishing</a>
+  <a href="../../operations/sdk-development/">Developing the SDKs</a>
+  <a href="../../operations/deploying-docs/">Deploying the docs</a>
+  <a href="../../operations/naming/">Naming</a>
+</div>
+  </nav>
+  <main class="content">
+    <h1>Multimodal input</h1>
+    <p class="lede">Attaching images and audio to a request through messages content parts.</p>
+<p>Tasks can read images and audio as well as text. Inputs are attached at the request level
+with <code>images</code> and <code>audio</code>, or inside a message as content parts. Both forms reach the same
+model context.</p>
+<h2 id="images">Images<a class="anchor" href="#images" aria-label="Link to Images">#</a></h2>
+<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;decider-extractor-v1&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;context&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Which of these two invoices is larger?&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;images&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;url&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;https://example.com/invoice-a.png&quot;</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;base64&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;data&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;iVBORw0KGgoAAAANSUhEUg...&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;mime_type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;image/png&quot;</span> <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;tasks&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;decide&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;a_is_larger&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;question&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Is invoice A larger than invoice B?&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;options&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;yes&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;no&quot;</span><span class="hljs-punctuation">]</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;extract&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;invoice_a_total&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;instruction&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Extract the total from invoice A&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;keys&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;amount&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;currency&quot;</span><span class="hljs-punctuation">]</span> <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>type</code></td>
+<td><code>url</code> or <code>base64</code></td>
+</tr>
+<tr>
+<td><code>url</code></td>
+<td>Set when <code>type</code> is <code>url</code></td>
+</tr>
+<tr>
+<td><code>data</code></td>
+<td>Base64-encoded payload, set when <code>type</code> is <code>base64</code></td>
+</tr>
+<tr>
+<td><code>mime_type</code></td>
+<td><code>image/png</code>, <code>image/jpeg</code>, <code>image/webp</code>, <code>image/gif</code></td>
+</tr>
+</tbody></table>
+<p>Always send <code>mime_type</code> with base64 data. Without it the server has to guess the format from
+the first bytes, which is slower and occasionally wrong.</p>
+<h2 id="audio">Audio<a class="anchor" href="#audio" aria-label="Link to Audio">#</a></h2>
+<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;decider-extractor-v1&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;context&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Summarise what the customer asked for&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;audio&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;base64&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;data&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;SUQzBAAAAA...&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;mime_type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;audio/mp3&quot;</span> <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;tasks&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;extract&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;requested_items&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;instruction&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Extract the items the customer asked about&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;keys&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;items&quot;</span><span class="hljs-punctuation">]</span> <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>type</code></td>
+<td><code>url</code> or <code>base64</code></td>
+</tr>
+<tr>
+<td><code>url</code></td>
+<td>Set when <code>type</code> is <code>url</code></td>
+</tr>
+<tr>
+<td><code>data</code></td>
+<td>Base64-encoded payload, set when <code>type</code> is <code>base64</code></td>
+</tr>
+<tr>
+<td><code>mime_type</code></td>
+<td><code>audio/mp3</code>, <code>audio/wav</code>, <code>audio/mpeg</code>, <code>audio/ogg</code>, <code>audio/mp4</code></td>
+</tr>
+</tbody></table>
+<h2 id="content-parts-in-messages">Content parts in messages<a class="anchor" href="#content-parts-in-messages" aria-label="Link to Content parts in messages">#</a></h2>
+<p>When you want per-turn control, use <code>messages</code> instead of <code>context</code>. <code>content</code> is either a
+plain string or a list of parts:</p>
+<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;decider-extractor-v1&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;messages&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;role&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;system&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;content&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;You are extracting from support calls.&quot;</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;role&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;user&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;content&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+        <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;text&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;text&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Which document is this, and what is the total?&quot;</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;image_url&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;image_url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;https://example.com/doc.png&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;detail&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;high&quot;</span> <span class="hljs-punctuation">}</span> <span class="hljs-punctuation">}</span>
+      <span class="hljs-punctuation">]</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;tasks&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;extract&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;document&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;instruction&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Extract the document type and total&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;keys&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;type&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;total&quot;</span><span class="hljs-punctuation">]</span> <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<h3 id="content-part-fields">Content part fields<a class="anchor" href="#content-part-fields" aria-label="Link to Content part fields">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>type</code></td>
+<td><code>text</code>, <code>image_url</code>, <code>image</code>, <code>audio</code>, <code>input_audio</code></td>
+</tr>
+<tr>
+<td><code>text</code></td>
+<td>Set when <code>type</code> is <code>text</code></td>
+</tr>
+<tr>
+<td><code>language</code></td>
+<td>Language of this part, for example <code>en</code> or <code>ja</code></td>
+</tr>
+<tr>
+<td><code>image_url</code></td>
+<td><code>{ &quot;url&quot;: &quot;...&quot;, &quot;detail&quot;: &quot;low&quot; | &quot;high&quot; | &quot;auto&quot; }</code></td>
+</tr>
+<tr>
+<td><code>image</code></td>
+<td>An <code>ImageInput</code> object</td>
+</tr>
+<tr>
+<td><code>audio</code>, <code>input_audio</code></td>
+<td>An <code>AudioInput</code> object</td>
+</tr>
+</tbody></table>
+<p><code>image_url</code> is the OpenAI-compatible spelling and takes a URL plus a <code>detail</code> hint. <code>image</code>
+is the same object used by the top-level <code>images</code> array, which is more convenient when the
+bytes are already base64.</p>
+<p><code>audio</code> and <code>input_audio</code> are aliases, so existing OpenAI code can be moved over unchanged.</p>
+<h3 id="message-fields">Message fields<a class="anchor" href="#message-fields" aria-label="Link to Message fields">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>role</code></td>
+<td>yes</td>
+<td><code>system</code>, <code>user</code> or <code>assistant</code></td>
+</tr>
+<tr>
+<td><code>content</code></td>
+<td>yes</td>
+<td>String, or a list of content parts</td>
+</tr>
+<tr>
+<td><code>language</code></td>
+<td>no</td>
+<td>Language of the whole message</td>
+</tr>
+</tbody></table>
+<h2 id="choosing-between-them">Choosing between them<a class="anchor" href="#choosing-between-them" aria-label="Link to Choosing between them">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Plain text, no system prompt</td>
+<td><code>context</code></td>
+</tr>
+<tr>
+<td>Need a system prompt or a conversation</td>
+<td><code>messages</code></td>
+</tr>
+<tr>
+<td>A few images and nothing conversational</td>
+<td><code>context</code> plus <code>images</code></td>
+</tr>
+<tr>
+<td>Fine control over which part is which language</td>
+<td><code>messages</code> with content parts</td>
+</tr>
+</tbody></table>
+<p><code>context</code> and <code>messages</code> are mutually exclusive at the top level: send one or the other,
+never both, and the API rejects requests that carry neither.</p>
+<p><div class="callout callout-warning"><div class="callout-title">Warning</div><p>Base64 media is counted as prompt tokens, and audio is not cheap. Put many small decisions
+over one recording into a single request rather than calling once per question, and watch
+<code>usage.prompt_tokens</code> if the calls are frequent.</p>
+</div></p>
+
+    <div class="pager"><a class="prev" href="../../guides/single-tasks/"><small>Previous</small>Single tasks</a><a class="next" href="../../guides/structured-output/"><small>Next</small>Structured output</a></div>
+  </main>
+  <aside class="toc">
+<div class="toc-title">On this page</div>
+<a class="depth-2" href="#images">Images#</a>
+<a class="depth-2" href="#audio">Audio#</a>
+<a class="depth-2" href="#content-parts-in-messages">Content parts in messages#</a>
+<a class="depth-3" href="#content-part-fields">Content part fields#</a>
+<a class="depth-3" href="#message-fields">Message fields#</a>
+<a class="depth-2" href="#choosing-between-them">Choosing between them#</a>
+  </aside>
+</div>
+<footer class="site"><div class="inner">
+  <span>Dexa API v0.5.0</span>
+  <a href="../../llms.txt">llms.txt</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk">Repository</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md">Changelog</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/PUBLISHING.md">Publishing</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/fern/openapi/openapi.yml">OpenAPI</a>
+</div></footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

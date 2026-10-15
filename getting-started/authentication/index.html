@@ -3,28 +3,29 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Authentication - Decider-Extractor API</title>
+<title>Authentication - Dexa API</title>
 <meta name="description" content="How tokens are sent, where they come from, and what happens when one is missing.">
 <link rel="stylesheet" href="../../assets/hljs.css">
 <link rel="stylesheet" href="../../assets/site.css">
 <script>var basePath = "../../";</script>
 </head>
-<body data-path="/getting-started/authentication/">
+<body data-path="/getting-started/authentication/" data-version="0.5.0">
 <header class="site">
   <button class="icon-button nav-toggle" aria-label="Menu">&#9776;</button>
-  <a class="brand" href="../../"><span class="dot"></span>Decider-Extractor API<span class="version">v0.3.0</span></a>
+  <a class="brand" href="../../"><span class="dot"></span>Dexa API<span class="version">v0.5.0</span></a>
   <div class="search">
     <input id="search-input" type="search" placeholder="Search docs" aria-label="Search docs">
     <kbd>Ctrl K</kbd>
     <div class="search-results" id="search-results"></div>
   </div>
+  <select id="version-picker" class="version-picker" aria-label="Documentation version"></select>
   <button class="icon-button" id="theme-toggle" aria-label="Toggle theme">&#9789;</button>
 </header>
 <div class="layout">
   <nav class="sidebar">
 <div class="section">
   <div class="section-title">Overview</div>
-  <a href="../../">Decider-Extractor API</a>
+  <a href="../../">Dexa API</a>
 </div>
 <div class="section">
   <div class="section-title">Getting started</div>
@@ -36,6 +37,7 @@
 <div class="section">
   <div class="section-title">Guides</div>
   <a href="../../guides/task-types/">Task types</a>
+  <a href="../../guides/doc-versions/">Documentation versions</a>
   <a href="../../guides/single-tasks/">Single tasks</a>
   <a href="../../guides/multimodal-input/">Multimodal input</a>
   <a href="../../guides/structured-output/">Structured output</a>
@@ -74,21 +76,21 @@
 </code></pre>
 <h2 id="in-the-clients">In the clients<a class="anchor" href="#in-the-clients" aria-label="Link to In the clients">#</a></h2>
 <p>Each generated client takes the token once, at construction, instead of on every call.</p>
-<pre data-lang="ts"><span class="lang">ts</span><code class="hljs language-ts"><span class="hljs-keyword">const</span> client = <span class="hljs-keyword">new</span> <span class="hljs-title class_">DsainvgApiClient</span>({ baseUrl, token });
+<pre data-lang="ts"><span class="lang">ts</span><code class="hljs language-ts"><span class="hljs-keyword">const</span> client = <span class="hljs-keyword">new</span> <span class="hljs-title class_">DexaAiSdkClient</span>({ baseUrl, token });
 </code></pre>
-<pre data-lang="python"><span class="lang">python</span><code class="hljs language-python">client = DsainvgApi(base_url=base_url, token=token)
+<pre data-lang="python"><span class="lang">python</span><code class="hljs language-python">client = DexaAiSdk(base_url=base_url, token=token)
 </code></pre>
-<pre data-lang="ruby"><span class="lang">ruby</span><code class="hljs language-ruby">client = <span class="hljs-title class_">DsainvgApi</span>.new(<span class="hljs-symbol">base_url:</span> base_url, <span class="hljs-symbol">token:</span> token)
+<pre data-lang="ruby"><span class="lang">ruby</span><code class="hljs language-ruby">client = <span class="hljs-title class_">DexaAiSdk</span>.new(<span class="hljs-symbol">base_url:</span> base_url, <span class="hljs-symbol">token:</span> token)
 </code></pre>
-<pre data-lang="rust"><span class="lang">rust</span><code class="hljs language-rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">client</span> = DsainvgApi::<span class="hljs-title function_ invoke__">builder</span>().<span class="hljs-title function_ invoke__">token</span>(token).<span class="hljs-title function_ invoke__">build</span>()?;
+<pre data-lang="rust"><span class="lang">rust</span><code class="hljs language-rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">client</span> = DexaAiSdk::<span class="hljs-title function_ invoke__">builder</span>().<span class="hljs-title function_ invoke__">token</span>(token).<span class="hljs-title function_ invoke__">build</span>()?;
 </code></pre>
-<pre data-lang="java"><span class="lang">java</span><code class="hljs language-java"><span class="hljs-type">var</span> <span class="hljs-variable">client</span> <span class="hljs-operator">=</span> DsainvgApiClient.builder().token(token).build();
+<pre data-lang="java"><span class="lang">java</span><code class="hljs language-java"><span class="hljs-type">var</span> <span class="hljs-variable">client</span> <span class="hljs-operator">=</span> DexaAiSdkClient.builder().token(token).build();
 </code></pre>
-<pre data-lang="csharp"><span class="lang">csharp</span><code class="hljs language-csharp"><span class="hljs-keyword">var</span> client = <span class="hljs-keyword">new</span> DsainvgApiClient(<span class="hljs-keyword">new</span> DsainvgApiClientOptions { Token = token });
+<pre data-lang="csharp"><span class="lang">csharp</span><code class="hljs language-csharp"><span class="hljs-keyword">var</span> client = <span class="hljs-keyword">new</span> DexaAiSdkClient(<span class="hljs-keyword">new</span> DexaAiSdkClientOptions { Token = token });
 </code></pre>
 <p>Keep the token in an environment variable or your platform&#39;s secret store. Never commit it,
 and never put it in a URL, since URLs end up in logs.</p>
-<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash"><span class="hljs-built_in">export</span> DECIDE_EXTRACTOR_TOKEN=<span class="hljs-string">&quot;sk-...&quot;</span>
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash"><span class="hljs-built_in">export</span> DEXA_TOKEN=<span class="hljs-string">&quot;sk-...&quot;</span>
 </code></pre>
 <h2 id="failures">Failures<a class="anchor" href="#failures" aria-label="Link to Failures">#</a></h2>
 <p>A missing or invalid key is rejected before any model runs, so a bad key costs nothing.</p>
@@ -132,7 +134,7 @@ See <a href="/guides/errors/">errors</a>.</p>
   </aside>
 </div>
 <footer class="site"><div class="inner">
-  <span>Decider-Extractor API v0.3.0</span>
+  <span>Dexa API v0.5.0</span>
   <a href="../../llms.txt">llms.txt</a>
   <a href="https://github.com/dsainvg/decide-extract-sdk">Repository</a>
   <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md">Changelog</a>

@@ -3,28 +3,29 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Publishing - Decider-Extractor API</title>
+<title>Publishing - Dexa API</title>
 <meta name="description" content="What goes to a registry, what is attached to the release, and how a release runs.">
 <link rel="stylesheet" href="../../assets/hljs.css">
 <link rel="stylesheet" href="../../assets/site.css">
 <script>var basePath = "../../";</script>
 </head>
-<body data-path="/operations/publishing/">
+<body data-path="/operations/publishing/" data-version="0.5.0">
 <header class="site">
   <button class="icon-button nav-toggle" aria-label="Menu">&#9776;</button>
-  <a class="brand" href="../../"><span class="dot"></span>Decider-Extractor API<span class="version">v0.3.0</span></a>
+  <a class="brand" href="../../"><span class="dot"></span>Dexa API<span class="version">v0.5.0</span></a>
   <div class="search">
     <input id="search-input" type="search" placeholder="Search docs" aria-label="Search docs">
     <kbd>Ctrl K</kbd>
     <div class="search-results" id="search-results"></div>
   </div>
+  <select id="version-picker" class="version-picker" aria-label="Documentation version"></select>
   <button class="icon-button" id="theme-toggle" aria-label="Toggle theme">&#9789;</button>
 </header>
 <div class="layout">
   <nav class="sidebar">
 <div class="section">
   <div class="section-title">Overview</div>
-  <a href="../../">Decider-Extractor API</a>
+  <a href="../../">Dexa API</a>
 </div>
 <div class="section">
   <div class="section-title">Getting started</div>
@@ -36,6 +37,7 @@
 <div class="section">
   <div class="section-title">Guides</div>
   <a href="../../guides/task-types/">Task types</a>
+  <a href="../../guides/doc-versions/">Documentation versions</a>
   <a href="../../guides/single-tasks/">Single tasks</a>
   <a href="../../guides/multimodal-input/">Multimodal input</a>
   <a href="../../guides/structured-output/">Structured output</a>
@@ -81,27 +83,27 @@ Cloudflare credentials live in this repository.</p>
 </thead>
 <tbody><tr>
 <td>TypeScript</td>
-<td>npm, published as <code>@dsainvg/decide-extractor-sdk</code></td>
+<td>npm, published as <code>@dsainvg/dexa-ai-sdk</code></td>
 </tr>
 <tr>
 <td>Python</td>
-<td>PyPI, published as <code>dsainvg-decide-extractor-sdk</code></td>
+<td>PyPI, published as <code>dexa-ai-sdk</code></td>
 </tr>
 <tr>
 <td>Ruby</td>
-<td>RubyGems, published as <code>decide_extractor_sdk</code></td>
+<td>RubyGems, published as <code>dexa-ai-sdk</code></td>
 </tr>
 <tr>
 <td>Rust</td>
-<td>crates.io, published as <code>dsainvg_api</code></td>
+<td>crates.io, published as <code>dexa-ai-sdk</code></td>
 </tr>
 <tr>
 <td>Java</td>
-<td>GitHub Release asset, <code>com.dsainvg:dexa-sdk</code></td>
+<td>GitHub Release asset, <code>com.dsainvg:dexa-ai-sdk</code></td>
 </tr>
 <tr>
 <td>.NET</td>
-<td>GitHub Release asset, <code>DsainvgApi</code></td>
+<td>GitHub Release asset, <code>DexaAiSdk</code></td>
 </tr>
 <tr>
 <td>C++</td>
@@ -111,15 +113,47 @@ Cloudflare credentials live in this repository.</p>
 <p>The release also carries one archive per language, so a download
 exists for every language whether or not it has a registry.</p>
 <h2 id="installing-the-release-asset-packages">Installing the release-asset packages<a class="anchor" href="#installing-the-release-asset-packages" aria-label="Link to Installing the release-asset packages">#</a></h2>
-<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">npm install @dsainvg/decide-extractor-sdk
-pip install dsainvg-decide-extractor-sdk
-gem install decide_extractor_sdk
-cargo add dsainvg_api
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">npm install @dsainvg/dexa-ai-sdk
+pip install dexa-ai-sdk
+gem install dexa-ai-sdk
+cargo add dexa-ai-sdk
 
-dotnet add package --<span class="hljs-built_in">source</span> https://github.com/dsainvg/decide-extract-sdk/releases/download/v0.3.0 DsainvgApi.0.3.0.nupkg
+dotnet add package --<span class="hljs-built_in">source</span> https://github.com/dsainvg/decide-extract-sdk/releases/download/v0.5.0 DexaAiSdk.0.5.0.nupkg
 </code></pre>
 <p>Maven has no equivalent one-liner. Point your build at the release download, or add it as an
-artifact repository and depend on <code>com.dsainvg:dexa-sdk</code>.</p>
+artifact repository and depend on <code>com.dsainvg:dexa-ai-sdk</code>.</p>
+<h2 id="what-each-branch-is-for">What each branch is for<a class="anchor" href="#what-each-branch-is-for" aria-label="Link to What each branch is for">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Branch</th>
+<th>Written by</th>
+<th>Holds</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>main</td>
+<td>you</td>
+<td>the contract, the generated SDKs, the workflows</td>
+</tr>
+<tr>
+<td>generated/sdks</td>
+<td>Regenerate SDKs</td>
+<td>freshly generated SDKs waiting to be merged</td>
+</tr>
+<tr>
+<td>diagnostics/java-build</td>
+<td>CI</td>
+<td>the Java build log, because a failed job&#39;s log cannot be read otherwise</td>
+</tr>
+<tr>
+<td>sites</td>
+<td>nothing writes to it any more</td>
+<td>the last site published by the old branch deployer</td>
+</tr>
+</tbody></table>
+<p>The docs site is published by the Docs workflow itself, with
+ctions/configure-pages, ctions/upload-pages-artifact and ctions/deploy-pages.</p>
 <h2 id="the-gate">The gate<a class="anchor" href="#the-gate" aria-label="Link to The gate">#</a></h2>
 <p>Before anything is published or attached, one job runs every check that must hold:</p>
 <pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">npm run release:check
@@ -201,6 +235,7 @@ way.</p>
 <div class="toc-title">On this page</div>
 <a class="depth-2" href="#where-each-package-goes">Where each package goes#</a>
 <a class="depth-2" href="#installing-the-release-asset-packages">Installing the release-asset packages#</a>
+<a class="depth-2" href="#what-each-branch-is-for">What each branch is for#</a>
 <a class="depth-2" href="#the-gate">The gate#</a>
 <a class="depth-2" href="#cutting-a-release">Cutting a release#</a>
 <a class="depth-2" href="#what-the-workflow-does">What the workflow does#</a>
@@ -209,7 +244,7 @@ way.</p>
   </aside>
 </div>
 <footer class="site"><div class="inner">
-  <span>Decider-Extractor API v0.3.0</span>
+  <span>Dexa API v0.5.0</span>
   <a href="../../llms.txt">llms.txt</a>
   <a href="https://github.com/dsainvg/decide-extract-sdk">Repository</a>
   <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md">Changelog</a>

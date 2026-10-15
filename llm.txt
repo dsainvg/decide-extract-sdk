@@ -1,4 +1,4 @@
-# Decider-Extractor API
+# Dexa API
 
 > Contract-first decider and extractor API for LLM workloads. Run many small judgement
 > tasks against one context in a single, compact, non-streaming request.
@@ -33,19 +33,19 @@ A missing or invalid key returns `401` before any model runs, so a bad key costs
 
 | Language | Package | Install |
 | --- | --- | --- |
-| TypeScript | `@dsainvg/decide-extractor-sdk` | `npm install @dsainvg/decide-extractor-sdk` |
-| Python | `dsainvg-decide-extractor-sdk` | `pip install dsainvg-decide-extractor-sdk` |
-| Ruby | `decide_extractor_sdk` | `gem install decide_extractor_sdk` |
-| Rust | `dsainvg_api` | `cargo add dsainvg_api` |
+| TypeScript | `@dsainvg/dexa-ai-sdk` | `npm install @dsainvg/dexa-ai-sdk` |
+| Python | `dexa-ai-sdk` | `pip install dexa-ai-sdk` |
+| Ruby | `dexa-ai-sdk` | `gem install dexa-ai-sdk` |
+| Rust | `dexa-ai-sdk` | `cargo add dexa-ai-sdk` |
 | Java | Fern Java client | see `packages/sdk-java` |
-| .NET | `DsainvgApi` | `dotnet add package DsainvgApi` |
+| .NET | `DexaAiSdk` | `dotnet add package DexaAiSdk` |
 
 ## First request
 
 ```bash
 curl -X POST http://localhost:8080/v1/tasks \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $DECIDE_EXTRACTOR_TOKEN" \
+  -H "Authorization: Bearer $DEXA_TOKEN" \
   -d '{
     "model": "decider-extractor-v1",
     "context": "User says: renew subscription for 2 years. Previous plan expired 3 months ago.",
@@ -80,11 +80,11 @@ curl -X POST http://localhost:8080/v1/tasks \
 TypeScript:
 
 ```ts
-import { DsainvgApiClient } from "@dsainvg/decide-extractor-sdk";
+import { DexaAiSdkClient } from "@dsainvg/dexa-ai-sdk";
 
-const client = new DsainvgApiClient({
+const client = new DexaAiSdkClient({
   baseUrl: "http://localhost:8080",
-  token: process.env.DECIDE_EXTRACTOR_TOKEN,
+  token: process.env.DEXA_TOKEN,
 });
 
 const response = await client.tasks.decideExtract({
@@ -102,9 +102,9 @@ console.log(response.results);
 Python:
 
 ```python
-from dsainvg_decide_extractor_sdk import DsainvgApi
+from dexa_ai_sdk import DexaAiSdk
 
-client = DsainvgApi(base_url="http://localhost:8080", token="...")
+client = DexaAiSdk(base_url="http://localhost:8080", token="...")
 
 response = client.tasks.decide_extract(
     model="decider-extractor-v1",
@@ -241,7 +241,7 @@ unknown fields are rejected rather than ignored, and `stream` is never valid.
 ## Documentation index
 
 ## Overview
-- [Decider-Extractor API](/): Run many decider and extractor tasks in one compact, non-streaming request. Official SDKs for TypeScript, Python, Ruby, Rust, Java and .NET.
+- [Dexa API](/): Run many decider and extractor tasks in one compact, non-streaming request. Official SDKs for TypeScript, Python, Ruby, Rust, Java and .NET.
 
 ## Getting started
 - [Installation](/getting-started/installation/): Add the TypeScript, Python, Ruby, Rust, Java or .NET client to your project.
@@ -251,6 +251,7 @@ unknown fields are rejected rather than ignored, and `stream` is never valid.
 
 ## Guides
 - [Task types](/guides/task-types/): How decider and extractor tasks are shaped, named, and answered.
+- [Documentation versions](/guides/doc-versions/): Every release keeps its own copy of the docs, and the root always shows the newest.
 - [Single tasks](/guides/single-tasks/): The /decide and /extract shortcuts for when there is exactly one task.
 - [Multimodal input](/guides/multimodal-input/): Attaching images and audio to a request through messages content parts.
 - [Structured output](/guides/structured-output/): How results are shaped, keyed, and repeated for OpenAI compatibility.

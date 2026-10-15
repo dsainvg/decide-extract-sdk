@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Errors - Dexa API</title>
+<meta name="description" content="Status codes, the error body, and what to do about each failure.">
+<link rel="stylesheet" href="../../assets/hljs.css">
+<link rel="stylesheet" href="../../assets/site.css">
+<script>var basePath = "../../";</script>
+</head>
+<body data-path="/guides/errors/" data-version="0.5.0">
+<header class="site">
+  <button class="icon-button nav-toggle" aria-label="Menu">&#9776;</button>
+  <a class="brand" href="../../"><span class="dot"></span>Dexa API<span class="version">v0.5.0</span></a>
+  <div class="search">
+    <input id="search-input" type="search" placeholder="Search docs" aria-label="Search docs">
+    <kbd>Ctrl K</kbd>
+    <div class="search-results" id="search-results"></div>
+  </div>
+  <select id="version-picker" class="version-picker" aria-label="Documentation version"></select>
+  <button class="icon-button" id="theme-toggle" aria-label="Toggle theme">&#9789;</button>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+<div class="section">
+  <div class="section-title">Overview</div>
+  <a href="../../">Dexa API</a>
+</div>
+<div class="section">
+  <div class="section-title">Getting started</div>
+  <a href="../../getting-started/installation/">Installation</a>
+  <a href="../../getting-started/quickstart/">Quickstart</a>
+  <a href="../../getting-started/authentication/">Authentication</a>
+  <a href="../../getting-started/configuration/">Configuration</a>
+</div>
+<div class="section">
+  <div class="section-title">Guides</div>
+  <a href="../../guides/task-types/">Task types</a>
+  <a href="../../guides/doc-versions/">Documentation versions</a>
+  <a href="../../guides/single-tasks/">Single tasks</a>
+  <a href="../../guides/multimodal-input/">Multimodal input</a>
+  <a href="../../guides/structured-output/">Structured output</a>
+  <a href="../../guides/errors/">Errors</a>
+  <a href="../../guides/versioning/">Versioning and migration</a>
+  <a href="../../guides/troubleshooting/">Troubleshooting</a>
+</div>
+<div class="section">
+  <div class="section-title">API reference</div>
+  <a href="../../api-reference/overview/">API overview</a>
+  <a href="../../api-reference/run-tasks/">POST /v1/tasks</a>
+  <a href="../../api-reference/decide-extract/">POST /v1/decide-extract</a>
+  <a href="../../api-reference/decide/">POST /decide</a>
+  <a href="../../api-reference/extract/">POST /extract</a>
+  <a href="../../api-reference/types/">Types</a>
+</div>
+<div class="section">
+  <div class="section-title">Operations</div>
+  <a href="../../operations/repository/">Repository</a>
+  <a href="../../operations/clients/">C++ and other clients</a>
+  <a href="../../operations/publishing/">Publishing</a>
+  <a href="../../operations/sdk-development/">Developing the SDKs</a>
+  <a href="../../operations/deploying-docs/">Deploying the docs</a>
+  <a href="../../operations/naming/">Naming</a>
+</div>
+  </nav>
+  <main class="content">
+    <h1>Errors</h1>
+    <p class="lede">Status codes, the error body, and what to do about each failure.</p>
+<h2 id="error-body">Error body<a class="anchor" href="#error-body" aria-label="Link to Error body">#</a></h2>
+<p>Every failure, at every endpoint, returns the same shape:</p>
+<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;error&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;invalid_request_error&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;tasks must contain at least one task&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;param&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;tasks&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;code&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;too_few_tasks&quot;</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Always present</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>type</code></td>
+<td>yes</td>
+<td>Broad category, <code>invalid_request_error</code> style</td>
+</tr>
+<tr>
+<td><code>message</code></td>
+<td>yes</td>
+<td>Human-readable, safe to log</td>
+</tr>
+<tr>
+<td><code>param</code></td>
+<td>no</td>
+<td>Which field was wrong</td>
+</tr>
+<tr>
+<td><code>code</code></td>
+<td>no</td>
+<td>Stable machine-readable code, safe to branch on</td>
+</tr>
+</tbody></table>
+<p>Branch on <code>code</code>, log <code>message</code>, show neither to end users.</p>
+<h2 id="status-codes">Status codes<a class="anchor" href="#status-codes" aria-label="Link to Status codes">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>When it happens</th>
+<th>Retry?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>400</code></td>
+<td>Malformed JSON, unknown field, missing <code>context</code> or <code>messages</code></td>
+<td>No, fix the request</td>
+</tr>
+<tr>
+<td><code>401</code></td>
+<td>Missing or invalid API key</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>403</code></td>
+<td>Key cannot use this model</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>422</code></td>
+<td>Well-formed JSON, invalid values</td>
+<td>No, fix the request</td>
+</tr>
+<tr>
+<td><code>429</code></td>
+<td>Rate limited</td>
+<td>Yes, after <code>Retry-After</code></td>
+</tr>
+<tr>
+<td><code>500</code></td>
+<td>Server-side failure</td>
+<td>Yes, with backoff</td>
+</tr>
+</tbody></table>
+<h2 id="common-errors">Common errors<a class="anchor" href="#common-errors" aria-label="Link to Common errors">#</a></h2>
+<h3 id="400-no-input"><code>400</code> no input<a class="anchor" href="#400-no-input" aria-label="Link to 400 no input">#</a></h3>
+<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;error&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;invalid_request_error&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;one of context or messages is required&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;code&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;missing_input&quot;</span> <span class="hljs-punctuation">}</span> <span class="hljs-punctuation">}</span>
+</code></pre>
+<p>Every endpoint needs text to work from. Send <code>context</code> for a single blob, or <code>messages</code> when
+you need roles or content parts.</p>
+<h3 id="400-unknown-field"><code>400</code> unknown field<a class="anchor" href="#400-unknown-field" aria-label="Link to 400 unknown field">#</a></h3>
+<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;error&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;invalid_request_error&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Unrecognized property: &#x27;stream&#x27;&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;param&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;stream&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;code&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;unknown_field&quot;</span> <span class="hljs-punctuation">}</span> <span class="hljs-punctuation">}</span>
+</code></pre>
+<p>Requests are strict. Unknown fields are rejected rather than ignored, so a typo fails loudly
+instead of silently doing nothing. The API is also non-streaming, so <code>stream</code> is never valid.</p>
+<h3 id="422-bad-task-name"><code>422</code> bad task name<a class="anchor" href="#422-bad-task-name" aria-label="Link to 422 bad task name">#</a></h3>
+<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;error&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;validation_error&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;name must match ^[a-zA-Z0-9_][a-zA-Z0-9_.-]{0,63}$&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;param&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;tasks[1].name&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;code&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;invalid_task_name&quot;</span> <span class="hljs-punctuation">}</span> <span class="hljs-punctuation">}</span>
+</code></pre>
+<p><code>param</code> points at the exact index in <code>tasks</code> that failed.</p>
+<h3 id="422-out-of-range"><code>422</code> out of range<a class="anchor" href="#422-out-of-range" aria-label="Link to 422 out of range">#</a></h3>
+<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;error&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;validation_error&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;max_output_tokens must be between 1 and 4096&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;param&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;max_output_tokens&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;code&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;out_of_range&quot;</span> <span class="hljs-punctuation">}</span> <span class="hljs-punctuation">}</span>
+</code></pre>
+<p><code>temperature</code> is <code>0</code> to <code>2</code>, <code>max_output_tokens</code> is <code>1</code> to <code>4096</code>.</p>
+<h3 id="429-rate-limited"><code>429</code> rate limited<a class="anchor" href="#429-rate-limited" aria-label="Link to 429 rate limited">#</a></h3>
+<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;error&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;rate_limit_error&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Rate limit reached&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;code&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;rate_limit_exceeded&quot;</span> <span class="hljs-punctuation">}</span> <span class="hljs-punctuation">}</span>
+</code></pre>
+<p>Honour the <code>Retry-After</code> header, fall back to exponential backoff with jitter, and batch more
+tasks per call rather than retrying in a tight loop.</p>
+<h3 id="500-server-error"><code>500</code> server error<a class="anchor" href="#500-server-error" aria-label="Link to 500 server error">#</a></h3>
+<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;error&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;api_error&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Internal server error&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;code&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;internal_error&quot;</span> <span class="hljs-punctuation">}</span> <span class="hljs-punctuation">}</span>
+</code></pre>
+<p>Retry with backoff. If it persists, the <code>request id</code> from the response is what support needs.</p>
+<h2 id="handling-in-the-clients">Handling in the clients<a class="anchor" href="#handling-in-the-clients" aria-label="Link to Handling in the clients">#</a></h2>
+<p>The generated clients throw on any non-2xx response, with the status code and the parsed
+error body attached.</p>
+<pre data-lang="ts"><span class="lang">ts</span><code class="hljs language-ts"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">DexaAiSdkError</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@dsainvg/dexa-ai-sdk&quot;</span>;
+
+<span class="hljs-keyword">try</span> {
+  <span class="hljs-keyword">await</span> client.<span class="hljs-property">tasks</span>.<span class="hljs-title function_">decideExtract</span>(request);
+} <span class="hljs-keyword">catch</span> (error) {
+  <span class="hljs-keyword">if</span> (error <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">DexaAiSdkError</span>) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(error.<span class="hljs-property">statusCode</span>, error.<span class="hljs-property">body</span>?.<span class="hljs-property">error</span>?.<span class="hljs-property">code</span>);
+  }
+}
+</code></pre>
+<pre data-lang="python"><span class="lang">python</span><code class="hljs language-python"><span class="hljs-keyword">from</span> dexa_ai_sdk.core.api_error <span class="hljs-keyword">import</span> ApiError
+
+<span class="hljs-keyword">try</span>:
+    client.tasks.decide_extract(request)
+<span class="hljs-keyword">except</span> ApiError <span class="hljs-keyword">as</span> error:
+    <span class="hljs-built_in">print</span>(error.status_code, error.body[<span class="hljs-string">&quot;error&quot;</span>][<span class="hljs-string">&quot;code&quot;</span>])
+</code></pre>
+<p>Retry only on <code>429</code> and <code>5xx</code>. Everything else needs a change to the request.</p>
+
+    <div class="pager"><a class="prev" href="../../guides/structured-output/"><small>Previous</small>Structured output</a><a class="next" href="../../guides/versioning/"><small>Next</small>Versioning and migration</a></div>
+  </main>
+  <aside class="toc">
+<div class="toc-title">On this page</div>
+<a class="depth-2" href="#error-body">Error body#</a>
+<a class="depth-2" href="#status-codes">Status codes#</a>
+<a class="depth-2" href="#common-errors">Common errors#</a>
+<a class="depth-3" href="#400-no-input">400 no input#</a>
+<a class="depth-3" href="#400-unknown-field">400 unknown field#</a>
+<a class="depth-3" href="#422-bad-task-name">422 bad task name#</a>
+<a class="depth-3" href="#422-out-of-range">422 out of range#</a>
+<a class="depth-3" href="#429-rate-limited">429 rate limited#</a>
+<a class="depth-3" href="#500-server-error">500 server error#</a>
+<a class="depth-2" href="#handling-in-the-clients">Handling in the clients#</a>
+  </aside>
+</div>
+<footer class="site"><div class="inner">
+  <span>Dexa API v0.5.0</span>
+  <a href="../../llms.txt">llms.txt</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk">Repository</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md">Changelog</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/PUBLISHING.md">Publishing</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/fern/openapi/openapi.yml">OpenAPI</a>
+</div></footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

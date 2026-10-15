@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Types - Dexa API</title>
+<meta name="description" content="Every schema in the contract, field by field.">
+<link rel="stylesheet" href="../../assets/hljs.css">
+<link rel="stylesheet" href="../../assets/site.css">
+<script>var basePath = "../../";</script>
+</head>
+<body data-path="/api-reference/types/" data-version="0.5.0">
+<header class="site">
+  <button class="icon-button nav-toggle" aria-label="Menu">&#9776;</button>
+  <a class="brand" href="../../"><span class="dot"></span>Dexa API<span class="version">v0.5.0</span></a>
+  <div class="search">
+    <input id="search-input" type="search" placeholder="Search docs" aria-label="Search docs">
+    <kbd>Ctrl K</kbd>
+    <div class="search-results" id="search-results"></div>
+  </div>
+  <select id="version-picker" class="version-picker" aria-label="Documentation version"></select>
+  <button class="icon-button" id="theme-toggle" aria-label="Toggle theme">&#9789;</button>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+<div class="section">
+  <div class="section-title">Overview</div>
+  <a href="../../">Dexa API</a>
+</div>
+<div class="section">
+  <div class="section-title">Getting started</div>
+  <a href="../../getting-started/installation/">Installation</a>
+  <a href="../../getting-started/quickstart/">Quickstart</a>
+  <a href="../../getting-started/authentication/">Authentication</a>
+  <a href="../../getting-started/configuration/">Configuration</a>
+</div>
+<div class="section">
+  <div class="section-title">Guides</div>
+  <a href="../../guides/task-types/">Task types</a>
+  <a href="../../guides/doc-versions/">Documentation versions</a>
+  <a href="../../guides/single-tasks/">Single tasks</a>
+  <a href="../../guides/multimodal-input/">Multimodal input</a>
+  <a href="../../guides/structured-output/">Structured output</a>
+  <a href="../../guides/errors/">Errors</a>
+  <a href="../../guides/versioning/">Versioning and migration</a>
+  <a href="../../guides/troubleshooting/">Troubleshooting</a>
+</div>
+<div class="section">
+  <div class="section-title">API reference</div>
+  <a href="../../api-reference/overview/">API overview</a>
+  <a href="../../api-reference/run-tasks/">POST /v1/tasks</a>
+  <a href="../../api-reference/decide-extract/">POST /v1/decide-extract</a>
+  <a href="../../api-reference/decide/">POST /decide</a>
+  <a href="../../api-reference/extract/">POST /extract</a>
+  <a href="../../api-reference/types/">Types</a>
+</div>
+<div class="section">
+  <div class="section-title">Operations</div>
+  <a href="../../operations/repository/">Repository</a>
+  <a href="../../operations/clients/">C++ and other clients</a>
+  <a href="../../operations/publishing/">Publishing</a>
+  <a href="../../operations/sdk-development/">Developing the SDKs</a>
+  <a href="../../operations/deploying-docs/">Deploying the docs</a>
+  <a href="../../operations/naming/">Naming</a>
+</div>
+  </nav>
+  <main class="content">
+    <h1>Types</h1>
+    <p class="lede">Every schema in the contract, field by field.</p>
+<p>Generated from <code>fern/openapi/openapi.yml</code>. When this page and the contract disagree, the
+contract wins and the clients follow it.</p>
+<h2 id="tasks">Tasks<a class="anchor" href="#tasks" aria-label="Link to Tasks">#</a></h2>
+<h3 id="decidetask">DecideTask<a class="anchor" href="#decidetask" aria-label="Link to DecideTask">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>type</code></td>
+<td><code>&quot;decide&quot;</code></td>
+<td>yes</td>
+<td>Discriminator</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>yes</td>
+<td>Result key. <code>^[a-zA-Z0-9_][a-zA-Z0-9_.-]{0,63}$</code></td>
+</tr>
+<tr>
+<td><code>question</code></td>
+<td>string</td>
+<td>yes</td>
+<td>The question to answer</td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td>array of string</td>
+<td>no</td>
+<td>At least one item</td>
+</tr>
+<tr>
+<td><code>choices</code></td>
+<td>array of string</td>
+<td>no</td>
+<td>Alias of <code>options</code></td>
+</tr>
+<tr>
+<td><code>instruction</code></td>
+<td>string</td>
+<td>no</td>
+<td>Extra guidance</td>
+</tr>
+<tr>
+<td><code>target_language</code></td>
+<td>enum</td>
+<td>no</td>
+<td>Per-task language override</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td>string</td>
+<td>no</td>
+<td>Legacy alias of <code>name</code></td>
+</tr>
+</tbody></table>
+<h3 id="extracttask">ExtractTask<a class="anchor" href="#extracttask" aria-label="Link to ExtractTask">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>type</code></td>
+<td><code>&quot;extract&quot;</code></td>
+<td>yes</td>
+<td>Discriminator</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>yes</td>
+<td>Result key, same pattern as <code>DecideTask</code></td>
+</tr>
+<tr>
+<td><code>instruction</code></td>
+<td>string</td>
+<td>yes</td>
+<td>What to extract</td>
+</tr>
+<tr>
+<td><code>keys</code></td>
+<td>array of string</td>
+<td>no</td>
+<td>Expected field names</td>
+</tr>
+<tr>
+<td><code>fields</code></td>
+<td>array of string</td>
+<td>no</td>
+<td>Alias of <code>keys</code></td>
+</tr>
+<tr>
+<td><code>schema</code></td>
+<td>object</td>
+<td>no</td>
+<td>JSON-Schema-like shape, extra properties allowed</td>
+</tr>
+<tr>
+<td><code>target_language</code></td>
+<td>enum</td>
+<td>no</td>
+<td>Per-task language override</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td>string</td>
+<td>no</td>
+<td>Legacy alias of <code>name</code></td>
+</tr>
+</tbody></table>
+<h3 id="task">Task<a class="anchor" href="#task" aria-label="Link to Task">#</a></h3>
+<p><code>oneOf</code> of <code>DecideTask</code> and <code>ExtractTask</code>, discriminated on <code>type</code>.</p>
+<h2 id="content">Content<a class="anchor" href="#content" aria-label="Link to Content">#</a></h2>
+<h3 id="message">Message<a class="anchor" href="#message" aria-label="Link to Message">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>role</code></td>
+<td>enum</td>
+<td>yes</td>
+<td><code>system</code>, <code>user</code>, <code>assistant</code></td>
+</tr>
+<tr>
+<td><code>content</code></td>
+<td>string or array of <code>ContentPart</code></td>
+<td>yes</td>
+<td></td>
+</tr>
+<tr>
+<td><code>language</code></td>
+<td>enum</td>
+<td>no</td>
+<td>Language of the message</td>
+</tr>
+</tbody></table>
+<h3 id="contentpart">ContentPart<a class="anchor" href="#contentpart" aria-label="Link to ContentPart">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>type</code></td>
+<td>enum</td>
+<td><code>text</code>, <code>image_url</code>, <code>image</code>, <code>audio</code>, <code>input_audio</code></td>
+</tr>
+<tr>
+<td><code>text</code></td>
+<td>string</td>
+<td>When <code>type</code> is <code>text</code></td>
+</tr>
+<tr>
+<td><code>language</code></td>
+<td>enum</td>
+<td>Language of this part</td>
+</tr>
+<tr>
+<td><code>image_url</code></td>
+<td><code>ImageUrl</code></td>
+<td>When <code>type</code> is <code>image_url</code></td>
+</tr>
+<tr>
+<td><code>image</code></td>
+<td><code>ImageInput</code></td>
+<td>When <code>type</code> is <code>image</code></td>
+</tr>
+<tr>
+<td><code>audio</code></td>
+<td><code>AudioInput</code></td>
+<td>When <code>type</code> is <code>audio</code></td>
+</tr>
+<tr>
+<td><code>input_audio</code></td>
+<td><code>AudioInput</code></td>
+<td>When <code>type</code> is <code>input_audio</code></td>
+</tr>
+</tbody></table>
+<h3 id="imageurl">ImageUrl<a class="anchor" href="#imageurl" aria-label="Link to ImageUrl">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>url</code></td>
+<td>string</td>
+<td>yes</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>detail</code></td>
+<td>enum</td>
+<td>no</td>
+<td><code>auto</code>. One of <code>low</code>, <code>high</code>, <code>auto</code></td>
+</tr>
+</tbody></table>
+<h3 id="imageinput">ImageInput<a class="anchor" href="#imageinput" aria-label="Link to ImageInput">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>type</code></td>
+<td>enum</td>
+<td><code>url</code> or <code>base64</code></td>
+</tr>
+<tr>
+<td><code>url</code></td>
+<td>string</td>
+<td>When <code>type</code> is <code>url</code></td>
+</tr>
+<tr>
+<td><code>data</code></td>
+<td>string</td>
+<td>Base64 payload, when <code>type</code> is <code>base64</code></td>
+</tr>
+<tr>
+<td><code>mime_type</code></td>
+<td>string</td>
+<td><code>image/png</code>, <code>image/jpeg</code>, <code>image/webp</code>, <code>image/gif</code></td>
+</tr>
+</tbody></table>
+<h3 id="audioinput">AudioInput<a class="anchor" href="#audioinput" aria-label="Link to AudioInput">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>type</code></td>
+<td>enum</td>
+<td><code>url</code> or <code>base64</code></td>
+</tr>
+<tr>
+<td><code>url</code></td>
+<td>string</td>
+<td>When <code>type</code> is <code>url</code></td>
+</tr>
+<tr>
+<td><code>data</code></td>
+<td>string</td>
+<td>Base64 payload, when <code>type</code> is <code>base64</code></td>
+</tr>
+<tr>
+<td><code>mime_type</code></td>
+<td>string</td>
+<td><code>audio/mp3</code>, <code>audio/wav</code>, <code>audio/mpeg</code>, <code>audio/ogg</code>, <code>audio/mp4</code></td>
+</tr>
+</tbody></table>
+<h2 id="responses">Responses<a class="anchor" href="#responses" aria-label="Link to Responses">#</a></h2>
+<h3 id="choice">Choice<a class="anchor" href="#choice" aria-label="Link to Choice">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>message</code></td>
+<td><code>ResponseMessage</code></td>
+<td>yes</td>
+<td></td>
+</tr>
+<tr>
+<td><code>finish_reason</code></td>
+<td>enum</td>
+<td>yes</td>
+<td><code>stop</code>, <code>length</code>, <code>content_filter</code>. Defaults to <code>stop</code></td>
+</tr>
+</tbody></table>
+<h3 id="responsemessage">ResponseMessage<a class="anchor" href="#responsemessage" aria-label="Link to ResponseMessage">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>role</code></td>
+<td><code>&quot;assistant&quot;</code></td>
+<td>yes</td>
+<td></td>
+</tr>
+<tr>
+<td><code>content</code></td>
+<td>string</td>
+<td>yes</td>
+<td>The answers as a JSON string</td>
+</tr>
+<tr>
+<td><code>language</code></td>
+<td>enum</td>
+<td>no</td>
+<td>Language of the answer</td>
+</tr>
+</tbody></table>
+<h3 id="decideresult">DecideResult<a class="anchor" href="#decideresult" aria-label="Link to DecideResult">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>value</code></td>
+<td>string</td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>reason</code></td>
+<td>string</td>
+<td>no</td>
+</tr>
+</tbody></table>
+<h3 id="usage">Usage<a class="anchor" href="#usage" aria-label="Link to Usage">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>prompt_tokens</code></td>
+<td>integer &gt;= 0</td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>completion_tokens</code></td>
+<td>integer &gt;= 0</td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>total_tokens</code></td>
+<td>integer &gt;= 0</td>
+<td>yes</td>
+</tr>
+</tbody></table>
+<h2 id="errors">Errors<a class="anchor" href="#errors" aria-label="Link to Errors">#</a></h2>
+<h3 id="errorresponse">ErrorResponse<a class="anchor" href="#errorresponse" aria-label="Link to ErrorResponse">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>error</code></td>
+<td>object</td>
+<td>yes</td>
+</tr>
+</tbody></table>
+<h3 id="error-object">Error object<a class="anchor" href="#error-object" aria-label="Link to Error object">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>type</code></td>
+<td>string</td>
+<td>yes</td>
+<td>Broad category</td>
+</tr>
+<tr>
+<td><code>message</code></td>
+<td>string</td>
+<td>yes</td>
+<td>Safe to log</td>
+</tr>
+<tr>
+<td><code>param</code></td>
+<td>string</td>
+<td>no</td>
+<td>Offending field</td>
+</tr>
+<tr>
+<td><code>code</code></td>
+<td>string</td>
+<td>no</td>
+<td>Stable machine-readable code</td>
+</tr>
+</tbody></table>
+<h2 id="language-enum">Language enum<a class="anchor" href="#language-enum" aria-label="Link to Language enum">#</a></h2>
+<p>Used by <code>target_language</code>, <code>output_language</code>, <code>Message.language</code>, <code>ContentPart.language</code> and
+<code>ResponseMessage.language</code>:</p>
+<p><code>en</code>, <code>es</code>, <code>fr</code>, <code>de</code>, <code>it</code>, <code>pt</code>, <code>nl</code>, <code>ru</code>, <code>ja</code>, <code>ko</code>, <code>zh</code>, <code>ar</code>, <code>hi</code>, <code>tr</code>, <code>pl</code>,
+<code>sv</code>, <code>da</code>, <code>no</code>, <code>fi</code>, <code>cs</code></p>
+
+    <div class="pager"><a class="prev" href="../../api-reference/extract/"><small>Previous</small>POST /extract</a><a class="next" href="../../operations/repository/"><small>Next</small>Repository</a></div>
+  </main>
+  <aside class="toc">
+<div class="toc-title">On this page</div>
+<a class="depth-2" href="#tasks">Tasks#</a>
+<a class="depth-3" href="#decidetask">DecideTask#</a>
+<a class="depth-3" href="#extracttask">ExtractTask#</a>
+<a class="depth-3" href="#task">Task#</a>
+<a class="depth-2" href="#content">Content#</a>
+<a class="depth-3" href="#message">Message#</a>
+<a class="depth-3" href="#contentpart">ContentPart#</a>
+<a class="depth-3" href="#imageurl">ImageUrl#</a>
+<a class="depth-3" href="#imageinput">ImageInput#</a>
+<a class="depth-3" href="#audioinput">AudioInput#</a>
+<a class="depth-2" href="#responses">Responses#</a>
+<a class="depth-3" href="#choice">Choice#</a>
+<a class="depth-3" href="#responsemessage">ResponseMessage#</a>
+<a class="depth-3" href="#decideresult">DecideResult#</a>
+<a class="depth-3" href="#usage">Usage#</a>
+<a class="depth-2" href="#errors">Errors#</a>
+<a class="depth-3" href="#errorresponse">ErrorResponse#</a>
+<a class="depth-3" href="#error-object">Error object#</a>
+<a class="depth-2" href="#language-enum">Language enum#</a>
+  </aside>
+</div>
+<footer class="site"><div class="inner">
+  <span>Dexa API v0.5.0</span>
+  <a href="../../llms.txt">llms.txt</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk">Repository</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md">Changelog</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/PUBLISHING.md">Publishing</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/fern/openapi/openapi.yml">OpenAPI</a>
+</div></footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>
