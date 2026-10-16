@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Troubleshooting - Dexa API</title>
+<meta name="description" content="Symptoms, causes and fixes for the problems that actually come up.">
+<link rel="stylesheet" href="../../assets/hljs.css">
+<link rel="stylesheet" href="../../assets/site.css">
+<script>var basePath = "../../";</script>
+</head>
+<body data-path="/guides/troubleshooting/" data-version="0.6.0">
+<header class="site">
+  <button class="icon-button nav-toggle" aria-label="Menu">&#9776;</button>
+  <a class="brand" href="../../"><span class="dot"></span>Dexa API<span class="version">v0.6.0</span></a>
+  <div class="search">
+    <input id="search-input" type="search" placeholder="Search docs" aria-label="Search docs">
+    <kbd>Ctrl K</kbd>
+    <div class="search-results" id="search-results"></div>
+  </div>
+  <select id="version-picker" class="version-picker" aria-label="Documentation version"></select>
+  <button class="icon-button" id="theme-toggle" aria-label="Toggle theme">&#9789;</button>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+<div class="section">
+  <div class="section-title">Overview</div>
+  <a href="../../">Dexa API</a>
+</div>
+<div class="section">
+  <div class="section-title">Getting started</div>
+  <a href="../../getting-started/installation/">Installation</a>
+  <a href="../../getting-started/quickstart/">Quickstart</a>
+  <a href="../../getting-started/authentication/">Authentication</a>
+  <a href="../../getting-started/configuration/">Configuration</a>
+</div>
+<div class="section">
+  <div class="section-title">Guides</div>
+  <a href="../../guides/task-types/">Task types</a>
+  <a href="../../guides/doc-versions/">Documentation versions</a>
+  <a href="../../guides/single-tasks/">Single tasks</a>
+  <a href="../../guides/multimodal-input/">Multimodal input</a>
+  <a href="../../guides/structured-output/">Structured output</a>
+  <a href="../../guides/errors/">Errors</a>
+  <a href="../../guides/versioning/">Versioning and migration</a>
+  <a href="../../guides/troubleshooting/">Troubleshooting</a>
+</div>
+<div class="section">
+  <div class="section-title">API reference</div>
+  <a href="../../api-reference/overview/">API overview</a>
+  <a href="../../api-reference/run-tasks/">POST /v1/tasks</a>
+  <a href="../../api-reference/decide-extract/">POST /v1/decide-extract</a>
+  <a href="../../api-reference/decide/">POST /decide</a>
+  <a href="../../api-reference/extract/">POST /extract</a>
+  <a href="../../api-reference/types/">Types</a>
+</div>
+<div class="section">
+  <div class="section-title">Operations</div>
+  <a href="../../operations/repository/">Repository</a>
+  <a href="../../operations/clients/">C++ and other clients</a>
+  <a href="../../operations/publishing/">Publishing</a>
+  <a href="../../operations/sdk-development/">Developing the SDKs</a>
+  <a href="../../operations/deploying-docs/">Deploying the docs</a>
+  <a href="../../operations/naming/">Naming</a>
+</div>
+  </nav>
+  <main class="content">
+    <h1>Troubleshooting</h1>
+    <p class="lede">Symptoms, causes and fixes for the problems that actually come up.</p>
+<h2 id="400-one-of-context-or-messages-is-required"><code>400: one of context or messages is required</code><a class="anchor" href="#400-one-of-context-or-messages-is-required" aria-label="Link to 400: one of context or messages is required">#</a></h2>
+<p>Every endpoint needs something to work from. Send <code>context</code> as a single string, or <code>messages</code>
+when you need roles or content parts. The two are alternatives, never both.</p>
+<h2 id="400-unrecognized-property"><code>400: Unrecognized property</code><a class="anchor" href="#400-unrecognized-property" aria-label="Link to 400: Unrecognized property">#</a></h2>
+<p>Requests are strict. The most common offenders are <code>stream</code> (this API never streams) and
+snake_case fields that do not exist, such as <code>max_tokens</code> instead of <code>max_output_tokens</code>. The
+error names the offending property.</p>
+<h2 id="400-unrecognized-property-39-maxtokens-39"><code>400: Unrecognized property: &#39;max_tokens&#39;</code><a class="anchor" href="#400-unrecognized-property-39-maxtokens-39" aria-label="Link to 400: Unrecognized property: &#39;max_tokens&#39;">#</a></h2>
+<p>The field is <code>max_output_tokens</code>, matching OpenAI&#39;s newer naming rather than the old one.</p>
+<h2 id="422-tasks-must-contain-at-least-one-task"><code>422: tasks must contain at least one task</code><a class="anchor" href="#422-tasks-must-contain-at-least-one-task" aria-label="Link to 422: tasks must contain at least one task">#</a></h2>
+<p><code>tasks</code> cannot be empty. If you built the list dynamically and it came out empty, check the
+filter that filled it before calling.</p>
+<h2 id="422-task-names-must-be-unique"><code>422: task names must be unique</code><a class="anchor" href="#422-task-names-must-be-unique" aria-label="Link to 422: task names must be unique">#</a></h2>
+<p>Two tasks shared a <code>name</code>, so one answer overwrote the other in <code>results</code>. This passes
+validation and produces wrong data, so validate names yourself when you build task lists
+dynamically.</p>
+<h2 id="the-answer-is-cut-off">The answer is cut off<a class="anchor" href="#the-answer-is-cut-off" aria-label="Link to The answer is cut off">#</a></h2>
+<p><code>finish_reason</code> is <code>length</code>. The batch hit <code>max_output_tokens</code>, usually an extractor asking
+for more fields than the default 16 tokens allows. Raise it, or split the batch.</p>
+<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;max_output_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">256</span> <span class="hljs-punctuation">}</span>
+</code></pre>
+<h2 id="finishreason-is-contentfilter"><code>finish_reason</code> is <code>content_filter</code><a class="anchor" href="#finishreason-is-contentfilter" aria-label="Link to finish_reason is content_filter">#</a></h2>
+<p>The request was stopped by a safety filter. Retrying the same input gives the same result;
+change the content or split the request.</p>
+<h2 id="answers-come-back-in-the-wrong-language">Answers come back in the wrong language<a class="anchor" href="#answers-come-back-in-the-wrong-language" aria-label="Link to Answers come back in the wrong language">#</a></h2>
+<p>Set <code>target_language</code>, or <code>output_language</code> if that reads better. It applies to the whole
+request, and each task can override it.</p>
+<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;target_language&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;fr&quot;</span> <span class="hljs-punctuation">}</span>
+</code></pre>
+<p>Keep keys in English and translate values. Code that reads <code>results.invoice_number</code> keeps
+working when the language changes.</p>
+<h2 id="401-on-every-call"><code>401</code> on every call<a class="anchor" href="#401-on-every-call" aria-label="Link to 401 on every call">#</a></h2>
+<p>Check the header is <code>Authorization: Bearer &lt;token&gt;</code> and not <code>Authorization: &lt;token&gt;</code>, and
+that the token is not quoted, has no trailing newline from a <code>.env</code> file, and has not been
+rotated out from under the process.</p>
+<h2 id="everything-is-slow-and-the-bill-went-up">Everything is slow and the bill went up<a class="anchor" href="#everything-is-slow-and-the-bill-went-up" aria-label="Link to Everything is slow and the bill went up">#</a></h2>
+<p>Look at <code>usage.prompt_tokens</code>. Batching many tasks over a large context, or attaching base64
+media, dominates the cost. Put more tasks in each call instead of making more calls, and
+trim the context to what the tasks actually need.</p>
+<h2 id="base64-media-is-rejected">Base64 media is rejected<a class="anchor" href="#base64-media-is-rejected" aria-label="Link to Base64 media is rejected">#</a></h2>
+<p>Send <code>mime_type</code>. The server should not have to infer the format from the payload&#39;s first
+bytes, and some clients require it. Valid values are <code>image/png</code>, <code>image/jpeg</code>, <code>image/webp</code>,
+<code>image/gif</code>, <code>audio/mp3</code>, <code>audio/wav</code>, <code>audio/mpeg</code>, <code>audio/ogg</code>, <code>audio/mp4</code>.</p>
+<h2 id="the-client-cannot-reach-the-server">The client cannot reach the server<a class="anchor" href="#the-client-cannot-reach-the-server" aria-label="Link to The client cannot reach the server">#</a></h2>
+<p>The contract&#39;s default base URL is <code>http://localhost:8080</code>. Against anything else, set
+<code>baseUrl</code> (or <code>base_url</code> in Python, <code>base_url</code> in Ruby) explicitly.</p>
+<h2 id="generated-client-names-differ-from-the-docs">Generated client names differ from the docs<a class="anchor" href="#generated-client-names-differ-from-the-docs" aria-label="Link to Generated client names differ from the docs">#</a></h2>
+<p>Method names follow the contract&#39;s operation ids and tag names, so a rename in
+<code>fern/openapi/openapi.yml</code> changes them after the next generation. Check the generated
+source in <code>packages/sdk-&lt;language&gt;/</code> if something does not match, and upgrade your client.</p>
+
+    <div class="pager"><a class="prev" href="../../guides/versioning/"><small>Previous</small>Versioning and migration</a><a class="next" href="../../api-reference/overview/"><small>Next</small>API overview</a></div>
+  </main>
+  <aside class="toc">
+<div class="toc-title">On this page</div>
+<a class="depth-2" href="#400-one-of-context-or-messages-is-required">400: one of context or messages is required#</a>
+<a class="depth-2" href="#400-unrecognized-property">400: Unrecognized property#</a>
+<a class="depth-2" href="#400-unrecognized-property-39-maxtokens-39">400: Unrecognized property: &amp;#39;max_tokens&amp;#39;#</a>
+<a class="depth-2" href="#422-tasks-must-contain-at-least-one-task">422: tasks must contain at least one task#</a>
+<a class="depth-2" href="#422-task-names-must-be-unique">422: task names must be unique#</a>
+<a class="depth-2" href="#the-answer-is-cut-off">The answer is cut off#</a>
+<a class="depth-2" href="#finishreason-is-contentfilter">finish_reason is content_filter#</a>
+<a class="depth-2" href="#answers-come-back-in-the-wrong-language">Answers come back in the wrong language#</a>
+<a class="depth-2" href="#401-on-every-call">401 on every call#</a>
+<a class="depth-2" href="#everything-is-slow-and-the-bill-went-up">Everything is slow and the bill went up#</a>
+<a class="depth-2" href="#base64-media-is-rejected">Base64 media is rejected#</a>
+<a class="depth-2" href="#the-client-cannot-reach-the-server">The client cannot reach the server#</a>
+<a class="depth-2" href="#generated-client-names-differ-from-the-docs">Generated client names differ from the docs#</a>
+  </aside>
+</div>
+<footer class="site"><div class="inner">
+  <span>Dexa API v0.6.0</span>
+  <a href="../../llms.txt">llms.txt</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk">Repository</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md">Changelog</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/PUBLISHING.md">Publishing</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/fern/openapi/openapi.yml">OpenAPI</a>
+</div></footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

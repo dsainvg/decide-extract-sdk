@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Single tasks - Dexa API</title>
+<meta name="description" content="The /decide and /extract shortcuts for when there is exactly one task.">
+<link rel="stylesheet" href="../../assets/hljs.css">
+<link rel="stylesheet" href="../../assets/site.css">
+<script>var basePath = "../../";</script>
+</head>
+<body data-path="/guides/single-tasks/" data-version="0.6.0">
+<header class="site">
+  <button class="icon-button nav-toggle" aria-label="Menu">&#9776;</button>
+  <a class="brand" href="../../"><span class="dot"></span>Dexa API<span class="version">v0.6.0</span></a>
+  <div class="search">
+    <input id="search-input" type="search" placeholder="Search docs" aria-label="Search docs">
+    <kbd>Ctrl K</kbd>
+    <div class="search-results" id="search-results"></div>
+  </div>
+  <select id="version-picker" class="version-picker" aria-label="Documentation version"></select>
+  <button class="icon-button" id="theme-toggle" aria-label="Toggle theme">&#9789;</button>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+<div class="section">
+  <div class="section-title">Overview</div>
+  <a href="../../">Dexa API</a>
+</div>
+<div class="section">
+  <div class="section-title">Getting started</div>
+  <a href="../../getting-started/installation/">Installation</a>
+  <a href="../../getting-started/quickstart/">Quickstart</a>
+  <a href="../../getting-started/authentication/">Authentication</a>
+  <a href="../../getting-started/configuration/">Configuration</a>
+</div>
+<div class="section">
+  <div class="section-title">Guides</div>
+  <a href="../../guides/task-types/">Task types</a>
+  <a href="../../guides/doc-versions/">Documentation versions</a>
+  <a href="../../guides/single-tasks/">Single tasks</a>
+  <a href="../../guides/multimodal-input/">Multimodal input</a>
+  <a href="../../guides/structured-output/">Structured output</a>
+  <a href="../../guides/errors/">Errors</a>
+  <a href="../../guides/versioning/">Versioning and migration</a>
+  <a href="../../guides/troubleshooting/">Troubleshooting</a>
+</div>
+<div class="section">
+  <div class="section-title">API reference</div>
+  <a href="../../api-reference/overview/">API overview</a>
+  <a href="../../api-reference/run-tasks/">POST /v1/tasks</a>
+  <a href="../../api-reference/decide-extract/">POST /v1/decide-extract</a>
+  <a href="../../api-reference/decide/">POST /decide</a>
+  <a href="../../api-reference/extract/">POST /extract</a>
+  <a href="../../api-reference/types/">Types</a>
+</div>
+<div class="section">
+  <div class="section-title">Operations</div>
+  <a href="../../operations/repository/">Repository</a>
+  <a href="../../operations/clients/">C++ and other clients</a>
+  <a href="../../operations/publishing/">Publishing</a>
+  <a href="../../operations/sdk-development/">Developing the SDKs</a>
+  <a href="../../operations/deploying-docs/">Deploying the docs</a>
+  <a href="../../operations/naming/">Naming</a>
+</div>
+  </nav>
+  <main class="content">
+    <h1>Single tasks</h1>
+    <p class="lede">The /decide and /extract shortcuts for when there is exactly one task.</p>
+<p>Batching exists to share context across tasks. When you only have one task, <code>POST /decide</code>
+and <code>POST /extract</code> skip the array and give you a flatter request and response.</p>
+<h2 id="post-decide">POST /decide<a class="anchor" href="#post-decide" aria-label="Link to POST /decide">#</a></h2>
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">curl -X POST http://localhost:8080/decide \
+  -H <span class="hljs-string">&quot;Content-Type: application/json&quot;</span> \
+  -H <span class="hljs-string">&quot;Authorization: Bearer <span class="hljs-variable">$DEXA_TOKEN</span>&quot;</span> \
+  -d <span class="hljs-string">&#x27;{
+    &quot;model&quot;: &quot;decider-extractor-v1&quot;,
+    &quot;context&quot;: &quot;User says: renew subscription for 2 years. Previous plan expired 3 months ago.&quot;,
+    &quot;question&quot;: &quot;Should we offer a renewal discount?&quot;,
+    &quot;options&quot;: [&quot;yes&quot;, &quot;no&quot;]
+  }&#x27;</span>
+</code></pre>
+<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;req_4Kd8PwPq&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;decider-extractor-v1&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;choices&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;role&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;assistant&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;content&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;{\&quot;value\&quot;:\&quot;yes\&quot;}&quot;</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;finish_reason&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;stop&quot;</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;result&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;yes&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;probabilities&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;yes&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.85</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;no&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.10</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;reason&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Two-year term and a three-month lapse&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;decision&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;yes&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;probabilities&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;yes&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.85</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;no&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.10</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;reason&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Two-year term and a three-month lapse&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;yes&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;usage&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;prompt_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">44</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;completion_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">6</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;total_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">50</span> <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>model</code></td>
+<td>yes</td>
+<td>Model identifier</td>
+</tr>
+<tr>
+<td><code>question</code></td>
+<td>yes</td>
+<td>The question to answer</td>
+</tr>
+<tr>
+<td><code>context</code> / <code>messages</code></td>
+<td>yes</td>
+<td>One of the two, same rule as <code>/v1/tasks</code></td>
+</tr>
+<tr>
+<td><code>options</code> / <code>choices</code></td>
+<td>no</td>
+<td>Allowed answers. Defaults to <code>[&quot;yes&quot;, &quot;no&quot;]</code> for boolean decisions; can specify more than 2 options</td>
+</tr>
+<tr>
+<td><code>instruction</code></td>
+<td>no</td>
+<td>Extra guidance</td>
+</tr>
+<tr>
+<td><code>temperature</code>, <code>max_output_tokens</code>, <code>response_format</code></td>
+<td>no</td>
+<td>Same as everywhere</td>
+</tr>
+</tbody></table>
+<p>The response carries the answer three times on purpose: <code>result</code> is canonical, <code>decision</code> is
+an alias for OpenAI-shaped clients that expect a <code>decision</code> field, and <code>value</code> is the bare
+string for callers that only want the answer. In <code>result</code>, <code>probabilities</code> maps each option to
+its estimated likelihood. If probabilities do not add up to 1.0, the remaining probability is
+treated as the model being <strong>not sure</strong> / uncertain.</p>
+<h2 id="post-extract">POST /extract<a class="anchor" href="#post-extract" aria-label="Link to POST /extract">#</a></h2>
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">curl -X POST http://localhost:8080/extract \
+  -H <span class="hljs-string">&quot;Content-Type: application/json&quot;</span> \
+  -H <span class="hljs-string">&quot;Authorization: Bearer <span class="hljs-variable">$DEXA_TOKEN</span>&quot;</span> \
+  -d <span class="hljs-string">&#x27;{
+    &quot;model&quot;: &quot;decider-extractor-v1&quot;,
+    &quot;context&quot;: &quot;User says: renew subscription for 2 years. Previous plan expired 3 months ago.&quot;,
+    &quot;question&quot;: &quot;What is the renewal term?&quot;
+  }&#x27;</span>
+</code></pre>
+<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;req_7Lq2XzVb&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;decider-extractor-v1&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;choices&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;role&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;assistant&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;content&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;24 months&quot;</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;finish_reason&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;stop&quot;</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;result&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;24 months&quot;</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;data&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;24 months&quot;</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;24 months&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;usage&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;prompt_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">41</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;completion_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">5</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;total_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">46</span> <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p><code>result</code> is canonical, <code>data</code> is the alias, and <code>value</code> gives the extracted string directly. There are no <code>keys</code> or <code>fields</code>: <code>question</code> is required (with <code>instruction</code> accepted as an alias) and extracts a single target value.</p>
+<h2 id="which-one-should-i-use">Which one should I use<a class="anchor" href="#which-one-should-i-use" aria-label="Link to Which one should I use">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>One task, ever</td>
+<td><code>/decide</code> or <code>/extract</code></td>
+</tr>
+<tr>
+<td>Several tasks over the same context</td>
+<td><code>/v1/tasks</code></td>
+</tr>
+<tr>
+<td>A task list that sometimes has one item</td>
+<td><code>/v1/tasks</code> anyway, so the code has one path</td>
+</tr>
+</tbody></table>
+<p><div class="callout callout-tip"><div class="callout-title">Tip</div><p><code>/v1/tasks</code> is a strict superset. If your code can handle a list, it can handle everything,
+and you avoid two code paths for the same call.</p>
+</div></p>
+
+    <div class="pager"><a class="prev" href="../../guides/doc-versions/"><small>Previous</small>Documentation versions</a><a class="next" href="../../guides/multimodal-input/"><small>Next</small>Multimodal input</a></div>
+  </main>
+  <aside class="toc">
+<div class="toc-title">On this page</div>
+<a class="depth-2" href="#post-decide">POST /decide#</a>
+<a class="depth-2" href="#post-extract">POST /extract#</a>
+<a class="depth-2" href="#which-one-should-i-use">Which one should I use#</a>
+  </aside>
+</div>
+<footer class="site"><div class="inner">
+  <span>Dexa API v0.6.0</span>
+  <a href="../../llms.txt">llms.txt</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk">Repository</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md">Changelog</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/PUBLISHING.md">Publishing</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/fern/openapi/openapi.yml">OpenAPI</a>
+</div></footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

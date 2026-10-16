@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Versioning and migration - Dexa API</title>
+<meta name="description" content="How versions are numbered, what changed between them, and how to upgrade.">
+<link rel="stylesheet" href="../../assets/hljs.css">
+<link rel="stylesheet" href="../../assets/site.css">
+<script>var basePath = "../../";</script>
+</head>
+<body data-path="/guides/versioning/" data-version="0.6.0">
+<header class="site">
+  <button class="icon-button nav-toggle" aria-label="Menu">&#9776;</button>
+  <a class="brand" href="../../"><span class="dot"></span>Dexa API<span class="version">v0.6.0</span></a>
+  <div class="search">
+    <input id="search-input" type="search" placeholder="Search docs" aria-label="Search docs">
+    <kbd>Ctrl K</kbd>
+    <div class="search-results" id="search-results"></div>
+  </div>
+  <select id="version-picker" class="version-picker" aria-label="Documentation version"></select>
+  <button class="icon-button" id="theme-toggle" aria-label="Toggle theme">&#9789;</button>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+<div class="section">
+  <div class="section-title">Overview</div>
+  <a href="../../">Dexa API</a>
+</div>
+<div class="section">
+  <div class="section-title">Getting started</div>
+  <a href="../../getting-started/installation/">Installation</a>
+  <a href="../../getting-started/quickstart/">Quickstart</a>
+  <a href="../../getting-started/authentication/">Authentication</a>
+  <a href="../../getting-started/configuration/">Configuration</a>
+</div>
+<div class="section">
+  <div class="section-title">Guides</div>
+  <a href="../../guides/task-types/">Task types</a>
+  <a href="../../guides/doc-versions/">Documentation versions</a>
+  <a href="../../guides/single-tasks/">Single tasks</a>
+  <a href="../../guides/multimodal-input/">Multimodal input</a>
+  <a href="../../guides/structured-output/">Structured output</a>
+  <a href="../../guides/errors/">Errors</a>
+  <a href="../../guides/versioning/">Versioning and migration</a>
+  <a href="../../guides/troubleshooting/">Troubleshooting</a>
+</div>
+<div class="section">
+  <div class="section-title">API reference</div>
+  <a href="../../api-reference/overview/">API overview</a>
+  <a href="../../api-reference/run-tasks/">POST /v1/tasks</a>
+  <a href="../../api-reference/decide-extract/">POST /v1/decide-extract</a>
+  <a href="../../api-reference/decide/">POST /decide</a>
+  <a href="../../api-reference/extract/">POST /extract</a>
+  <a href="../../api-reference/types/">Types</a>
+</div>
+<div class="section">
+  <div class="section-title">Operations</div>
+  <a href="../../operations/repository/">Repository</a>
+  <a href="../../operations/clients/">C++ and other clients</a>
+  <a href="../../operations/publishing/">Publishing</a>
+  <a href="../../operations/sdk-development/">Developing the SDKs</a>
+  <a href="../../operations/deploying-docs/">Deploying the docs</a>
+  <a href="../../operations/naming/">Naming</a>
+</div>
+  </nav>
+  <main class="content">
+    <h1>Versioning and migration</h1>
+    <p class="lede">How versions are numbered, what changed between them, and how to upgrade.</p>
+<h2 id="one-version-everything">One version, everything<a class="anchor" href="#one-version-everything" aria-label="Link to One version, everything">#</a></h2>
+<p>The version lives in exactly one place, <code>info.version</code> in the OpenAPI contract. It is stamped
+into every generated client and into both registries, so <code>0.5.0</code> on npm, on PyPI, in the Git
+tag and in the response envelope are always the same number.</p>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Released</th>
+<th>What changed</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>0.5.0</code></td>
+<td>current</td>
+<td><code>/v1/tasks</code>, multimodal input, language selection, <code>DecideResult</code></td>
+</tr>
+<tr>
+<td><code>0.2.0</code></td>
+<td>yes</td>
+<td>Single <code>/v1/decide-extract</code> endpoint</td>
+</tr>
+<tr>
+<td><code>0.1.0</code></td>
+<td>yes</td>
+<td>First contract, <code>POST /v1/decide-extract</code></td>
+</tr>
+</tbody></table>
+<h2 id="what-changed-in-0-5-0">What changed in 0.5.0<a class="anchor" href="#what-changed-in-0-5-0" aria-label="Link to What changed in 0.5.0">#</a></h2>
+<p><strong>Renamed, with aliases.</strong> <code>Task.id</code> became <code>Task.name</code>, and <code>results</code> was added as the
+canonical response field next to <code>tasks</code>. Both old names still work.</p>
+<table>
+<thead>
+<tr>
+<th>Before</th>
+<th>Now</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>tasks[].id</code></td>
+<td><code>tasks[].name</code></td>
+<td><code>id</code> still accepted</td>
+</tr>
+<tr>
+<td><code>response.tasks</code></td>
+<td><code>response.results</code></td>
+<td><code>tasks</code> still returned</td>
+</tr>
+<tr>
+<td><code>DecideTask.options</code></td>
+<td><code>DecideTask.options</code></td>
+<td><code>choices</code> added as an alias</td>
+</tr>
+<tr>
+<td><code>ExtractTask.keys</code></td>
+<td><code>ExtractTask.keys</code></td>
+<td><code>fields</code> added as an alias</td>
+</tr>
+<tr>
+<td><code>POST /v1/decide-extract</code></td>
+<td><code>POST /v1/tasks</code></td>
+<td>old path still serves</td>
+</tr>
+</tbody></table>
+<p><strong>Added</strong></p>
+<ul>
+<li><code>POST /v1/tasks</code>, <code>POST /decide</code>, <code>POST /extract</code></li>
+<li><code>images</code>, <code>audio</code>, and content parts on <code>messages</code></li>
+<li><code>target_language</code> / <code>output_language</code></li>
+<li><code>DecideResult</code> with an optional <code>reason</code></li>
+<li><code>result</code>, <code>decision</code> and <code>value</code> on the decide response</li>
+</ul>
+<p><strong>Removed:</strong> nothing. No field or endpoint in <code>0.2.0</code> was taken away.</p>
+<h2 id="migrating-from-0-2-0">Migrating from 0.2.0<a class="anchor" href="#migrating-from-0-2-0" aria-label="Link to Migrating from 0.2.0">#</a></h2>
+<ol>
+<li>Upgrade the client package.</li>
+<li>Rename <code>id</code> to <code>name</code> in your task builders, if you can. <code>id</code> still works, so this is
+optional today and worth doing before it is removed.</li>
+<li>Prefer <code>results</code> over <code>tasks</code> when reading responses.</li>
+<li>Move the endpoint to <code>/v1/tasks</code> when convenient.</li>
+</ol>
+<pre data-lang="diff"><span class="lang">diff</span><code class="hljs language-diff"><span class="hljs-deletion">-const response = await client.tasks.decideExtract({</span>
+<span class="hljs-addition">+const response = await client.tasks.runTasks({</span>
+   model,
+   context,
+   tasks: [
+<span class="hljs-deletion">-    { type: &quot;decide&quot;, id: &quot;should_renew&quot;, question, options: [&quot;yes&quot;, &quot;no&quot;] },</span>
+<span class="hljs-addition">+    { type: &quot;decide&quot;, name: &quot;should_renew&quot;, question, options: [&quot;yes&quot;, &quot;no&quot;] },</span>
+   ],
+ });
+
+<span class="hljs-deletion">-response.tasks?.should_renew;</span>
+<span class="hljs-addition">+response.results?.should_renew;</span>
+</code></pre>
+<h2 id="pinning">Pinning<a class="anchor" href="#pinning" aria-label="Link to Pinning">#</a></h2>
+<p>Pin exactly in production. Clients are generated, and a patch release can rename a symbol
+when the contract gains a field.</p>
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">npm install @dsainvg/dexa-ai-sdk@0.5.0
+pip install dexa-ai-sdk==0.5.0
+</code></pre>
+<p>Take a minor version to get new fields and endpoints, a patch for fixes only, and expect a
+major version to change something you depend on.</p>
+<h2 id="breaking-changes">Breaking changes<a class="anchor" href="#breaking-changes" aria-label="Link to Breaking changes">#</a></h2>
+<p>A breaking change is anything that can make a correct program wrong: removing a field,
+renaming one, changing a type, changing a default, tightening validation. Those land in a
+major version, ship with a note in <code>CHANGELOG.md</code>, and keep the old behaviour for at least
+one minor release.</p>
+<p>Non-breaking additions, new optional fields, new enum values and new endpoints ship in a minor
+version. When new enum values appear, ignore values you do not recognise rather than failing.</p>
+
+    <div class="pager"><a class="prev" href="../../guides/errors/"><small>Previous</small>Errors</a><a class="next" href="../../guides/troubleshooting/"><small>Next</small>Troubleshooting</a></div>
+  </main>
+  <aside class="toc">
+<div class="toc-title">On this page</div>
+<a class="depth-2" href="#one-version-everything">One version, everything#</a>
+<a class="depth-2" href="#what-changed-in-0-5-0">What changed in 0.5.0#</a>
+<a class="depth-2" href="#migrating-from-0-2-0">Migrating from 0.2.0#</a>
+<a class="depth-2" href="#pinning">Pinning#</a>
+<a class="depth-2" href="#breaking-changes">Breaking changes#</a>
+  </aside>
+</div>
+<footer class="site"><div class="inner">
+  <span>Dexa API v0.6.0</span>
+  <a href="../../llms.txt">llms.txt</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk">Repository</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md">Changelog</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/PUBLISHING.md">Publishing</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/fern/openapi/openapi.yml">OpenAPI</a>
+</div></footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

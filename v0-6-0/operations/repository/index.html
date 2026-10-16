@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Repository - Dexa API</title>
+<meta name="description" content="How this SDK repository is laid out, and what each part is for.">
+<link rel="stylesheet" href="../../assets/hljs.css">
+<link rel="stylesheet" href="../../assets/site.css">
+<script>var basePath = "../../";</script>
+</head>
+<body data-path="/operations/repository/" data-version="0.6.0">
+<header class="site">
+  <button class="icon-button nav-toggle" aria-label="Menu">&#9776;</button>
+  <a class="brand" href="../../"><span class="dot"></span>Dexa API<span class="version">v0.6.0</span></a>
+  <div class="search">
+    <input id="search-input" type="search" placeholder="Search docs" aria-label="Search docs">
+    <kbd>Ctrl K</kbd>
+    <div class="search-results" id="search-results"></div>
+  </div>
+  <select id="version-picker" class="version-picker" aria-label="Documentation version"></select>
+  <button class="icon-button" id="theme-toggle" aria-label="Toggle theme">&#9789;</button>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+<div class="section">
+  <div class="section-title">Overview</div>
+  <a href="../../">Dexa API</a>
+</div>
+<div class="section">
+  <div class="section-title">Getting started</div>
+  <a href="../../getting-started/installation/">Installation</a>
+  <a href="../../getting-started/quickstart/">Quickstart</a>
+  <a href="../../getting-started/authentication/">Authentication</a>
+  <a href="../../getting-started/configuration/">Configuration</a>
+</div>
+<div class="section">
+  <div class="section-title">Guides</div>
+  <a href="../../guides/task-types/">Task types</a>
+  <a href="../../guides/doc-versions/">Documentation versions</a>
+  <a href="../../guides/single-tasks/">Single tasks</a>
+  <a href="../../guides/multimodal-input/">Multimodal input</a>
+  <a href="../../guides/structured-output/">Structured output</a>
+  <a href="../../guides/errors/">Errors</a>
+  <a href="../../guides/versioning/">Versioning and migration</a>
+  <a href="../../guides/troubleshooting/">Troubleshooting</a>
+</div>
+<div class="section">
+  <div class="section-title">API reference</div>
+  <a href="../../api-reference/overview/">API overview</a>
+  <a href="../../api-reference/run-tasks/">POST /v1/tasks</a>
+  <a href="../../api-reference/decide-extract/">POST /v1/decide-extract</a>
+  <a href="../../api-reference/decide/">POST /decide</a>
+  <a href="../../api-reference/extract/">POST /extract</a>
+  <a href="../../api-reference/types/">Types</a>
+</div>
+<div class="section">
+  <div class="section-title">Operations</div>
+  <a href="../../operations/repository/">Repository</a>
+  <a href="../../operations/clients/">C++ and other clients</a>
+  <a href="../../operations/publishing/">Publishing</a>
+  <a href="../../operations/sdk-development/">Developing the SDKs</a>
+  <a href="../../operations/deploying-docs/">Deploying the docs</a>
+  <a href="../../operations/naming/">Naming</a>
+</div>
+  </nav>
+  <main class="content">
+    <h1>Repository</h1>
+    <p class="lede">How this SDK repository is laid out, and what each part is for.</p>
+<p>The SDKs are generated from one contract. Nothing in <code>packages/</code> is written by hand.</p>
+<pre data-lang="text"><span class="lang">text</span><code class="hljs language-text">fern/
+  fern.config.json      Fern project config, pins the CLI version
+  generators.yml        which generators run, at which versions, writing where
+  openapi/openapi.yml   THE CONTRACT, including the released version
+packages/
+  sdk-ts/               generated TypeScript client   -&gt; npm
+  sdk-py/               generated Python client       -&gt; PyPI
+  sdk-ruby/             generated Ruby client         -&gt; release asset
+  sdk-rust/             generated Rust client         -&gt; release asset
+  sdk-java/             generated Java client         -&gt; release asset
+  sdk-csharp/           generated .NET client         -&gt; release asset
+scripts/
+  generate.mjs          regenerate every SDK at the contract version
+  bump.mjs              bump the version and regenerate
+  test.mjs              build and test whichever SDKs exist
+  prepublish-check.mjs  everything that must hold before a release
+  build-artifacts.mjs   build every package, collect files for the release
+  build-docs.mjs        docs/*.md -&gt; sites/
+  check-docs.mjs        link and front matter checks
+docs/                   the documentation you are reading
+sites/                  generated site, gitignored, pushed to the sites branch
+release-artifacts/      generated files attached to the GitHub Release
+</code></pre>
+<h2 id="the-contract-is-the-source-of-truth">The contract is the source of truth<a class="anchor" href="#the-contract-is-the-source-of-truth" aria-label="Link to The contract is the source of truth">#</a></h2>
+<p><code>fern/openapi/openapi.yml</code> defines the endpoints, the schemas and <code>info.version</code>. Everything
+else is derived: the clients, the docs&#39; type reference, the version stamped into every
+package.</p>
+<p><code>info.version</code> is the only version in the repository. npm, PyPI, the git tag, the GitHub
+Release and every attached artifact carry that number.</p>
+<h2 id="generated-code-is-committed">Generated code is committed<a class="anchor" href="#generated-code-is-committed" aria-label="Link to Generated code is committed">#</a></h2>
+<p><code>packages/</code> is committed so the clients are browsable, greppable and diffable in review. The
+cost is that it can go stale, which CI prevents: the <code>Generate SDKs</code> job regenerates from the
+contract and fails if the result differs from what is committed, or if nothing was committed.</p>
+<p>If you do not have Docker locally, push the contract change and the <code>Regenerate SDKs</code> workflow
+opens a <code>chore: regenerate SDKs</code> pull request for you. Merge it and CI goes green.</p>
+<p>Contract changes and <code>packages/</code> changes belong in the same commit, which is exactly what that
+pull request does.</p>
+<h2 id="local-commands">Local commands<a class="anchor" href="#local-commands" aria-label="Link to Local commands">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>npm run fern:check</code></td>
+<td>Validate the contract and generator config</td>
+</tr>
+<tr>
+<td><code>npm run fern:generate</code></td>
+<td>Regenerate every SDK. Needs Docker</td>
+</tr>
+<tr>
+<td><code>npm run fern:check:drift</code></td>
+<td>Regenerate and fail if the committed SDKs are stale</td>
+</tr>
+<tr>
+<td><code>npm run version:print</code></td>
+<td>Print the contract version</td>
+</tr>
+<tr>
+<td><code>npm run version:bump -- patch</code></td>
+<td>Bump the version and regenerate</td>
+</tr>
+<tr>
+<td><code>npm test</code></td>
+<td>Build and test every generated SDK</td>
+</tr>
+<tr>
+<td><code>npm run release:check</code></td>
+<td>The full pre-publish gate</td>
+</tr>
+<tr>
+<td><code>npm run build:artifacts</code></td>
+<td>Build every package and collect release files</td>
+</tr>
+<tr>
+<td><code>npm run docs:build</code></td>
+<td>Build the docs site into <code>sites/</code></td>
+</tr>
+<tr>
+<td><code>npm run docs:serve</code></td>
+<td>Preview the docs site locally</td>
+</tr>
+</tbody></table>
+<h2 id="upgrading">Upgrading<a class="anchor" href="#upgrading" aria-label="Link to Upgrading">#</a></h2>
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">npm run fern:upgrade                                    <span class="hljs-comment"># the Fern CLI</span>
+<span class="hljs-built_in">cd</span> fern &amp;&amp; fern generator upgrade --generator fern-typescript-sdk --list
+<span class="hljs-built_in">cd</span> fern &amp;&amp; fern generator upgrade --generator fern-python-sdk --list
+</code></pre>
+<p>Then regenerate, test and commit. Generator bumps are ordinary dependency updates.</p>
+<h2 id="see-also">See also<a class="anchor" href="#see-also" aria-label="Link to See also">#</a></h2>
+<ul>
+<li><a href="/operations/sdk-development/">Developing the SDKs</a></li>
+<li><a href="/operations/publishing/">Publishing</a></li>
+<li><a href="/operations/deploying-docs/">Deploying the docs</a></li>
+</ul>
+
+    <div class="pager"><a class="prev" href="../../api-reference/types/"><small>Previous</small>Types</a><a class="next" href="../../operations/clients/"><small>Next</small>C++ and other clients</a></div>
+  </main>
+  <aside class="toc">
+<div class="toc-title">On this page</div>
+<a class="depth-2" href="#the-contract-is-the-source-of-truth">The contract is the source of truth#</a>
+<a class="depth-2" href="#generated-code-is-committed">Generated code is committed#</a>
+<a class="depth-2" href="#local-commands">Local commands#</a>
+<a class="depth-2" href="#upgrading">Upgrading#</a>
+<a class="depth-2" href="#see-also">See also#</a>
+  </aside>
+</div>
+<footer class="site"><div class="inner">
+  <span>Dexa API v0.6.0</span>
+  <a href="../../llms.txt">llms.txt</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk">Repository</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md">Changelog</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/PUBLISHING.md">Publishing</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/fern/openapi/openapi.yml">OpenAPI</a>
+</div></footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

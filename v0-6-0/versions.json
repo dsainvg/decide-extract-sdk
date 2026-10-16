@@ -1,0 +1,14 @@
+[
+  {
+    "version": "0.6.0",
+    "path": "/v0-6-0/",
+    "label": "0.6.0 (latest)",
+    "current": true
+  },
+  {
+    "version": "0.5.0",
+    "path": "/v0-5-0/",
+    "label": "0.5.0",
+    "current": false
+  }
+]

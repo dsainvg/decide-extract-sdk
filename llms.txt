@@ -133,36 +133,36 @@ print(response.results)
 
 `tasks` is a discriminated union on `type`. Names must match
 `^[a-zA-Z0-9_][a-zA-Z0-9_.-]{0,63}$` and must be unique within a request.
+The `name` field has **no effect on LLM inference** and serves strictly as the key in `results`.
 
 ### decide
 
 | Field | Type | Required | Notes |
 | --- | --- | --- | --- |
 | `type` | `"decide"` | yes | Discriminator |
-| `name` | string | yes | Key the answer appears under in `results` |
+| `name` | string | yes | Key the answer appears under in `results` (no effect on LLM inference) |
 | `question` | string | yes | The question to answer |
-| `options` | array of string | no | Allowed answers, constrains the output |
-| `choices` | array of string | no | Alias of `options` |
+| `options` | array of string | no | Allowed answers. Defaults to `["yes", "no"]` for boolean decisions; can specify > 2 options |
+| `choices` | array of string | no | Alias of `options`. Defaults to `["yes", "no"]` |
 | `instruction` | string | no | Extra guidance |
 | `target_language` | enum | no | Per-task language override |
 | `id` | string | no | Legacy alias of `name` |
 
-Answered as `{ "value": "yes" }`, optionally with a `reason`.
+Answered as `{ "value": "yes", "probabilities": { "yes": 0.85, "no": 0.10 } }`, optionally with a `reason`. If probabilities do not sum to 1.0, the remainder represents "not sure" / uncertainty.
 
 ### extract
 
 | Field | Type | Required | Notes |
 | --- | --- | --- | --- |
 | `type` | `"extract"` | yes | Discriminator |
-| `name` | string | yes | Key the answer appears under in `results` |
-| `instruction` | string | yes | What to extract |
-| `keys` | array of string | no | Expected field names |
-| `fields` | array of string | no | Alias of `keys` |
-| `schema` | object | no | JSON-Schema-like shape for nested or typed results |
+| `name` | string | yes | Key the answer appears under in `results` (no effect on LLM inference) |
+| `question` | string | yes | Question specifying what to extract |
+| `instruction` | string | no | Backward-compatible alias for `question` |
+| `schema` | object | no | Optional shape for typed results |
 | `target_language` | enum | no | Per-task language override |
 | `id` | string | no | Legacy alias of `name` |
 
-Answered as a free-form object of the requested fields.
+Answered as `{ "value": "extracted answer" }`.
 
 ## Shared request fields
 

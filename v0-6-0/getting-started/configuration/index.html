@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Configuration - Dexa API</title>
+<meta name="description" content="Base URLs, model selection, determinism and the controls every request shares.">
+<link rel="stylesheet" href="../../assets/hljs.css">
+<link rel="stylesheet" href="../../assets/site.css">
+<script>var basePath = "../../";</script>
+</head>
+<body data-path="/getting-started/configuration/" data-version="0.6.0">
+<header class="site">
+  <button class="icon-button nav-toggle" aria-label="Menu">&#9776;</button>
+  <a class="brand" href="../../"><span class="dot"></span>Dexa API<span class="version">v0.6.0</span></a>
+  <div class="search">
+    <input id="search-input" type="search" placeholder="Search docs" aria-label="Search docs">
+    <kbd>Ctrl K</kbd>
+    <div class="search-results" id="search-results"></div>
+  </div>
+  <select id="version-picker" class="version-picker" aria-label="Documentation version"></select>
+  <button class="icon-button" id="theme-toggle" aria-label="Toggle theme">&#9789;</button>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+<div class="section">
+  <div class="section-title">Overview</div>
+  <a href="../../">Dexa API</a>
+</div>
+<div class="section">
+  <div class="section-title">Getting started</div>
+  <a href="../../getting-started/installation/">Installation</a>
+  <a href="../../getting-started/quickstart/">Quickstart</a>
+  <a href="../../getting-started/authentication/">Authentication</a>
+  <a href="../../getting-started/configuration/">Configuration</a>
+</div>
+<div class="section">
+  <div class="section-title">Guides</div>
+  <a href="../../guides/task-types/">Task types</a>
+  <a href="../../guides/doc-versions/">Documentation versions</a>
+  <a href="../../guides/single-tasks/">Single tasks</a>
+  <a href="../../guides/multimodal-input/">Multimodal input</a>
+  <a href="../../guides/structured-output/">Structured output</a>
+  <a href="../../guides/errors/">Errors</a>
+  <a href="../../guides/versioning/">Versioning and migration</a>
+  <a href="../../guides/troubleshooting/">Troubleshooting</a>
+</div>
+<div class="section">
+  <div class="section-title">API reference</div>
+  <a href="../../api-reference/overview/">API overview</a>
+  <a href="../../api-reference/run-tasks/">POST /v1/tasks</a>
+  <a href="../../api-reference/decide-extract/">POST /v1/decide-extract</a>
+  <a href="../../api-reference/decide/">POST /decide</a>
+  <a href="../../api-reference/extract/">POST /extract</a>
+  <a href="../../api-reference/types/">Types</a>
+</div>
+<div class="section">
+  <div class="section-title">Operations</div>
+  <a href="../../operations/repository/">Repository</a>
+  <a href="../../operations/clients/">C++ and other clients</a>
+  <a href="../../operations/publishing/">Publishing</a>
+  <a href="../../operations/sdk-development/">Developing the SDKs</a>
+  <a href="../../operations/deploying-docs/">Deploying the docs</a>
+  <a href="../../operations/naming/">Naming</a>
+</div>
+  </nav>
+  <main class="content">
+    <h1>Configuration</h1>
+    <p class="lede">Base URLs, model selection, determinism and the controls every request shares.</p>
+<p>Every endpoint, single or batched, accepts the same generation controls.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>model</code></td>
+<td>string</td>
+<td>required</td>
+<td>Which model runs the tasks</td>
+</tr>
+<tr>
+<td><code>context</code></td>
+<td>string</td>
+<td>-</td>
+<td>Free-form text the tasks read. Required unless <code>messages</code> is given</td>
+</tr>
+<tr>
+<td><code>messages</code></td>
+<td>array</td>
+<td>-</td>
+<td>OpenAI-style turns. Required unless <code>context</code> is given</td>
+</tr>
+<tr>
+<td><code>temperature</code></td>
+<td>number</td>
+<td><code>0</code></td>
+<td><code>0</code> to <code>2</code>. <code>0</code> is deterministic</td>
+</tr>
+<tr>
+<td><code>max_output_tokens</code></td>
+<td>integer</td>
+<td><code>16</code></td>
+<td><code>1</code> to <code>4096</code>. Raise it when extracting many fields</td>
+</tr>
+<tr>
+<td><code>response_format</code></td>
+<td>object</td>
+<td><code>{ &quot;type&quot;: &quot;json_object&quot; }</code></td>
+<td>JSON output is enforced</td>
+</tr>
+<tr>
+<td><code>target_language</code></td>
+<td>enum</td>
+<td>-</td>
+<td>Language for the results</td>
+</tr>
+<tr>
+<td><code>output_language</code></td>
+<td>enum</td>
+<td>-</td>
+<td>Alias of <code>target_language</code></td>
+</tr>
+</tbody></table>
+<h2 id="base-url">Base URL<a class="anchor" href="#base-url" aria-label="Link to Base URL">#</a></h2>
+<p>The contract&#39;s default server is <code>http://localhost:8080</code>. Point clients at your deployment:</p>
+<pre data-lang="ts"><span class="lang">ts</span><code class="hljs language-ts"><span class="hljs-keyword">new</span> <span class="hljs-title class_">DexaAiSdkClient</span>({ <span class="hljs-attr">baseUrl</span>: <span class="hljs-string">&quot;https://api.example.com&quot;</span> });
+</code></pre>
+<pre data-lang="python"><span class="lang">python</span><code class="hljs language-python">DexaAiSdk(base_url=<span class="hljs-string">&quot;https://api.example.com&quot;</span>, token=token)
+</code></pre>
+<h2 id="determinism">Determinism<a class="anchor" href="#determinism" aria-label="Link to Determinism">#</a></h2>
+<p><code>temperature</code> defaults to <code>0</code>, which makes repeated calls against the same input produce the
+same answer. That is what you want for routing and compliance decisions.</p>
+<p>If you need variation, raise it deliberately:</p>
+<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;temperature&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.7</span> <span class="hljs-punctuation">}</span>
+</code></pre>
+<p>Decisions are short by design. If a <code>decide</code> task comes back truncated, the whole request hit
+<code>max_output_tokens</code>, not that one task. The default of <code>16</code> is plenty for several decisions;
+raise it when a batch contains an extractor pulling a larger object.</p>
+<h2 id="json-output">JSON output<a class="anchor" href="#json-output" aria-label="Link to JSON output">#</a></h2>
+<p><code>response_format</code> only accepts <code>json_object</code>, which is also the default, so you can leave it
+out. It exists so the request shape matches the OpenAI API and so it can be relaxed later
+without breaking clients.</p>
+<h2 id="language-of-the-results">Language of the results<a class="anchor" href="#language-of-the-results" aria-label="Link to Language of the results">#</a></h2>
+<p><code>target_language</code> (or its alias <code>output_language</code>) asks for the values in <code>results</code> to come
+back in a given language. Supported values:</p>
+<p><code>en</code>, <code>es</code>, <code>fr</code>, <code>de</code>, <code>it</code>, <code>pt</code>, <code>nl</code>, <code>ru</code>, <code>ja</code>, <code>ko</code>, <code>zh</code>, <code>ar</code>, <code>hi</code>, <code>tr</code>, <code>pl</code>,
+<code>sv</code>, <code>da</code>, <code>no</code>, <code>fi</code>, <code>cs</code></p>
+<p>A task can override the request default:</p>
+<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;target_language&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;en&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;tasks&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;decide&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;intent&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;question&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;What is the customer asking for?&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;target_language&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;fr&quot;</span> <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p><div class="callout callout-tip"><div class="callout-title">Tip</div><p>Keep the keys stable and only translate the values. Downstream code that reads
+<code>results.invoice_number</code> keeps working when the content language changes.</p>
+</div></p>
+
+    <div class="pager"><a class="prev" href="../../getting-started/authentication/"><small>Previous</small>Authentication</a><a class="next" href="../../guides/task-types/"><small>Next</small>Task types</a></div>
+  </main>
+  <aside class="toc">
+<div class="toc-title">On this page</div>
+<a class="depth-2" href="#base-url">Base URL#</a>
+<a class="depth-2" href="#determinism">Determinism#</a>
+<a class="depth-2" href="#json-output">JSON output#</a>
+<a class="depth-2" href="#language-of-the-results">Language of the results#</a>
+  </aside>
+</div>
+<footer class="site"><div class="inner">
+  <span>Dexa API v0.6.0</span>
+  <a href="../../llms.txt">llms.txt</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk">Repository</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md">Changelog</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/PUBLISHING.md">Publishing</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/fern/openapi/openapi.yml">OpenAPI</a>
+</div></footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

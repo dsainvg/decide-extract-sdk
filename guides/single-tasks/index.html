@@ -9,10 +9,10 @@
 <link rel="stylesheet" href="../../assets/site.css">
 <script>var basePath = "../../";</script>
 </head>
-<body data-path="/guides/single-tasks/" data-version="0.5.0">
+<body data-path="/guides/single-tasks/" data-version="0.6.0">
 <header class="site">
   <button class="icon-button nav-toggle" aria-label="Menu">&#9776;</button>
-  <a class="brand" href="../../"><span class="dot"></span>Dexa API<span class="version">v0.5.0</span></a>
+  <a class="brand" href="../../"><span class="dot"></span>Dexa API<span class="version">v0.6.0</span></a>
   <div class="search">
     <input id="search-input" type="search" placeholder="Search docs" aria-label="Search docs">
     <kbd>Ctrl K</kbd>
@@ -89,8 +89,16 @@ and <code>POST /extract</code> skip the array and give you a flatter request and
       <span class="hljs-attr">&quot;finish_reason&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;stop&quot;</span>
     <span class="hljs-punctuation">}</span>
   <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
-  <span class="hljs-attr">&quot;result&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;yes&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;reason&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Two-year term and a three-month lapse&quot;</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
-  <span class="hljs-attr">&quot;decision&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;yes&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;reason&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Two-year term and a three-month lapse&quot;</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;result&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;yes&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;probabilities&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;yes&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.85</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;no&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.10</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;reason&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Two-year term and a three-month lapse&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;decision&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;yes&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;probabilities&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;yes&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.85</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;no&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.10</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;reason&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Two-year term and a three-month lapse&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;yes&quot;</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">&quot;usage&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;prompt_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">44</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;completion_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">6</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;total_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">50</span> <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
@@ -121,7 +129,7 @@ and <code>POST /extract</code> skip the array and give you a flatter request and
 <tr>
 <td><code>options</code> / <code>choices</code></td>
 <td>no</td>
-<td>Allowed answers</td>
+<td>Allowed answers. Defaults to <code>[&quot;yes&quot;, &quot;no&quot;]</code> for boolean decisions; can specify more than 2 options</td>
 </tr>
 <tr>
 <td><code>instruction</code></td>
@@ -136,7 +144,9 @@ and <code>POST /extract</code> skip the array and give you a flatter request and
 </tbody></table>
 <p>The response carries the answer three times on purpose: <code>result</code> is canonical, <code>decision</code> is
 an alias for OpenAI-shaped clients that expect a <code>decision</code> field, and <code>value</code> is the bare
-string for callers that only want the answer. Read whichever is convenient.</p>
+string for callers that only want the answer. In <code>result</code>, <code>probabilities</code> maps each option to
+its estimated likelihood. If probabilities do not add up to 1.0, the remaining probability is
+treated as the model being <strong>not sure</strong> / uncertain.</p>
 <h2 id="post-extract">POST /extract<a class="anchor" href="#post-extract" aria-label="Link to POST /extract">#</a></h2>
 <pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">curl -X POST http://localhost:8080/extract \
   -H <span class="hljs-string">&quot;Content-Type: application/json&quot;</span> \
@@ -144,8 +154,7 @@ string for callers that only want the answer. Read whichever is convenient.</p>
   -d <span class="hljs-string">&#x27;{
     &quot;model&quot;: &quot;decider-extractor-v1&quot;,
     &quot;context&quot;: &quot;User says: renew subscription for 2 years. Previous plan expired 3 months ago.&quot;,
-    &quot;instruction&quot;: &quot;Extract the renewal term in months&quot;,
-    &quot;keys&quot;: [&quot;months&quot;]
+    &quot;question&quot;: &quot;What is the renewal term?&quot;
   }&#x27;</span>
 </code></pre>
 <pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span>
@@ -153,17 +162,17 @@ string for callers that only want the answer. Read whichever is convenient.</p>
   <span class="hljs-attr">&quot;model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;decider-extractor-v1&quot;</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">&quot;choices&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
     <span class="hljs-punctuation">{</span>
-      <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;role&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;assistant&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;content&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;{\&quot;months\&quot;:24}&quot;</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;role&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;assistant&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;content&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;24 months&quot;</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
       <span class="hljs-attr">&quot;finish_reason&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;stop&quot;</span>
     <span class="hljs-punctuation">}</span>
   <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
-  <span class="hljs-attr">&quot;result&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;months&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">24</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
-  <span class="hljs-attr">&quot;data&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;months&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">24</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;result&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;24 months&quot;</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;data&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;24 months&quot;</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;24 months&quot;</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">&quot;usage&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;prompt_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">41</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;completion_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">5</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;total_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">46</span> <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 </code></pre>
-<p><code>result</code> is canonical, <code>data</code> is the alias. <code>instruction</code> is required, plus <code>keys</code>/<code>fields</code>
-and <code>schema</code> as in <a href="/guides/task-types/">task types</a>.</p>
+<p><code>result</code> is canonical, <code>data</code> is the alias, and <code>value</code> gives the extracted string directly. There are no <code>keys</code> or <code>fields</code>: <code>question</code> is required (with <code>instruction</code> accepted as an alias) and extracts a single target value.</p>
 <h2 id="which-one-should-i-use">Which one should I use<a class="anchor" href="#which-one-should-i-use" aria-label="Link to Which one should I use">#</a></h2>
 <table>
 <thead>
@@ -199,7 +208,7 @@ and you avoid two code paths for the same call.</p>
   </aside>
 </div>
 <footer class="site"><div class="inner">
-  <span>Dexa API v0.5.0</span>
+  <span>Dexa API v0.6.0</span>
   <a href="../../llms.txt">llms.txt</a>
   <a href="https://github.com/dsainvg/decide-extract-sdk">Repository</a>
   <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md">Changelog</a>

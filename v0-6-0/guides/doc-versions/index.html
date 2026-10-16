@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Documentation versions - Dexa API</title>
+<meta name="description" content="Every release keeps its own copy of the docs, and the root always shows the newest.">
+<link rel="stylesheet" href="../../assets/hljs.css">
+<link rel="stylesheet" href="../../assets/site.css">
+<script>var basePath = "../../";</script>
+</head>
+<body data-path="/guides/doc-versions/" data-version="0.6.0">
+<header class="site">
+  <button class="icon-button nav-toggle" aria-label="Menu">&#9776;</button>
+  <a class="brand" href="../../"><span class="dot"></span>Dexa API<span class="version">v0.6.0</span></a>
+  <div class="search">
+    <input id="search-input" type="search" placeholder="Search docs" aria-label="Search docs">
+    <kbd>Ctrl K</kbd>
+    <div class="search-results" id="search-results"></div>
+  </div>
+  <select id="version-picker" class="version-picker" aria-label="Documentation version"></select>
+  <button class="icon-button" id="theme-toggle" aria-label="Toggle theme">&#9789;</button>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+<div class="section">
+  <div class="section-title">Overview</div>
+  <a href="../../">Dexa API</a>
+</div>
+<div class="section">
+  <div class="section-title">Getting started</div>
+  <a href="../../getting-started/installation/">Installation</a>
+  <a href="../../getting-started/quickstart/">Quickstart</a>
+  <a href="../../getting-started/authentication/">Authentication</a>
+  <a href="../../getting-started/configuration/">Configuration</a>
+</div>
+<div class="section">
+  <div class="section-title">Guides</div>
+  <a href="../../guides/task-types/">Task types</a>
+  <a href="../../guides/doc-versions/">Documentation versions</a>
+  <a href="../../guides/single-tasks/">Single tasks</a>
+  <a href="../../guides/multimodal-input/">Multimodal input</a>
+  <a href="../../guides/structured-output/">Structured output</a>
+  <a href="../../guides/errors/">Errors</a>
+  <a href="../../guides/versioning/">Versioning and migration</a>
+  <a href="../../guides/troubleshooting/">Troubleshooting</a>
+</div>
+<div class="section">
+  <div class="section-title">API reference</div>
+  <a href="../../api-reference/overview/">API overview</a>
+  <a href="../../api-reference/run-tasks/">POST /v1/tasks</a>
+  <a href="../../api-reference/decide-extract/">POST /v1/decide-extract</a>
+  <a href="../../api-reference/decide/">POST /decide</a>
+  <a href="../../api-reference/extract/">POST /extract</a>
+  <a href="../../api-reference/types/">Types</a>
+</div>
+<div class="section">
+  <div class="section-title">Operations</div>
+  <a href="../../operations/repository/">Repository</a>
+  <a href="../../operations/clients/">C++ and other clients</a>
+  <a href="../../operations/publishing/">Publishing</a>
+  <a href="../../operations/sdk-development/">Developing the SDKs</a>
+  <a href="../../operations/deploying-docs/">Deploying the docs</a>
+  <a href="../../operations/naming/">Naming</a>
+</div>
+  </nav>
+  <main class="content">
+    <h1>Documentation versions</h1>
+    <p class="lede">Every release keeps its own copy of the docs, and the root always shows the newest.</p>
+<p>The documentation is versioned. Each release is published under its own path and
+is never rewritten afterwards, so a link to the docs that shipped with a given
+version keeps showing that version.</p>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>/</code></td>
+<td>the newest published version</td>
+</tr>
+<tr>
+<td><code>/v0-5-0/</code></td>
+<td>the docs exactly as they shipped with 0.5.0</td>
+</tr>
+<tr>
+<td><code>/v0-3-5/</code></td>
+<td>the docs exactly as they shipped with 0.3.5</td>
+</tr>
+</tbody></table>
+<p>A version turns into a path by replacing the dots with dashes, so <code>0.3.5</code> is
+<code>v0-3-5</code>. There is no redirect between them on purpose: a reader who followed a
+versioned link stays on the version they asked for.</p>
+<p>Use the selector in the header to move between versions. It reads
+<code>versions.json</code>, which lists every published version with the newest first.</p>
+<h2 id="what-gets-published-when">What gets published when<a class="anchor" href="#what-gets-published-when" aria-label="Link to What gets published when">#</a></h2>
+<p>On every push to <code>main</code>, the docs are built and the <code>Docs</code> workflow publishes
+them:</p>
+<ol>
+<li>The site for the current contract version is written to <code>/vX-Y-Z/</code>.</li>
+<li>The root is refreshed with the same build.</li>
+<li>No other version folder is touched.</li>
+<li><code>versions.json</code> is rewritten to match.</li>
+</ol>
+<p>Two consequences follow from that. Rebuilding the same version replaces that one
+folder and leaves the history intact, and a new version adds a folder rather than
+overwriting the one before it.</p>
+<h2 id="running-it-locally">Running it locally<a class="anchor" href="#running-it-locally" aria-label="Link to Running it locally">#</a></h2>
+<pre data-lang="bash"><span class="lang">bash</span><code class="hljs language-bash">npm run docs:build      <span class="hljs-comment"># build into sites/</span>
+npm run docs:serve      <span class="hljs-comment"># serve it on http://localhost:4321</span>
+</code></pre>
+<p><code>npm run docs:publish</code> pushes the build to the <code>sites</code> branch. It only ever
+writes that one branch, and only that one version folder.</p>
+<h2 id="see-also">See also<a class="anchor" href="#see-also" aria-label="Link to See also">#</a></h2>
+<ul>
+<li><a href="/operations/publishing/">Publishing</a> for what goes to which registry.</li>
+<li><a href="/operations/deploying-docs/">Deploying the docs</a> for how the site is served.</li>
+</ul>
+
+    <div class="pager"><a class="prev" href="../../guides/task-types/"><small>Previous</small>Task types</a><a class="next" href="../../guides/single-tasks/"><small>Next</small>Single tasks</a></div>
+  </main>
+  <aside class="toc">
+<div class="toc-title">On this page</div>
+<a class="depth-2" href="#what-gets-published-when">What gets published when#</a>
+<a class="depth-2" href="#running-it-locally">Running it locally#</a>
+<a class="depth-2" href="#see-also">See also#</a>
+  </aside>
+</div>
+<footer class="site"><div class="inner">
+  <span>Dexa API v0.6.0</span>
+  <a href="../../llms.txt">llms.txt</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk">Repository</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md">Changelog</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/PUBLISHING.md">Publishing</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/fern/openapi/openapi.yml">OpenAPI</a>
+</div></footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Developing the SDKs - Dexa API</title>
+<meta name="description" content="Changing the API, regenerating, and keeping CI green.">
+<link rel="stylesheet" href="../../assets/hljs.css">
+<link rel="stylesheet" href="../../assets/site.css">
+<script>var basePath = "../../";</script>
+</head>
+<body data-path="/operations/sdk-development/" data-version="0.6.0">
+<header class="site">
+  <button class="icon-button nav-toggle" aria-label="Menu">&#9776;</button>
+  <a class="brand" href="../../"><span class="dot"></span>Dexa API<span class="version">v0.6.0</span></a>
+  <div class="search">
+    <input id="search-input" type="search" placeholder="Search docs" aria-label="Search docs">
+    <kbd>Ctrl K</kbd>
+    <div class="search-results" id="search-results"></div>
+  </div>
+  <select id="version-picker" class="version-picker" aria-label="Documentation version"></select>
+  <button class="icon-button" id="theme-toggle" aria-label="Toggle theme">&#9789;</button>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+<div class="section">
+  <div class="section-title">Overview</div>
+  <a href="../../">Dexa API</a>
+</div>
+<div class="section">
+  <div class="section-title">Getting started</div>
+  <a href="../../getting-started/installation/">Installation</a>
+  <a href="../../getting-started/quickstart/">Quickstart</a>
+  <a href="../../getting-started/authentication/">Authentication</a>
+  <a href="../../getting-started/configuration/">Configuration</a>
+</div>
+<div class="section">
+  <div class="section-title">Guides</div>
+  <a href="../../guides/task-types/">Task types</a>
+  <a href="../../guides/doc-versions/">Documentation versions</a>
+  <a href="../../guides/single-tasks/">Single tasks</a>
+  <a href="../../guides/multimodal-input/">Multimodal input</a>
+  <a href="../../guides/structured-output/">Structured output</a>
+  <a href="../../guides/errors/">Errors</a>
+  <a href="../../guides/versioning/">Versioning and migration</a>
+  <a href="../../guides/troubleshooting/">Troubleshooting</a>
+</div>
+<div class="section">
+  <div class="section-title">API reference</div>
+  <a href="../../api-reference/overview/">API overview</a>
+  <a href="../../api-reference/run-tasks/">POST /v1/tasks</a>
+  <a href="../../api-reference/decide-extract/">POST /v1/decide-extract</a>
+  <a href="../../api-reference/decide/">POST /decide</a>
+  <a href="../../api-reference/extract/">POST /extract</a>
+  <a href="../../api-reference/types/">Types</a>
+</div>
+<div class="section">
+  <div class="section-title">Operations</div>
+  <a href="../../operations/repository/">Repository</a>
+  <a href="../../operations/clients/">C++ and other clients</a>
+  <a href="../../operations/publishing/">Publishing</a>
+  <a href="../../operations/sdk-development/">Developing the SDKs</a>
+  <a href="../../operations/deploying-docs/">Deploying the docs</a>
+  <a href="../../operations/naming/">Naming</a>
+</div>
+  </nav>
+  <main class="content">
+    <h1>Developing the SDKs</h1>
+    <p class="lede">Changing the API, regenerating, and keeping CI green.</p>
+<h2 id="changing-the-api">Changing the API<a class="anchor" href="#changing-the-api" aria-label="Link to Changing the API">#</a></h2>
+<ol>
+<li>Edit <code>fern/openapi/openapi.yml</code>.</li>
+<li><code>npm run fern:check</code> to validate it.</li>
+<li><code>npm run fern:generate</code> to regenerate every client. Needs Docker.</li>
+<li><code>npm test</code> to build and test them.</li>
+<li>Commit the contract and <code>packages/</code> together.</li>
+</ol>
+<p>CI regenerates from scratch and fails if the committed output differs, so step 3 is not
+optional.</p>
+<h2 id="adding-an-endpoint">Adding an endpoint<a class="anchor" href="#adding-an-endpoint" aria-label="Link to Adding an endpoint">#</a></h2>
+<ul>
+<li>Give it an <code>operationId</code>. It becomes the method name in every client.</li>
+<li>Give it a <code>summary</code>. It becomes the docstring and JSDoc comment.</li>
+<li>Tag it, so it lands in the right subclient.</li>
+<li>Use <code>oneOf</code> with a <code>discriminator</code> for polymorphic payloads, the way <code>Task</code> does.</li>
+</ul>
+<h2 id="making-a-change-safely">Making a change safely<a class="anchor" href="#making-a-change-safely" aria-label="Link to Making a change safely">#</a></h2>
+<p><strong>Adding an optional field</strong> is a minor version. Existing requests stay valid, and clients
+gain the field.</p>
+<p><strong>Renaming a field</strong> is a major version. Add the new name, keep the old one as an alias for a
+full minor release, then remove it in the next major. <code>id</code> to <code>name</code>, and <code>tasks</code> to <code>results</code>,
+were done exactly this way.</p>
+<p><strong>Adding an endpoint</strong> is a minor version.</p>
+<p><strong>Tightening validation</strong> is a major version. Rejecting a request that used to succeed breaks
+callers who never find out until they deploy.</p>
+<h2 id="keeping-the-docs-in-step">Keeping the docs in step<a class="anchor" href="#keeping-the-docs-in-step" aria-label="Link to Keeping the docs in step">#</a></h2>
+<p>The reference pages are written by hand, so they can drift from the contract. Two checks keep
+that visible:</p>
+<ul>
+<li><code>npm run docs:build</code> fails if <code>docs.config.json</code> says a different version than the contract.</li>
+<li><code>node scripts/check-docs.mjs</code> fails on broken internal links and on pages missing a title or
+description.</li>
+</ul>
+<p>If you add a field, update the type reference and the relevant guide in the same commit.</p>
+<h2 id="what-ci-runs">What CI runs<a class="anchor" href="#what-ci-runs" aria-label="Link to What CI runs">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Job</th>
+<th>Checks</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Contract</code></td>
+<td><code>fern check</code></td>
+</tr>
+<tr>
+<td><code>Generate SDKs</code></td>
+<td>regenerates, then fails on drift</td>
+</tr>
+<tr>
+<td><code>TypeScript</code>, <code>Python</code>, <code>Ruby</code>, <code>Rust</code>, <code>Java</code>, <code>.NET</code></td>
+<td>build and test each client</td>
+</tr>
+<tr>
+<td><code>Docs site</code></td>
+<td>builds the site, checks links</td>
+</tr>
+<tr>
+<td><code>Regenerate SDKs</code></td>
+<td>opens a pull request when <code>packages/</code> is missing or stale</td>
+</tr>
+<tr>
+<td><code>Release</code></td>
+<td>the full pre-publish gate, then publishes and attaches artifacts</td>
+</tr>
+</tbody></table>
+<h2 id="without-docker">Without Docker<a class="anchor" href="#without-docker" aria-label="Link to Without Docker">#</a></h2>
+<p><code>npm run fern:generate</code> needs Docker because Fern runs each generator in a container. If you
+cannot run it locally, push the contract change: the <code>Regenerate SDKs</code> workflow does it on a
+runner and opens a <code>chore: regenerate SDKs</code> pull request containing <code>packages/</code>. Merge it and
+the drift check passes.</p>
+<h2 id="requirements-for-a-local-run">Requirements for a local run<a class="anchor" href="#requirements-for-a-local-run" aria-label="Link to Requirements for a local run">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Needed for</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Node 20+</td>
+<td>everything</td>
+</tr>
+<tr>
+<td>Docker</td>
+<td><code>fern generate --local</code>, which is how all six generators run</td>
+</tr>
+<tr>
+<td>Python 3.9+, uv</td>
+<td>the Python client</td>
+</tr>
+<tr>
+<td>Ruby 3.3+</td>
+<td>the Ruby client</td>
+</tr>
+<tr>
+<td>Rust stable</td>
+<td>the Rust client</td>
+</tr>
+<tr>
+<td>JDK 17+, Maven</td>
+<td>the Java client</td>
+</tr>
+<tr>
+<td>.NET SDK 8</td>
+<td>the .NET client</td>
+</tr>
+</tbody></table>
+<p>Toolchains that are not installed are skipped with a message rather than failing, so you can
+work on just the languages you have.</p>
+<h2 id="see-also">See also<a class="anchor" href="#see-also" aria-label="Link to See also">#</a></h2>
+<ul>
+<li><a href="/operations/repository/">Repository layout</a></li>
+<li><a href="/operations/publishing/">Publishing</a></li>
+<li><a href="/operations/deploying-docs/">Deploying the docs</a></li>
+</ul>
+
+    <div class="pager"><a class="prev" href="../../operations/publishing/"><small>Previous</small>Publishing</a><a class="next" href="../../operations/deploying-docs/"><small>Next</small>Deploying the docs</a></div>
+  </main>
+  <aside class="toc">
+<div class="toc-title">On this page</div>
+<a class="depth-2" href="#changing-the-api">Changing the API#</a>
+<a class="depth-2" href="#adding-an-endpoint">Adding an endpoint#</a>
+<a class="depth-2" href="#making-a-change-safely">Making a change safely#</a>
+<a class="depth-2" href="#keeping-the-docs-in-step">Keeping the docs in step#</a>
+<a class="depth-2" href="#what-ci-runs">What CI runs#</a>
+<a class="depth-2" href="#without-docker">Without Docker#</a>
+<a class="depth-2" href="#requirements-for-a-local-run">Requirements for a local run#</a>
+<a class="depth-2" href="#see-also">See also#</a>
+  </aside>
+</div>
+<footer class="site"><div class="inner">
+  <span>Dexa API v0.6.0</span>
+  <a href="../../llms.txt">llms.txt</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk">Repository</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md">Changelog</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/PUBLISHING.md">Publishing</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/fern/openapi/openapi.yml">OpenAPI</a>
+</div></footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

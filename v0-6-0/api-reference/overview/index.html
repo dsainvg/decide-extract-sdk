@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API overview - Dexa API</title>
+<meta name="description" content="Endpoints, conventions and shared request fields.">
+<link rel="stylesheet" href="../../assets/hljs.css">
+<link rel="stylesheet" href="../../assets/site.css">
+<script>var basePath = "../../";</script>
+</head>
+<body data-path="/api-reference/overview/" data-version="0.6.0">
+<header class="site">
+  <button class="icon-button nav-toggle" aria-label="Menu">&#9776;</button>
+  <a class="brand" href="../../"><span class="dot"></span>Dexa API<span class="version">v0.6.0</span></a>
+  <div class="search">
+    <input id="search-input" type="search" placeholder="Search docs" aria-label="Search docs">
+    <kbd>Ctrl K</kbd>
+    <div class="search-results" id="search-results"></div>
+  </div>
+  <select id="version-picker" class="version-picker" aria-label="Documentation version"></select>
+  <button class="icon-button" id="theme-toggle" aria-label="Toggle theme">&#9789;</button>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+<div class="section">
+  <div class="section-title">Overview</div>
+  <a href="../../">Dexa API</a>
+</div>
+<div class="section">
+  <div class="section-title">Getting started</div>
+  <a href="../../getting-started/installation/">Installation</a>
+  <a href="../../getting-started/quickstart/">Quickstart</a>
+  <a href="../../getting-started/authentication/">Authentication</a>
+  <a href="../../getting-started/configuration/">Configuration</a>
+</div>
+<div class="section">
+  <div class="section-title">Guides</div>
+  <a href="../../guides/task-types/">Task types</a>
+  <a href="../../guides/doc-versions/">Documentation versions</a>
+  <a href="../../guides/single-tasks/">Single tasks</a>
+  <a href="../../guides/multimodal-input/">Multimodal input</a>
+  <a href="../../guides/structured-output/">Structured output</a>
+  <a href="../../guides/errors/">Errors</a>
+  <a href="../../guides/versioning/">Versioning and migration</a>
+  <a href="../../guides/troubleshooting/">Troubleshooting</a>
+</div>
+<div class="section">
+  <div class="section-title">API reference</div>
+  <a href="../../api-reference/overview/">API overview</a>
+  <a href="../../api-reference/run-tasks/">POST /v1/tasks</a>
+  <a href="../../api-reference/decide-extract/">POST /v1/decide-extract</a>
+  <a href="../../api-reference/decide/">POST /decide</a>
+  <a href="../../api-reference/extract/">POST /extract</a>
+  <a href="../../api-reference/types/">Types</a>
+</div>
+<div class="section">
+  <div class="section-title">Operations</div>
+  <a href="../../operations/repository/">Repository</a>
+  <a href="../../operations/clients/">C++ and other clients</a>
+  <a href="../../operations/publishing/">Publishing</a>
+  <a href="../../operations/sdk-development/">Developing the SDKs</a>
+  <a href="../../operations/deploying-docs/">Deploying the docs</a>
+  <a href="../../operations/naming/">Naming</a>
+</div>
+  </nav>
+  <main class="content">
+    <h1>API overview</h1>
+    <p class="lede">Endpoints, conventions and shared request fields.</p>
+<p>Base URL in development: <code>http://localhost:8080</code>. All endpoints are <code>POST</code>, take and return
+<code>application/json</code>, and authenticate with <code>Authorization: Bearer &lt;token&gt;</code>.</p>
+<h2 id="endpoints">Endpoints<a class="anchor" href="#endpoints" aria-label="Link to Endpoints">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Endpoint</th>
+<th>Operation id</th>
+<th>Request</th>
+<th>Response</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>/v1/tasks</code></td>
+<td><code>runTasks</code></td>
+<td><code>RunTasksRequest</code></td>
+<td><code>RunTasksResponse</code></td>
+</tr>
+<tr>
+<td><code>/v1/decide-extract</code></td>
+<td><code>decideExtract</code></td>
+<td><code>RunTasksRequest</code></td>
+<td><code>RunTasksResponse</code></td>
+</tr>
+<tr>
+<td><code>/decide</code></td>
+<td><code>decide</code></td>
+<td><code>DecideRequest</code></td>
+<td><code>DecideResponse</code></td>
+</tr>
+<tr>
+<td><code>/extract</code></td>
+<td><code>extract</code></td>
+<td><code>ExtractRequest</code></td>
+<td><code>ExtractResponse</code></td>
+</tr>
+</tbody></table>
+<ul>
+<li><a href="/api-reference/run-tasks/">POST /v1/tasks</a></li>
+<li><a href="/api-reference/decide-extract/">POST /v1/decide-extract</a></li>
+<li><a href="/api-reference/decide/">POST /decide</a></li>
+<li><a href="/api-reference/extract/">POST /extract</a></li>
+<li><a href="/api-reference/types/">Types</a></li>
+</ul>
+<h2 id="shared-conventions">Shared conventions<a class="anchor" href="#shared-conventions" aria-label="Link to Shared conventions">#</a></h2>
+<p><strong>Input is required.</strong> Every request needs <code>model</code> plus exactly one of <code>context</code> or
+<code>messages</code>. The contract expresses this as a <code>oneOf</code> over those two fields.</p>
+<p><strong>Output is batched and keyed.</strong> <code>/v1/tasks</code> answers every task in one response, keyed by
+each task&#39;s <code>name</code>. See <a href="/guides/structured-output/">structured output</a>.</p>
+<p><strong>Strictness.</strong> Unknown fields are rejected, not ignored. Requests that validate locally in
+your client will validate on the server, but requests hand-built as JSON can fail.</p>
+<p><strong>Aliases exist for compatibility.</strong> Old names are still accepted and old names are still
+returned. New code should use <code>name</code>, <code>results</code>, <code>options</code> and <code>keys</code>.
+See <a href="/guides/versioning/">versioning</a>.</p>
+<p><strong>Non-streaming.</strong> There is no streaming endpoint and <code>stream</code> is not a valid field.</p>
+<h2 id="shared-request-fields">Shared request fields<a class="anchor" href="#shared-request-fields" aria-label="Link to Shared request fields">#</a></h2>
+<p>Present on every request:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>model</code></td>
+<td>string</td>
+<td>yes</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>context</code></td>
+<td>string</td>
+<td>one of</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>messages</code></td>
+<td>array of <code>Message</code></td>
+<td>one of</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>images</code></td>
+<td>array of <code>ImageInput</code></td>
+<td>no</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>audio</code></td>
+<td>array of <code>AudioInput</code></td>
+<td>no</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>temperature</code></td>
+<td>number, 0-2</td>
+<td>no</td>
+<td><code>0</code></td>
+</tr>
+<tr>
+<td><code>max_output_tokens</code></td>
+<td>integer, 1-4096</td>
+<td>no</td>
+<td><code>16</code></td>
+</tr>
+<tr>
+<td><code>response_format</code></td>
+<td><code>{ type: &quot;json_object&quot; }</code></td>
+<td>no</td>
+<td><code>json_object</code></td>
+</tr>
+<tr>
+<td><code>target_language</code></td>
+<td>enum</td>
+<td>no</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>output_language</code></td>
+<td>enum</td>
+<td>no</td>
+<td>alias</td>
+</tr>
+</tbody></table>
+<h2 id="response-envelope">Response envelope<a class="anchor" href="#response-envelope" aria-label="Link to Response envelope">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>id</code></td>
+<td>string</td>
+<td>Request id, for logs and support</td>
+</tr>
+<tr>
+<td><code>model</code></td>
+<td>string</td>
+<td>The model that ran</td>
+</tr>
+<tr>
+<td><code>choices</code></td>
+<td>array, exactly one</td>
+<td>OpenAI-shaped copy of the answer</td>
+</tr>
+<tr>
+<td><code>results</code></td>
+<td>object</td>
+<td>The canonical answers, keyed by task name</td>
+</tr>
+<tr>
+<td><code>tasks</code></td>
+<td>object</td>
+<td>Alias of <code>results</code></td>
+</tr>
+<tr>
+<td><code>usage</code></td>
+<td><code>Usage</code></td>
+<td>Token counts</td>
+</tr>
+</tbody></table>
+<h2 id="status-codes">Status codes<a class="anchor" href="#status-codes" aria-label="Link to Status codes">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>200</code></td>
+<td>Success</td>
+</tr>
+<tr>
+<td><code>400</code></td>
+<td>Malformed request, or missing <code>context</code>/<code>messages</code></td>
+</tr>
+<tr>
+<td><code>401</code></td>
+<td>Missing or invalid API key</td>
+</tr>
+<tr>
+<td><code>403</code></td>
+<td>Key cannot use this model</td>
+</tr>
+<tr>
+<td><code>422</code></td>
+<td>Invalid values</td>
+</tr>
+<tr>
+<td><code>429</code></td>
+<td>Rate limited</td>
+</tr>
+<tr>
+<td><code>500</code></td>
+<td>Server error</td>
+</tr>
+</tbody></table>
+<p>Every error body has the shape <code>{ &quot;error&quot;: { &quot;type&quot;, &quot;message&quot;, &quot;param?&quot;, &quot;code?&quot; } }</code>.
+See <a href="/guides/errors/">errors</a>.</p>
+
+    <div class="pager"><a class="prev" href="../../guides/troubleshooting/"><small>Previous</small>Troubleshooting</a><a class="next" href="../../api-reference/run-tasks/"><small>Next</small>POST /v1/tasks</a></div>
+  </main>
+  <aside class="toc">
+<div class="toc-title">On this page</div>
+<a class="depth-2" href="#endpoints">Endpoints#</a>
+<a class="depth-2" href="#shared-conventions">Shared conventions#</a>
+<a class="depth-2" href="#shared-request-fields">Shared request fields#</a>
+<a class="depth-2" href="#response-envelope">Response envelope#</a>
+<a class="depth-2" href="#status-codes">Status codes#</a>
+  </aside>
+</div>
+<footer class="site"><div class="inner">
+  <span>Dexa API v0.6.0</span>
+  <a href="../../llms.txt">llms.txt</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk">Repository</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md">Changelog</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/PUBLISHING.md">Publishing</a>
+  <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/fern/openapi/openapi.yml">OpenAPI</a>
+</div></footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

@@ -9,10 +9,10 @@
 <link rel="stylesheet" href="../../assets/site.css">
 <script>var basePath = "../../";</script>
 </head>
-<body data-path="/guides/task-types/" data-version="0.5.0">
+<body data-path="/guides/task-types/" data-version="0.6.0">
 <header class="site">
   <button class="icon-button nav-toggle" aria-label="Menu">&#9776;</button>
-  <a class="brand" href="../../"><span class="dot"></span>Dexa API<span class="version">v0.5.0</span></a>
+  <a class="brand" href="../../"><span class="dot"></span>Dexa API<span class="version">v0.6.0</span></a>
   <div class="search">
     <input id="search-input" type="search" placeholder="Search docs" aria-label="Search docs">
     <kbd>Ctrl K</kbd>
@@ -71,7 +71,7 @@
 field. The field is the discriminator: the API routes on it, and the generated clients type
 it as a union of <code>DecideTask</code> and <code>ExtractTask</code>.</p>
 <h2 id="decider">Decider<a class="anchor" href="#decider" aria-label="Link to Decider">#</a></h2>
-<p>A decider answers one question with one short value.</p>
+<p>A decider answers one question with one value selected from a set of choices.</p>
 <pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;decide&quot;</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;should_renew&quot;</span><span class="hljs-punctuation">,</span>
@@ -95,7 +95,7 @@ it as a union of <code>DecideTask</code> and <code>ExtractTask</code>.</p>
 <tr>
 <td><code>name</code></td>
 <td>yes</td>
-<td>Key this result appears under. <code>[a-zA-Z0-9_][a-zA-Z0-9_.-]{0,63}</code></td>
+<td>Key this result appears under in <code>results</code>. Has no effect on LLM inference.</td>
 </tr>
 <tr>
 <td><code>question</code></td>
@@ -105,12 +105,12 @@ it as a union of <code>DecideTask</code> and <code>ExtractTask</code>.</p>
 <tr>
 <td><code>options</code></td>
 <td>no</td>
-<td>Allowed answers. Constrains the output to one of them</td>
+<td>Allowed answers. Defaults to <code>[&quot;yes&quot;, &quot;no&quot;]</code> for boolean decisions; may have more than 2 options.</td>
 </tr>
 <tr>
 <td><code>choices</code></td>
 <td>no</td>
-<td>Alias of <code>options</code></td>
+<td>Alias of <code>options</code>. Defaults to <code>[&quot;yes&quot;, &quot;no&quot;]</code></td>
 </tr>
 <tr>
 <td><code>instruction</code></td>
@@ -128,21 +128,31 @@ it as a union of <code>DecideTask</code> and <code>ExtractTask</code>.</p>
 <td>Legacy alias of <code>name</code></td>
 </tr>
 </tbody></table>
-<p>Answered as:</p>
-<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;should_renew&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;yes&quot;</span> <span class="hljs-punctuation">}</span> <span class="hljs-punctuation">}</span>
+<h3 id="boolean-decisions-and-multi-option-decisions">Boolean Decisions and Multi-Option Decisions<a class="anchor" href="#boolean-decisions-and-multi-option-decisions" aria-label="Link to Boolean Decisions and Multi-Option Decisions">#</a></h3>
+<p>By default, omitting <code>options</code> (or <code>choices</code>) creates a <strong>boolean decision</strong> defaulting to <code>[&quot;yes&quot;, &quot;no&quot;]</code>. When needed, deciders can specify more than two options (for example, <code>[&quot;approve&quot;, &quot;reject&quot;, &quot;escalate&quot;]</code>).</p>
+<h3 id="decision-probabilities-and-quot-not-sure-quot">Decision Probabilities and &quot;Not Sure&quot;<a class="anchor" href="#decision-probabilities-and-quot-not-sure-quot" aria-label="Link to Decision Probabilities and &quot;Not Sure&quot;">#</a></h3>
+<p>Every decision returns a <code>probabilities</code> map providing the estimated likelihood for each option:</p>
+<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;should_renew&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;yes&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;probabilities&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;yes&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.85</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;no&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.10</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;reason&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Two-year term and a three-month lapse&quot;</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
 </code></pre>
-<p>A <code>reason</code> may be present when the model explains itself:</p>
-<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;should_renew&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;yes&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;reason&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Two-year term and a three-month lapse&quot;</span> <span class="hljs-punctuation">}</span> <span class="hljs-punctuation">}</span>
-</code></pre>
+<p><div class="callout"><div class="callout-title">Note</div><p>The option probabilities may not add up to <code>1.0</code>. In such cases, the remaining probability (<code>1.0 - sum(probabilities)</code>) should be treated as the model&#39;s probability of being <strong>not sure</strong> / uncertain.</p>
+</div></p>
 <p><code>reason</code> costs completion tokens. Leave it out of the request if you do not read it, and
 lower <code>max_output_tokens</code> accordingly.</p>
 <h2 id="extractor">Extractor<a class="anchor" href="#extractor" aria-label="Link to Extractor">#</a></h2>
-<p>An extractor pulls fields out of the context.</p>
+<p>An extractor answers an extraction <code>question</code> against the context. There are no <code>keys</code> or <code>fields</code>: the question itself specifies what to extract (a single extraction per task, rather than multiple fields).</p>
 <pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;extract&quot;</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;renew_term&quot;</span><span class="hljs-punctuation">,</span>
-  <span class="hljs-attr">&quot;instruction&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Extract the renewal term in months&quot;</span><span class="hljs-punctuation">,</span>
-  <span class="hljs-attr">&quot;keys&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;months&quot;</span><span class="hljs-punctuation">]</span>
+  <span class="hljs-attr">&quot;question&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;What is the renewal term?&quot;</span>
 <span class="hljs-punctuation">}</span>
 </code></pre>
 <table>
@@ -161,27 +171,22 @@ lower <code>max_output_tokens</code> accordingly.</p>
 <tr>
 <td><code>name</code></td>
 <td>yes</td>
-<td>Key this result appears under. Same pattern as <code>name</code> above</td>
+<td>Key this result appears under in <code>results</code>. Has no effect on LLM inference.</td>
+</tr>
+<tr>
+<td><code>question</code></td>
+<td>yes</td>
+<td>The extraction question or prompt (previously <code>instruction</code>)</td>
 </tr>
 <tr>
 <td><code>instruction</code></td>
-<td>yes</td>
-<td>What to extract and how to phrase it</td>
-</tr>
-<tr>
-<td><code>keys</code></td>
 <td>no</td>
-<td>Expected field names</td>
-</tr>
-<tr>
-<td><code>fields</code></td>
-<td>no</td>
-<td>Alias of <code>keys</code></td>
+<td>Backward-compatible alias for <code>question</code></td>
 </tr>
 <tr>
 <td><code>schema</code></td>
 <td>no</td>
-<td>A JSON-Schema-like object describing the shape</td>
+<td>Optional JSON-Schema-like object describing shape</td>
 </tr>
 <tr>
 <td><code>target_language</code></td>
@@ -195,40 +200,19 @@ lower <code>max_output_tokens</code> accordingly.</p>
 </tr>
 </tbody></table>
 <p>Answered as:</p>
-<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;renew_term&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;months&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">24</span> <span class="hljs-punctuation">}</span> <span class="hljs-punctuation">}</span>
+<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;renew_term&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;24 months&quot;</span> <span class="hljs-punctuation">}</span> <span class="hljs-punctuation">}</span>
 </code></pre>
-<h3 id="flat-versus-shaped">Flat versus shaped<a class="anchor" href="#flat-versus-shaped" aria-label="Link to Flat versus shaped">#</a></h3>
-<p><code>keys</code> is the fast path, for flat objects:</p>
-<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;extract&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;customer&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;instruction&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Extract the customer details&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;keys&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;name&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;plan&quot;</span><span class="hljs-punctuation">]</span> <span class="hljs-punctuation">}</span>
-</code></pre>
-<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;customer&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Ada Lovelace&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;plan&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;enterprise&quot;</span> <span class="hljs-punctuation">}</span> <span class="hljs-punctuation">}</span>
-</code></pre>
-<p>Use <code>schema</code> when the result is nested or typed:</p>
-<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span>
-  <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;extract&quot;</span><span class="hljs-punctuation">,</span>
-  <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;invoice&quot;</span><span class="hljs-punctuation">,</span>
-  <span class="hljs-attr">&quot;instruction&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Extract the invoice&quot;</span><span class="hljs-punctuation">,</span>
-  <span class="hljs-attr">&quot;schema&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
-    <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;object&quot;</span><span class="hljs-punctuation">,</span>
-    <span class="hljs-attr">&quot;properties&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
-      <span class="hljs-attr">&quot;total&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;number&quot;</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
-      <span class="hljs-attr">&quot;currency&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;string&quot;</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
-      <span class="hljs-attr">&quot;lines&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;array&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;items&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;object&quot;</span> <span class="hljs-punctuation">}</span> <span class="hljs-punctuation">}</span>
-    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
-    <span class="hljs-attr">&quot;required&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;total&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;currency&quot;</span><span class="hljs-punctuation">]</span>
-  <span class="hljs-punctuation">}</span>
-<span class="hljs-punctuation">}</span>
-</code></pre>
-<p><code>schema</code> is passed through as-is, so anything expressible in JSON Schema works.</p>
 <h2 id="naming">Naming<a class="anchor" href="#naming" aria-label="Link to Naming">#</a></h2>
 <p><code>name</code> is the key in <code>results</code>, so choose names your code can read out loud:</p>
 <pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;should_renew&quot;</span> <span class="hljs-punctuation">}</span>
 </code></pre>
-<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;results&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;should_renew&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;yes&quot;</span> <span class="hljs-punctuation">}</span> <span class="hljs-punctuation">}</span> <span class="hljs-punctuation">}</span>
+<pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;results&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;should_renew&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;yes&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;probabilities&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;yes&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.85</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;no&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.10</span> <span class="hljs-punctuation">}</span> <span class="hljs-punctuation">}</span> <span class="hljs-punctuation">}</span> <span class="hljs-punctuation">}</span>
 </code></pre>
 <p>The pattern is <code>[a-zA-Z0-9_][a-zA-Z0-9_.-]{0,63}</code>: letters, digits, underscore, dot and
 hyphen, up to 64 characters, and it cannot start with a dot or a hyphen. Names must be unique
 within a request; duplicates overwrite each other in <code>results</code>.</p>
+<p><div class="callout callout-warning"><div class="callout-title">Important</div><p>The <code>name</code> field has <strong>no effect on LLM inference</strong>. It is strictly used as the dictionary key to index and return each task&#39;s answer in <code>results</code>.</p>
+</div></p>
 <p><div class="callout callout-warning"><div class="callout-title">Warning</div><p>Naming a field <code>id</code> used to be the only way. It still works, but <code>name</code> is canonical. Pick one
 and stay with it, or <code>results</code> will be keyed by whichever the model preferred.</p>
 </div></p>
@@ -239,14 +223,14 @@ and stay with it, or <code>results</code> will be keyed by whichever the model p
   <span class="hljs-attr">&quot;context&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Ada upgraded to enterprise on 3 March. Invoice INV-8842 totals 4200 EUR.&quot;</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">&quot;tasks&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
     <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;decide&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;is_churn_risk&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;question&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Is there churn risk?&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;options&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;yes&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;no&quot;</span><span class="hljs-punctuation">]</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
-    <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;extract&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;invoice_total&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;instruction&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Extract the invoice total&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;keys&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;amount&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;currency&quot;</span><span class="hljs-punctuation">]</span> <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;extract&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;invoice_total&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;question&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;What is the total amount and currency on the invoice?&quot;</span> <span class="hljs-punctuation">}</span>
   <span class="hljs-punctuation">]</span>
 <span class="hljs-punctuation">}</span>
 </code></pre>
 <pre data-lang="json"><span class="lang">json</span><code class="hljs language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;results&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
-    <span class="hljs-attr">&quot;is_churn_risk&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;no&quot;</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
-    <span class="hljs-attr">&quot;invoice_total&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;amount&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">4200</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;currency&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;EUR&quot;</span> <span class="hljs-punctuation">}</span>
+    <span class="hljs-attr">&quot;is_churn_risk&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;no&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;probabilities&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;yes&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.05</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;no&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.90</span> <span class="hljs-punctuation">}</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;invoice_total&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;4200 EUR&quot;</span> <span class="hljs-punctuation">}</span>
   <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 </code></pre>
@@ -258,14 +242,15 @@ once.</p>
   <aside class="toc">
 <div class="toc-title">On this page</div>
 <a class="depth-2" href="#decider">Decider#</a>
+<a class="depth-3" href="#boolean-decisions-and-multi-option-decisions">Boolean Decisions and Multi-Option Decisions#</a>
+<a class="depth-3" href="#decision-probabilities-and-quot-not-sure-quot">Decision Probabilities and &amp;quot;Not Sure&amp;quot;#</a>
 <a class="depth-2" href="#extractor">Extractor#</a>
-<a class="depth-3" href="#flat-versus-shaped">Flat versus shaped#</a>
 <a class="depth-2" href="#naming">Naming#</a>
 <a class="depth-2" href="#deciders-and-extractors-together">Deciders and extractors together#</a>
   </aside>
 </div>
 <footer class="site"><div class="inner">
-  <span>Dexa API v0.5.0</span>
+  <span>Dexa API v0.6.0</span>
   <a href="../../llms.txt">llms.txt</a>
   <a href="https://github.com/dsainvg/decide-extract-sdk">Repository</a>
   <a href="https://github.com/dsainvg/decide-extract-sdk/blob/main/CHANGELOG.md">Changelog</a>
