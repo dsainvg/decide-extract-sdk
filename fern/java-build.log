@@ -1,0 +1,50 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ----------------------< com.dsainvg:dexa-ai-sdk >-----------------------
+[INFO] Building Dexa 0.6.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] Loaded 24116 auto-discovered prefixes for remote repository central (prefixes-central.txt)
+[INFO] Loaded 74 auto-discovered prefixes for remote repository apache.snapshots (prefixes-apache.snapshots.txt)
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ dexa-ai-sdk ---
+[INFO] skip non existing resourceDirectory /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-java/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.16.0:compile (default-compile) @ dexa-ai-sdk ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 87 source files with javac [debug target 17] to target/classes
+[INFO] /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-java/src/main/java/core/ResponseDecompressionInterceptor.java: /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-java/src/main/java/core/ResponseDecompressionInterceptor.java uses or overrides a deprecated API.
+[INFO] /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-java/src/main/java/core/ResponseDecompressionInterceptor.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ dexa-ai-sdk ---
+[INFO] skip non existing resourceDirectory /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-java/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.16.0:testCompile (default-testCompile) @ dexa-ai-sdk ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug target 17] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ dexa-ai-sdk ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running core.QueryStringMapperTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.364 s -- in core.QueryStringMapperTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ dexa-ai-sdk ---
+[INFO] Building jar: /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-java/target/dexa-ai-sdk-0.6.0.jar
+[INFO] 
+[INFO] --- source:3.3.1:jar-no-fork (attach-sources) @ dexa-ai-sdk ---
+[INFO] Building jar: /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-java/target/dexa-ai-sdk-0.6.0-sources.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  12.999 s
+[INFO] Finished at: 2026-10-16T17:38:18Z
+[INFO] ------------------------------------------------------------------------
