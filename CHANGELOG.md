@@ -8,6 +8,15 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 Versions are recorded once, in `info.version` of `fern/openapi/openapi.yml`. An entry is added
 here when that version is tagged and published.
 
+## [0.6.0]
+
+### Changed
+- **Decider boolean decision defaults**: `choices` / `options` now default to `["yes", "no"]` for boolean decisions; deciders can also specify more than two options.
+- **Decider probabilities**: `DecideResult` returns `probabilities` for every option. When probabilities do not add up to 1.0, the remaining probability represents "not sure" / uncertainty.
+- **Extractor question**: `ExtractRequest` and `ExtractTask` now use `question` instead of `instruction` (`instruction` preserved as a backward-compatible alias).
+- **Extractor fields removed**: Removed `fields` in favor of `keys` and `schema`.
+- **Task name note**: Explicitly documented across guides that `Task.name` has no effect on LLM inference.
+
 ## [Unreleased]
 
 ### Added

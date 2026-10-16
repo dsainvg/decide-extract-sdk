@@ -18,6 +18,7 @@ class ExtractResponse(UniversalBaseModel):
     Backward-compatible alias for result
     """
 
+    value: typing.Optional[str] = pydantic.Field(default=None)
     usage: Usage
 
     if IS_PYDANTIC_V2:

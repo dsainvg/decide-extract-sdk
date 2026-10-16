@@ -1,7 +1,7 @@
 {
   "name": "Dexa API",
   "tagline": "Contract-first decider and extractor API for LLM workloads",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Run many decider and extractor tasks in a single, compact, non-streaming request. SDKs for TypeScript, Python, Ruby, Rust, Java and .NET.",
   "basePath": "/",
   "repo": "https://github.com/dsainvg/decide-extract-sdk",

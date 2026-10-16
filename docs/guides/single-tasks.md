@@ -31,8 +31,16 @@ curl -X POST http://localhost:8080/decide \
       "finish_reason": "stop"
     }
   ],
-  "result": { "value": "yes", "reason": "Two-year term and a three-month lapse" },
-  "decision": { "value": "yes", "reason": "Two-year term and a three-month lapse" },
+  "result": {
+    "value": "yes",
+    "probabilities": { "yes": 0.85, "no": 0.10 },
+    "reason": "Two-year term and a three-month lapse"
+  },
+  "decision": {
+    "value": "yes",
+    "probabilities": { "yes": 0.85, "no": 0.10 },
+    "reason": "Two-year term and a three-month lapse"
+  },
   "value": "yes",
   "usage": { "prompt_tokens": 44, "completion_tokens": 6, "total_tokens": 50 }
 }
@@ -43,13 +51,15 @@ curl -X POST http://localhost:8080/decide \
 | `model` | yes | Model identifier |
 | `question` | yes | The question to answer |
 | `context` / `messages` | yes | One of the two, same rule as `/v1/tasks` |
-| `options` / `choices` | no | Allowed answers |
+| `options` / `choices` | no | Allowed answers. Defaults to `["yes", "no"]` for boolean decisions; can specify more than 2 options |
 | `instruction` | no | Extra guidance |
 | `temperature`, `max_output_tokens`, `response_format` | no | Same as everywhere |
 
 The response carries the answer three times on purpose: `result` is canonical, `decision` is
 an alias for OpenAI-shaped clients that expect a `decision` field, and `value` is the bare
-string for callers that only want the answer. Read whichever is convenient.
+string for callers that only want the answer. In `result`, `probabilities` maps each option to
+its estimated likelihood. If probabilities do not add up to 1.0, the remaining probability is
+treated as the model being **not sure** / uncertain.
 
 ## POST /extract
 
@@ -60,8 +70,7 @@ curl -X POST http://localhost:8080/extract \
   -d '{
     "model": "decider-extractor-v1",
     "context": "User says: renew subscription for 2 years. Previous plan expired 3 months ago.",
-    "instruction": "Extract the renewal term in months",
-    "keys": ["months"]
+    "question": "What is the renewal term?"
   }'
 ```
 
@@ -71,18 +80,18 @@ curl -X POST http://localhost:8080/extract \
   "model": "decider-extractor-v1",
   "choices": [
     {
-      "message": { "role": "assistant", "content": "{\"months\":24}" },
+      "message": { "role": "assistant", "content": "24 months" },
       "finish_reason": "stop"
     }
   ],
-  "result": { "months": 24 },
-  "data": { "months": 24 },
+  "result": { "value": "24 months" },
+  "data": { "value": "24 months" },
+  "value": "24 months",
   "usage": { "prompt_tokens": 41, "completion_tokens": 5, "total_tokens": 46 }
 }
 ```
 
-`result` is canonical, `data` is the alias. `instruction` is required, plus `keys`/`fields`
-and `schema` as in [task types](/guides/task-types/).
+`result` is canonical, `data` is the alias, and `value` gives the extracted string directly. There are no `keys` or `fields`: `question` is required (with `instruction` accepted as an alias) and extracts a single target value.
 
 ## Which one should I use
 

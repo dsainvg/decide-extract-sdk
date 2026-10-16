@@ -1,8 +1,8 @@
-﻿openapi: 3.1.0
+openapi: 3.1.0
 info:
   title: Decider-Extractor API
   description: Minimal OpenAI-compatible, non-streaming API for decider/extractor tasks (TypeSafe-style). Supports combined /v1/tasks and individual /decide and /extract endpoints. Designed to extend to multimodal inputs (image/audio) later and multi-language targets.
-  version: 0.5.0
+  version: 0.6.0
 servers:
   - url: http://localhost:8080
 tags:
@@ -135,8 +135,18 @@ components:
           type: array
           items: { $ref: '#/components/schemas/AudioInput' }
         question: { type: string }
-        choices: { type: array, items: { type: string }, minItems: 1 }
-        options: { type: array, items: { type: string }, minItems: 1 }
+        choices:
+          type: array
+          items: { type: string }
+          minItems: 1
+          default: ["yes", "no"]
+          description: "Options to decide between. Defaults to ['yes', 'no'] for boolean decisions; can specify more than 2 options."
+        options:
+          type: array
+          items: { type: string }
+          minItems: 1
+          default: ["yes", "no"]
+          description: "Alias for choices. Defaults to ['yes', 'no']."
         instruction: { type: string }
         temperature: { type: number, minimum: 0, maximum: 2, default: 0 }
         max_output_tokens: { type: integer, minimum: 1, maximum: 4096, default: 16 }
@@ -158,7 +168,7 @@ components:
 
     ExtractRequest:
       type: object
-      required: [model, instruction]
+      required: [model, question]
       additionalProperties: false
       properties:
         model: { type: string }
@@ -172,9 +182,8 @@ components:
         audio:
           type: array
           items: { $ref: '#/components/schemas/AudioInput' }
-        instruction: { type: string }
-        fields: { type: array, items: { type: string }, minItems: 1 }
-        keys: { type: array, items: { type: string }, minItems: 1 }
+        question: { type: string, description: "Question or extraction prompt" }
+        instruction: { type: string, description: "Backward-compatible alias for question" }
         schema: { type: object, additionalProperties: true }
         temperature: { type: number, minimum: 0, maximum: 2, default: 0 }
         max_output_tokens: { type: integer, minimum: 1, maximum: 4096, default: 16 }
@@ -265,25 +274,40 @@ components:
       additionalProperties: false
       properties:
         type: { type: string, enum: [decide] }
-        name: { type: string, pattern: '^[a-zA-Z0-9_][a-zA-Z0-9_.-]{0,63}$' }
+        name:
+          type: string
+          pattern: '^[a-zA-Z0-9_][a-zA-Z0-9_.-]{0,63}$'
+          description: "Unique task name used as key in results. Has no effect on LLM inference."
         id: { type: string, pattern: '^[a-zA-Z0-9_][a-zA-Z0-9_.-]{0,63}$' }
         question: { type: string }
-        choices: { type: array, items: { type: string }, minItems: 1 }
-        options: { type: array, items: { type: string }, minItems: 1 }
+        choices:
+          type: array
+          items: { type: string }
+          minItems: 1
+          default: ["yes", "no"]
+          description: "Allowed decision options. Defaults to ['yes', 'no'] for boolean decisions; can specify more than 2 options."
+        options:
+          type: array
+          items: { type: string }
+          minItems: 1
+          default: ["yes", "no"]
+          description: "Alias for choices. Defaults to ['yes', 'no']."
         instruction: { type: string }
         target_language: { type: string, enum: [en, es, fr, de, it, pt, nl, ru, ja, ko, zh, ar, hi, tr, pl, sv, da, no, fi, cs] }
 
     ExtractTask:
       type: object
-      required: [type, name, instruction]
+      required: [type, name, question]
       additionalProperties: false
       properties:
         type: { type: string, enum: [extract] }
-        name: { type: string, pattern: '^[a-zA-Z0-9_][a-zA-Z0-9_.-]{0,63}$' }
+        name:
+          type: string
+          pattern: '^[a-zA-Z0-9_][a-zA-Z0-9_.-]{0,63}$'
+          description: "Unique task name used as key in results. Has no effect on LLM inference."
         id: { type: string, pattern: '^[a-zA-Z0-9_][a-zA-Z0-9_.-]{0,63}$' }
-        instruction: { type: string }
-        fields: { type: array, items: { type: string }, minItems: 1 }
-        keys: { type: array, items: { type: string }, minItems: 1 }
+        question: { type: string, description: "Question or extraction prompt" }
+        instruction: { type: string, description: "Backward-compatible alias for question" }
         schema: { type: object, additionalProperties: true }
         target_language: { type: string, enum: [en, es, fr, de, it, pt, nl, ru, ja, ko, zh, ar, hi, tr, pl, sv, da, no, fi, cs] }
 
@@ -334,6 +358,7 @@ components:
           items: { $ref: '#/components/schemas/Choice' }
         result: { type: object, additionalProperties: true }
         data: { type: object, additionalProperties: true, description: Backward-compatible alias for result }
+        value: { type: string, description: "Extracted value" }
         usage: { $ref: '#/components/schemas/Usage' }
 
     Choice:
@@ -357,10 +382,15 @@ components:
 
     DecideResult:
       type: object
-      required: [value]
+      required: [value, probabilities]
       additionalProperties: false
       properties:
         value: { type: string }
+        probabilities:
+          type: object
+          additionalProperties:
+            type: number
+          description: "Probabilities for each option. These may not add up to 1.0; any remaining probability represents 'not sure' / uncertain."
         reason: { type: string }
 
     Usage:

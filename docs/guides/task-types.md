@@ -10,7 +10,7 @@ it as a union of `DecideTask` and `ExtractTask`.
 
 ## Decider
 
-A decider answers one question with one short value.
+A decider answers one question with one value selected from a set of choices.
 
 ```json
 {
@@ -24,91 +24,68 @@ A decider answers one question with one short value.
 | Field | Required | Notes |
 | --- | --- | --- |
 | `type` | yes | Always `decide` |
-| `name` | yes | Key this result appears under. `[a-zA-Z0-9_][a-zA-Z0-9_.-]{0,63}` |
+| `name` | yes | Key this result appears under in `results`. Has no effect on LLM inference. |
 | `question` | yes | The question to answer |
-| `options` | no | Allowed answers. Constrains the output to one of them |
-| `choices` | no | Alias of `options` |
+| `options` | no | Allowed answers. Defaults to `["yes", "no"]` for boolean decisions; may have more than 2 options. |
+| `choices` | no | Alias of `options`. Defaults to `["yes", "no"]` |
 | `instruction` | no | Extra guidance for this one decision |
 | `target_language` | no | Overrides the request language for this task |
 | `id` | no | Legacy alias of `name` |
 
-Answered as:
+### Boolean Decisions and Multi-Option Decisions
+
+By default, omitting `options` (or `choices`) creates a **boolean decision** defaulting to `["yes", "no"]`. When needed, deciders can specify more than two options (for example, `["approve", "reject", "escalate"]`).
+
+### Decision Probabilities and "Not Sure"
+
+Every decision returns a `probabilities` map providing the estimated likelihood for each option:
 
 ```json
-{ "should_renew": { "value": "yes" } }
+{
+  "should_renew": {
+    "value": "yes",
+    "probabilities": {
+      "yes": 0.85,
+      "no": 0.10
+    },
+    "reason": "Two-year term and a three-month lapse"
+  }
+}
 ```
 
-A `reason` may be present when the model explains itself:
-
-```json
-{ "should_renew": { "value": "yes", "reason": "Two-year term and a three-month lapse" } }
-```
+> [!NOTE]
+> The option probabilities may not add up to `1.0`. In such cases, the remaining probability (`1.0 - sum(probabilities)`) should be treated as the model's probability of being **not sure** / uncertain.
 
 `reason` costs completion tokens. Leave it out of the request if you do not read it, and
 lower `max_output_tokens` accordingly.
 
 ## Extractor
 
-An extractor pulls fields out of the context.
+An extractor answers an extraction `question` against the context. There are no `keys` or `fields`: the question itself specifies what to extract (a single extraction per task, rather than multiple fields).
 
 ```json
 {
   "type": "extract",
   "name": "renew_term",
-  "instruction": "Extract the renewal term in months",
-  "keys": ["months"]
+  "question": "What is the renewal term?"
 }
 ```
 
 | Field | Required | Notes |
 | --- | --- | --- |
 | `type` | yes | Always `extract` |
-| `name` | yes | Key this result appears under. Same pattern as `name` above |
-| `instruction` | yes | What to extract and how to phrase it |
-| `keys` | no | Expected field names |
-| `fields` | no | Alias of `keys` |
-| `schema` | no | A JSON-Schema-like object describing the shape |
+| `name` | yes | Key this result appears under in `results`. Has no effect on LLM inference. |
+| `question` | yes | The extraction question or prompt (previously `instruction`) |
+| `instruction` | no | Backward-compatible alias for `question` |
+| `schema` | no | Optional JSON-Schema-like object describing shape |
 | `target_language` | no | Overrides the request language for this task |
 | `id` | no | Legacy alias of `name` |
 
 Answered as:
 
 ```json
-{ "renew_term": { "months": 24 } }
+{ "renew_term": { "value": "24 months" } }
 ```
-
-### Flat versus shaped
-
-`keys` is the fast path, for flat objects:
-
-```json
-{ "type": "extract", "name": "customer", "instruction": "Extract the customer details", "keys": ["name", "plan"] }
-```
-
-```json
-{ "customer": { "name": "Ada Lovelace", "plan": "enterprise" } }
-```
-
-Use `schema` when the result is nested or typed:
-
-```json
-{
-  "type": "extract",
-  "name": "invoice",
-  "instruction": "Extract the invoice",
-  "schema": {
-    "type": "object",
-    "properties": {
-      "total": { "type": "number" },
-      "currency": { "type": "string" },
-      "lines": { "type": "array", "items": { "type": "object" } }
-    },
-    "required": ["total", "currency"]
-  }
-}
-```
-
-`schema` is passed through as-is, so anything expressible in JSON Schema works.
 
 ## Naming
 
@@ -119,12 +96,15 @@ Use `schema` when the result is nested or typed:
 ```
 
 ```json
-{ "results": { "should_renew": { "value": "yes" } } }
+{ "results": { "should_renew": { "value": "yes", "probabilities": { "yes": 0.85, "no": 0.10 } } } }
 ```
 
 The pattern is `[a-zA-Z0-9_][a-zA-Z0-9_.-]{0,63}`: letters, digits, underscore, dot and
 hyphen, up to 64 characters, and it cannot start with a dot or a hyphen. Names must be unique
 within a request; duplicates overwrite each other in `results`.
+
+> [!IMPORTANT]
+> The `name` field has **no effect on LLM inference**. It is strictly used as the dictionary key to index and return each task's answer in `results`.
 
 > [!WARNING]
 > Naming a field `id` used to be the only way. It still works, but `name` is canonical. Pick one
@@ -140,7 +120,7 @@ Tasks of both kinds go in one array and are answered together, in one call:
   "context": "Ada upgraded to enterprise on 3 March. Invoice INV-8842 totals 4200 EUR.",
   "tasks": [
     { "type": "decide", "name": "is_churn_risk", "question": "Is there churn risk?", "options": ["yes", "no"] },
-    { "type": "extract", "name": "invoice_total", "instruction": "Extract the invoice total", "keys": ["amount", "currency"] }
+    { "type": "extract", "name": "invoice_total", "question": "What is the total amount and currency on the invoice?" }
   ]
 }
 ```
@@ -148,8 +128,8 @@ Tasks of both kinds go in one array and are answered together, in one call:
 ```json
 {
   "results": {
-    "is_churn_risk": { "value": "no" },
-    "invoice_total": { "amount": 4200, "currency": "EUR" }
+    "is_churn_risk": { "value": "no", "probabilities": { "yes": 0.05, "no": 0.90 } },
+    "invoice_total": { "value": "4200 EUR" }
   }
 }
 ```

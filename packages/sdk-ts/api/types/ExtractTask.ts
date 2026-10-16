@@ -3,9 +3,8 @@
 export interface ExtractTask {
     name: string;
     id?: string | undefined;
-    instruction: string;
-    fields?: string[] | undefined;
-    keys?: string[] | undefined;
+    question: string;
+    instruction?: string | undefined;
     schema?: Record<string, unknown> | undefined;
     target_language?: ExtractTask.TargetLanguage | undefined;
 }

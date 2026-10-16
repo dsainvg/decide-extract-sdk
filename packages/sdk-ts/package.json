@@ -1,6 +1,6 @@
 {
   "name": "@dsainvg/dexa-ai-sdk",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Dexa is the TypeScript client for the Decide + Extract API. Run decide and extract tasks against one context in a single request.",
   "license": "Apache-2.0",
   "author": "Durga Sai",

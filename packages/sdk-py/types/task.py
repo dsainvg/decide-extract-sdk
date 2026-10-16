@@ -36,9 +36,8 @@ class Task_Extract(UniversalBaseModel):
     type: typing.Literal["extract"] = "extract"
     name: str
     id: typing.Optional[str] = None
-    instruction: str
-    fields: typing.Optional[typing.List[str]] = None
-    keys: typing.Optional[typing.List[str]] = None
+    question: str
+    instruction: typing.Optional[str] = None
     schema_: typing_extensions.Annotated[
         typing.Optional[typing.Dict[str, typing.Any]], FieldMetadata(alias="schema"), pydantic.Field(alias="schema")
     ] = None

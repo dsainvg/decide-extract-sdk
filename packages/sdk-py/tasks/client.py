@@ -296,7 +296,8 @@ class TasksClient:
         self,
         *,
         model: str,
-        instruction: str,
+        question: typing.Optional[str] = OMIT,
+        instruction: typing.Optional[str] = OMIT,
         context: typing.Optional[str] = OMIT,
         messages: typing.Optional[typing.Sequence[Message]] = OMIT,
         images: typing.Optional[typing.Sequence[ImageInput]] = OMIT,
@@ -362,6 +363,7 @@ class TasksClient:
         """
         _response = self._raw_client.extract(
             model=model,
+            question=question,
             instruction=instruction,
             context=context,
             messages=messages,
@@ -674,7 +676,8 @@ class AsyncTasksClient:
         self,
         *,
         model: str,
-        instruction: str,
+        question: typing.Optional[str] = OMIT,
+        instruction: typing.Optional[str] = OMIT,
         context: typing.Optional[str] = OMIT,
         messages: typing.Optional[typing.Sequence[Message]] = OMIT,
         images: typing.Optional[typing.Sequence[ImageInput]] = OMIT,
@@ -694,7 +697,9 @@ class AsyncTasksClient:
         ----------
         model : str
 
-        instruction : str
+        question : typing.Optional[str]
+
+        instruction : typing.Optional[str]
 
         context : typing.Optional[str]
 
@@ -740,7 +745,7 @@ class AsyncTasksClient:
         async def main() -> None:
             await client.tasks.extract(
                 model="model",
-                instruction="instruction",
+                question="Extract customer details",
             )
 
 
@@ -748,6 +753,7 @@ class AsyncTasksClient:
         """
         _response = await self._raw_client.extract(
             model=model,
+            question=question,
             instruction=instruction,
             context=context,
             messages=messages,

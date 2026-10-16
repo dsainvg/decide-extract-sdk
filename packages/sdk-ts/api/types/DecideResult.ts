@@ -2,5 +2,6 @@
 
 export interface DecideResult {
     value: string;
+    probabilities: Record<string, number>;
     reason?: string | undefined;
 }

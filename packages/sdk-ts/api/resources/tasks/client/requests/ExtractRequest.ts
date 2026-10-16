@@ -14,10 +14,8 @@ export interface ExtractRequest {
     context?: string;
     messages?: DexaAiSdk.Message[];
     images?: DexaAiSdk.ImageInput[];
-    audio?: DexaAiSdk.AudioInput[];
-    instruction: string;
-    fields?: string[];
-    keys?: string[];
+    question: string;
+    instruction?: string;
     schema?: Record<string, unknown>;
     temperature?: number;
     max_output_tokens?: number;

@@ -451,7 +451,8 @@ class RawTasksClient:
         self,
         *,
         model: str,
-        instruction: str,
+        question: typing.Optional[str] = OMIT,
+        instruction: typing.Optional[str] = OMIT,
         context: typing.Optional[str] = OMIT,
         messages: typing.Optional[typing.Sequence[Message]] = OMIT,
         images: typing.Optional[typing.Sequence[ImageInput]] = OMIT,
@@ -471,7 +472,9 @@ class RawTasksClient:
         ----------
         model : str
 
-        instruction : str
+        question : typing.Optional[str]
+
+        instruction : typing.Optional[str]
 
         context : typing.Optional[str]
 
@@ -505,6 +508,7 @@ class RawTasksClient:
         HttpResponse[ExtractResponse]
             Success
         """
+        _effective_question = question if question is not OMIT else instruction
         _response = self._client_wrapper.httpx_client.request(
             "extract",
             method="POST",
@@ -520,9 +524,8 @@ class RawTasksClient:
                 "audio": convert_and_respect_annotation_metadata(
                     object_=audio, annotation=typing.Sequence[AudioInput], direction="write"
                 ),
-                "instruction": instruction,
-                "fields": fields,
-                "keys": keys,
+                "question": _effective_question,
+                "instruction": instruction if instruction is not OMIT else _effective_question,
                 "schema": schema,
                 "temperature": temperature,
                 "max_output_tokens": max_output_tokens,
@@ -1006,7 +1009,8 @@ class AsyncRawTasksClient:
         self,
         *,
         model: str,
-        instruction: str,
+        question: typing.Optional[str] = OMIT,
+        instruction: typing.Optional[str] = OMIT,
         context: typing.Optional[str] = OMIT,
         messages: typing.Optional[typing.Sequence[Message]] = OMIT,
         images: typing.Optional[typing.Sequence[ImageInput]] = OMIT,
@@ -1026,7 +1030,9 @@ class AsyncRawTasksClient:
         ----------
         model : str
 
-        instruction : str
+        question : typing.Optional[str]
+
+        instruction : typing.Optional[str]
 
         context : typing.Optional[str]
 
@@ -1060,6 +1066,7 @@ class AsyncRawTasksClient:
         AsyncHttpResponse[ExtractResponse]
             Success
         """
+        _effective_question = question if question is not OMIT else instruction
         _response = await self._client_wrapper.httpx_client.request(
             "extract",
             method="POST",
@@ -1075,9 +1082,8 @@ class AsyncRawTasksClient:
                 "audio": convert_and_respect_annotation_metadata(
                     object_=audio, annotation=typing.Sequence[AudioInput], direction="write"
                 ),
-                "instruction": instruction,
-                "fields": fields,
-                "keys": keys,
+                "question": _effective_question,
+                "instruction": instruction if instruction is not OMIT else _effective_question,
                 "schema": schema,
                 "temperature": temperature,
                 "max_output_tokens": max_output_tokens,
