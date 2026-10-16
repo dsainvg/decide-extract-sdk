@@ -1,0 +1,1119 @@
+
+> decide-extract-sdk@0.0.0 fern:generate
+> node scripts/generate.mjs
+
+generating 6 SDKs at version 0.6.0, one at a time
+
+[1/6] fern-typescript-sdk
+[api]: Using default group 'sdk' from generators.yml
+[api]: sdk Started.
+[api]: sdk fernapi/fern-typescript-sdk Started.
+[api]: sdk ✓ All checks passed
+[api]: sdk fernapi/fern-typescript-sdk Executing generator fernapi/fern-typescript-sdk using container image: fernapi/fern-typescript-sdk:3.105.1
+[api]: sdk fernapi/fern-typescript-sdk Generator logs here: /tmp/tmp-7444-tT31kEiu3jRo
+[api]: sdk fernapi/fern-typescript-sdk Wrote files to /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-ts
+[api]: sdk fernapi/fern-typescript-sdk Finished.
+[api]: sdk Finished.
+  packages/sdk-ts: 1071 -> 79 files
+[2/6] fern-python-sdk
+[api]: Using default group 'sdk' from generators.yml
+[api]: sdk Started.
+[api]: sdk fernapi/fern-python-sdk Started.
+[api]: sdk ✓ All checks passed
+[api]: sdk fernapi/fern-python-sdk Executing generator fernapi/fern-python-sdk using container image: fernapi/fern-python-sdk:5.41.0
+[api]: sdk fernapi/fern-python-sdk Generator logs here: /tmp/tmp-7649-ulwS2eXhLn5l
+[api]: sdk fernapi/fern-python-sdk Wrote files to /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-py
+[api]: sdk fernapi/fern-python-sdk Finished.
+[api]: sdk Finished.
+  packages/sdk-py: 2542 -> 83 files
+[3/6] fern-ruby-sdk
+[api]: Using default group 'sdk' from generators.yml
+[api]: sdk Started.
+[api]: sdk fernapi/fern-ruby-sdk Started.
+[api]: sdk ✓ All checks passed
+[api]: sdk fernapi/fern-ruby-sdk Executing generator fernapi/fern-ruby-sdk using container image: fernapi/fern-ruby-sdk:1.38.1
+[api]: sdk fernapi/fern-ruby-sdk Generator logs here: /tmp/tmp-7804-opUK4mfzMsHW
+[api]: sdk fernapi/fern-ruby-sdk Wrote files to /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-ruby
+[api]: sdk fernapi/fern-ruby-sdk Finished.
+[api]: sdk Finished.
+  packages/sdk-ruby: 111 -> 110 files
+[4/6] fern-rust-sdk
+[api]: Using default group 'sdk' from generators.yml
+[api]: sdk Started.
+[api]: sdk fernapi/fern-rust-sdk Started.
+[api]: sdk ✓ All checks passed
+[api]: sdk fernapi/fern-rust-sdk Executing generator fernapi/fern-rust-sdk using container image: fernapi/fern-rust-sdk:0.53.1
+[api]: sdk fernapi/fern-rust-sdk Generator logs here: /tmp/tmp-7955-MKPjMDnObE97
+[api]: sdk fernapi/fern-rust-sdk Wrote files to /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-rust
+[api]: sdk fernapi/fern-rust-sdk Finished.
+[api]: sdk Finished.
+  packages/sdk-rust: 961 -> 70 files
+[5/6] fern-java-sdk
+[api]: Using default group 'sdk' from generators.yml
+[api]: sdk Started.
+[api]: sdk fernapi/fern-java-sdk Started.
+[api]: sdk ✓ All checks passed
+[api]: sdk fernapi/fern-java-sdk Executing generator fernapi/fern-java-sdk using container image: fernapi/fern-java-sdk:4.32.0
+[api]: sdk fernapi/fern-java-sdk Generator logs here: /tmp/tmp-8162-pxjfEEc67Tx6
+[api]: sdk fernapi/fern-java-sdk Wrote files to /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-java
+[api]: sdk fernapi/fern-java-sdk Finished.
+[api]: sdk Finished.
+  packages/sdk-java: 93 -> 92 files
+[6/6] fern-csharp-sdk
+[api]: Using default group 'sdk' from generators.yml
+[api]: sdk Started.
+[api]: sdk fernapi/fern-csharp-sdk Started.
+[api]: sdk ✓ All checks passed
+[api]: sdk fernapi/fern-csharp-sdk Executing generator fernapi/fern-csharp-sdk using container image: fernapi/fern-csharp-sdk:2.92.1
+[api]: sdk fernapi/fern-csharp-sdk Generator logs here: /tmp/tmp-8315-qSzi63prbgqm
+[api]: sdk fernapi/fern-csharp-sdk Wrote files to /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp
+[api]: sdk fernapi/fern-csharp-sdk Finished.
+[api]: sdk Finished.
+  packages/sdk-csharp: 637 -> 136 files
+
+wrote packages/sdk-ts/package.json at 0.6.0
+wrote packages/sdk-ts/tsconfig.json at 0.6.0
+wrote packages/sdk-ts/tsconfig.build.json at 0.6.0
+wrote packages/sdk-py/pyproject.toml at 0.6.0
+wrote packages/sdk-java/pom.xml at 0.6.0
+ruby version already at 0.6.0
+stamped packages/sdk-rust/Cargo.toml at 0.6.0
+dotnet version already at 0.6.0
+dotnet version constant already at 0.6.0
+6 manifest(s) written
+  sdk-ts: renamed in 26 file(s) or path(s)
+  sdk-py: renamed in 6 file(s) or path(s)
+  sdk-ruby: renamed in 101 file(s) or path(s)
+  sdk-rust: renamed in 7 file(s) or path(s)
+  sdk-java: renamed in 22 file(s) or path(s)
+  sdk-csharp: renamed in 138 file(s) or path(s)
+
+300 file(s) or path(s) renamed to dexa-ai-sdk
+
+> decide-extract-sdk@0.0.0 build:artifacts
+> node scripts/build-artifacts.mjs
+
+
+typescript
+
+$ npm install --no-audit --no-fund   [packages/sdk-ts]
+
+added 12 packages in 488ms
+
+$ npm run build   [packages/sdk-ts]
+
+> @dsainvg/dexa-ai-sdk@0.6.0 build
+> tsc --project tsconfig.build.json
+
+
+$ npm pack --pack-destination ../../release-artifacts   [packages/sdk-ts]
+npm notice
+npm notice 📦  @dsainvg/dexa-ai-sdk@0.6.0
+npm notice Tarball Contents
+npm notice 8.9kB README.md
+npm notice 386B dist/api/errors/BadRequestError.d.ts
+npm notice 630B dist/api/errors/BadRequestError.js
+npm notice 604B dist/api/errors/BadRequestError.js.map
+npm notice 162B dist/api/errors/index.d.ts
+npm notice 160B dist/api/errors/index.js
+npm notice 182B dist/api/errors/index.js.map
+npm notice 394B dist/api/errors/InternalServerError.d.ts
+npm notice 646B dist/api/errors/InternalServerError.js
+npm notice 613B dist/api/errors/InternalServerError.js.map
+npm notice 404B dist/api/errors/UnprocessableEntityError.d.ts
+npm notice 666B dist/api/errors/UnprocessableEntityError.js
+npm notice 623B dist/api/errors/UnprocessableEntityError.js.map
+npm notice 142B dist/api/index.d.ts
+npm notice 140B dist/api/index.js
+npm notice 172B dist/api/index.js.map
+npm notice 128B dist/api/resources/index.d.ts
+npm notice 126B dist/api/resources/index.js
+npm notice 177B dist/api/resources/index.js.map
+npm notice 3.8kB dist/api/resources/tasks/client/Client.d.ts
+npm notice 12.3kB dist/api/resources/tasks/client/Client.js
+npm notice 8.5kB dist/api/resources/tasks/client/Client.js.map
+npm notice 72B dist/api/resources/tasks/client/index.d.ts
+npm notice 70B dist/api/resources/tasks/client/index.js
+npm notice 158B dist/api/resources/tasks/client/index.js.map
+npm notice 2.5kB dist/api/resources/tasks/client/requests/DecideRequest.d.ts
+npm notice 1.2kB dist/api/resources/tasks/client/requests/DecideRequest.js
+npm notice 1.3kB dist/api/resources/tasks/client/requests/DecideRequest.js.map
+npm notice 2.4kB dist/api/resources/tasks/client/requests/ExtractRequest.d.ts
+npm notice 1.3kB dist/api/resources/tasks/client/requests/ExtractRequest.js
+npm notice 1.3kB dist/api/resources/tasks/client/requests/ExtractRequest.js.map
+npm notice 141B dist/api/resources/tasks/client/requests/index.d.ts
+npm notice 139B dist/api/resources/tasks/client/requests/index.js
+npm notice 233B dist/api/resources/tasks/client/requests/index.js.map
+npm notice 122B dist/api/resources/tasks/exports.d.ts
+npm notice 185B dist/api/resources/tasks/exports.js
+npm notice 208B dist/api/resources/tasks/exports.js.map
+npm notice 70B dist/api/resources/tasks/index.d.ts
+npm notice 68B dist/api/resources/tasks/index.js
+npm notice 148B dist/api/resources/tasks/index.js.map
+npm notice 441B dist/api/types/AudioInput.d.ts
+npm notice 265B dist/api/types/AudioInput.js
+npm notice 281B dist/api/types/AudioInput.js.map
+npm notice 450B dist/api/types/Choice.d.ts
+npm notice 292B dist/api/types/Choice.js
+npm notice 298B dist/api/types/Choice.js.map
+npm notice 1.4kB dist/api/types/ContentPart.d.ts
+npm notice 757B dist/api/types/ContentPart.js
+npm notice 777B dist/api/types/ContentPart.js.map
+npm notice 342B dist/api/types/DecideResponse.d.ts
+npm notice 118B dist/api/types/DecideResponse.js
+npm notice 143B dist/api/types/DecideResponse.js.map
+npm notice 303B dist/api/types/DecideResult.d.ts
+npm notice 116B dist/api/types/DecideResult.js
+npm notice 139B dist/api/types/DecideResult.js.map
+npm notice 1.3kB dist/api/types/DecideTask.d.ts
+npm notice 589B dist/api/types/DecideTask.js
+npm notice 646B dist/api/types/DecideTask.js.map
+npm notice 301B dist/api/types/ErrorResponse.d.ts
+npm notice 117B dist/api/types/ErrorResponse.js
+npm notice 141B dist/api/types/ErrorResponse.js.map
+npm notice 417B dist/api/types/ExtractResponse.d.ts
+npm notice 119B dist/api/types/ExtractResponse.js
+npm notice 145B dist/api/types/ExtractResponse.js.map
+npm notice 1.2kB dist/api/types/ExtractTask.d.ts
+npm notice 595B dist/api/types/ExtractTask.js
+npm notice 648B dist/api/types/ExtractTask.js.map
+npm notice 441B dist/api/types/ImageInput.d.ts
+npm notice 265B dist/api/types/ImageInput.js
+npm notice 281B dist/api/types/ImageInput.js.map
+npm notice 339B dist/api/types/ImageUrl.d.ts
+npm notice 273B dist/api/types/ImageUrl.js
+npm notice 297B dist/api/types/ImageUrl.js.map
+npm notice 608B dist/api/types/index.d.ts
+npm notice 606B dist/api/types/index.js
+npm notice 493B dist/api/types/index.js.map
+npm notice 1.1kB dist/api/types/Message.d.ts
+npm notice 673B dist/api/types/Message.js
+npm notice 728B dist/api/types/Message.js.map
+npm notice 980B dist/api/types/ResponseMessage.d.ts
+npm notice 681B dist/api/types/ResponseMessage.js
+npm notice 704B dist/api/types/ResponseMessage.js.map
+npm notice 2.4kB dist/api/types/RunTasksRequest.d.ts
+npm notice 1.3kB dist/api/types/RunTasksRequest.js
+npm notice 1.2kB dist/api/types/RunTasksRequest.js.map
+npm notice 363B dist/api/types/RunTasksResponse.d.ts
+npm notice 120B dist/api/types/RunTasksResponse.js
+npm notice 147B dist/api/types/RunTasksResponse.js.map
+npm notice 349B dist/api/types/Task.d.ts
+npm notice 108B dist/api/types/Task.js
+npm notice 123B dist/api/types/Task.js.map
+npm notice 146B dist/api/types/Usage.d.ts
+npm notice 109B dist/api/types/Usage.js
+npm notice 125B dist/api/types/Usage.js.map
+npm notice 2.4kB dist/BaseClient.d.ts
+npm notice 568B dist/BaseClient.js
+npm notice 534B dist/BaseClient.js.map
+npm notice 1.5kB dist/Client.d.ts
+npm notice 1.6kB dist/Client.js
+npm notice 919B dist/Client.js.map
+npm notice 75B dist/core/exports.d.ts
+npm notice 73B dist/core/exports.js
+npm notice 131B dist/core/exports.js.map
+npm notice 580B dist/core/fetcher/APIResponse.d.ts
+npm notice 50B dist/core/fetcher/APIResponse.js
+npm notice 129B dist/core/fetcher/APIResponse.js.map
+npm notice 947B dist/core/fetcher/BinaryResponse.d.ts
+npm notice 505B dist/core/fetcher/BinaryResponse.js
+npm notice 598B dist/core/fetcher/BinaryResponse.js.map
+npm notice 156B dist/core/fetcher/createRequestUrl.d.ts
+npm notice 300B dist/core/fetcher/createRequestUrl.js
+npm notice 390B dist/core/fetcher/createRequestUrl.js.map
+npm notice 647B dist/core/fetcher/EndpointMetadata.d.ts
+npm notice 55B dist/core/fetcher/EndpointMetadata.js
+npm notice 139B dist/core/fetcher/EndpointMetadata.js.map
+npm notice 500B dist/core/fetcher/EndpointSupplier.d.ts
+npm notice 268B dist/core/fetcher/EndpointSupplier.js
+npm notice 373B dist/core/fetcher/EndpointSupplier.js.map
+npm notice 2.1kB dist/core/fetcher/Fetcher.d.ts
+npm notice 9.5kB dist/core/fetcher/Fetcher.js
+npm notice 8.1kB dist/core/fetcher/Fetcher.js.map
+npm notice 134B dist/core/fetcher/getErrorResponseBody.d.ts
+npm notice 1.7kB dist/core/fetcher/getErrorResponseBody.js
+npm notice 1.5kB dist/core/fetcher/getErrorResponseBody.js.map
+npm notice 101B dist/core/fetcher/getFetchFn.d.ts
+npm notice 95B dist/core/fetcher/getFetchFn.js
+npm notice 188B dist/core/fetcher/getFetchFn.js.map
+npm notice 140B dist/core/fetcher/getHeader.d.ts
+npm notice 288B dist/core/fetcher/getHeader.js
+npm notice 390B dist/core/fetcher/getHeader.js.map
+npm notice 306B dist/core/fetcher/getRequestBody.d.ts
+npm notice 398B dist/core/fetcher/getRequestBody.js
+npm notice 559B dist/core/fetcher/getRequestBody.js.map
+npm notice 648B dist/core/fetcher/getResponseBody.d.ts
+npm notice 2.5kB dist/core/fetcher/getResponseBody.js
+npm notice 2.0kB dist/core/fetcher/getResponseBody.js.map
+npm notice 105B dist/core/fetcher/Headers.d.ts
+npm notice 2.8kB dist/core/fetcher/Headers.js
+npm notice 3.0kB dist/core/fetcher/Headers.js.map
+npm notice 2.9kB dist/core/fetcher/HttpResponsePromise.d.ts
+npm notice 3.0kB dist/core/fetcher/HttpResponsePromise.js
+npm notice 1.7kB dist/core/fetcher/HttpResponsePromise.js.map
+npm notice 817B dist/core/fetcher/index.d.ts
+npm notice 439B dist/core/fetcher/index.js
+npm notice 442B dist/core/fetcher/index.js.map
+npm notice 2.4kB dist/core/fetcher/makePassthroughRequest.d.ts
+npm notice 6.7kB dist/core/fetcher/makePassthroughRequest.js
+npm notice 5.2kB dist/core/fetcher/makePassthroughRequest.js.map
+npm notice 853B dist/core/fetcher/makeRequest.d.ts
+npm notice 2.8kB dist/core/fetcher/makeRequest.js
+npm notice 2.3kB dist/core/fetcher/makeRequest.js.map
+npm notice 1.0kB dist/core/fetcher/RawResponse.d.ts
+npm notice 1.1kB dist/core/fetcher/RawResponse.js
+npm notice 810B dist/core/fetcher/RawResponse.js.map
+npm notice 153B dist/core/fetcher/redactUrl.d.ts
+npm notice 3.0kB dist/core/fetcher/redactUrl.js
+npm notice 3.2kB dist/core/fetcher/redactUrl.js.map
+npm notice 195B dist/core/fetcher/requestWithRetries.d.ts
+npm notice 3.0kB dist/core/fetcher/requestWithRetries.js
+npm notice 3.0kB dist/core/fetcher/requestWithRetries.js.map
+npm notice 304B dist/core/fetcher/signals.d.ts
+npm notice 1.2kB dist/core/fetcher/signals.js
+npm notice 1.2kB dist/core/fetcher/signals.js.map
+npm notice 192B dist/core/fetcher/Supplier.d.ts
+npm notice 244B dist/core/fetcher/Supplier.js
+npm notice 334B dist/core/fetcher/Supplier.js.map
+npm notice 304B dist/core/headers.d.ts
+npm notice 902B dist/core/headers.js
+npm notice 1.1kB dist/core/headers.js.map
+npm notice 193B dist/core/index.d.ts
+npm notice 191B dist/core/index.js
+npm notice 226B dist/core/index.js.map
+npm notice 1.0kB dist/core/json.d.ts
+npm notice 910B dist/core/json.js
+npm notice 397B dist/core/json.js.map
+npm notice 592B dist/core/logging/exports.d.ts
+npm notice 319B dist/core/logging/exports.js
+npm notice 326B dist/core/logging/exports.js.map
+npm notice 64B dist/core/logging/index.d.ts
+npm notice 62B dist/core/logging/index.js
+npm notice 136B dist/core/logging/index.js.map
+npm notice 3.8kB dist/core/logging/logger.d.ts
+npm notice 3.7kB dist/core/logging/logger.js
+npm notice 2.9kB dist/core/logging/logger.js.map
+npm notice 885B dist/core/requestBody.d.ts
+npm notice 1.1kB dist/core/requestBody.js
+npm notice 509B dist/core/requestBody.js.map
+npm notice 89B dist/core/runtime/index.d.ts
+npm notice 87B dist/core/runtime/index.js
+npm notice 166B dist/core/runtime/index.js.map
+npm notice 1.2kB dist/core/runtime/runtime.d.ts
+npm notice 6.6kB dist/core/runtime/runtime.js
+npm notice 3.8kB dist/core/runtime/runtime.js.map
+npm notice 110B dist/core/url/encodePathParam.d.ts
+npm notice 468B dist/core/url/encodePathParam.js
+npm notice 508B dist/core/url/encodePathParam.js.map
+npm notice 222B dist/core/url/index.d.ts
+npm notice 220B dist/core/url/index.js
+npm notice 279B dist/core/url/index.js.map
+npm notice 109B dist/core/url/join.d.ts
+npm notice 1.9kB dist/core/url/join.js
+npm notice 2.3kB dist/core/url/join.js.map
+npm notice 271B dist/core/url/qs.d.ts
+npm notice 2.9kB dist/core/url/qs.js
+npm notice 3.1kB dist/core/url/qs.js.map
+npm notice 1.7kB dist/core/url/QueryStringBuilder.d.ts
+npm notice 2.7kB dist/core/url/QueryStringBuilder.js
+npm notice 1.7kB dist/core/url/QueryStringBuilder.js.map
+npm notice 209B dist/environments.d.ts
+npm notice 184B dist/environments.js
+npm notice 190B dist/environments.js.map
+npm notice 546B dist/errors/DexaAiSdkError.d.ts
+npm notice 1.2kB dist/errors/DexaAiSdkError.js
+npm notice 1.4kB dist/errors/DexaAiSdkError.js.map
+npm notice 241B dist/errors/DexaAiSdkTimeoutError.d.ts
+npm notice 564B dist/errors/DexaAiSdkTimeoutError.js
+npm notice 575B dist/errors/DexaAiSdkTimeoutError.js.map
+npm notice 246B dist/errors/handleNonStatusCodeError.d.ts
+npm notice 1.2kB dist/errors/handleNonStatusCodeError.js
+npm notice 973B dist/errors/handleNonStatusCodeError.js.map
+npm notice 157B dist/errors/index.d.ts
+npm notice 155B dist/errors/index.js
+npm notice 194B dist/errors/index.js.map
+npm notice 72B dist/exports.d.ts
+npm notice 70B dist/exports.js
+npm notice 123B dist/exports.js.map
+npm notice 368B dist/index.d.ts
+npm notice 288B dist/index.js
+npm notice 296B dist/index.js.map
+npm notice 1.4kB package.json
+npm notice Tarball Details
+npm notice name: @dsainvg/dexa-ai-sdk
+npm notice version: 0.6.0
+npm notice filename: dsainvg-dexa-ai-sdk-0.6.0.tgz
+npm notice package size: 53.9 kB
+npm notice unpacked size: 237.9 kB
+npm notice shasum: c5852301c0d31e679819eb1d74fc06476010e978
+npm notice integrity: sha512-okaElOVEssFMX[...]Nq/AcX6MoEZ2A==
+npm notice total files: 230
+npm notice
+dsainvg-dexa-ai-sdk-0.6.0.tgz
+  collected dexa-ai-sdk-typescript-0.6.0.zip (154 files)
+
+python
+
+$ uv build --out-dir ../../release-artifacts   [packages/sdk-py]
+Building source distribution...
+/home/runner/work/_temp/setup-uv-cache/builds-v0/.tmpUssXPW/lib/python3.13/site-packages/setuptools/config/_apply_pyprojecttoml.py:82: SetuptoolsDeprecationWarning: `project.license` as a TOML table is deprecated
+!!
+
+        ********************************************************************************
+        Please use a simple string containing a SPDX expression for `project.license`. You can also use `project.license-files`. (Both options available on setuptools>=77.0.0).
+
+        By 2027-Feb-18, you need to update your project and remove deprecated calls
+        or your builds will no longer be supported.
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+  corresp(dist, value, root_dir)
+running egg_info
+creating dexa_ai_sdk.egg-info
+writing dexa_ai_sdk.egg-info/PKG-INFO
+writing dependency_links to dexa_ai_sdk.egg-info/dependency_links.txt
+writing requirements to dexa_ai_sdk.egg-info/requires.txt
+writing top-level names to dexa_ai_sdk.egg-info/top_level.txt
+writing manifest file 'dexa_ai_sdk.egg-info/SOURCES.txt'
+reading manifest file 'dexa_ai_sdk.egg-info/SOURCES.txt'
+writing manifest file 'dexa_ai_sdk.egg-info/SOURCES.txt'
+/home/runner/work/_temp/setup-uv-cache/builds-v0/.tmpUssXPW/lib/python3.13/site-packages/setuptools/config/_apply_pyprojecttoml.py:82: SetuptoolsDeprecationWarning: `project.license` as a TOML table is deprecated
+!!
+
+        ********************************************************************************
+        Please use a simple string containing a SPDX expression for `project.license`. You can also use `project.license-files`. (Both options available on setuptools>=77.0.0).
+
+        By 2027-Feb-18, you need to update your project and remove deprecated calls
+        or your builds will no longer be supported.
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+  corresp(dist, value, root_dir)
+running sdist
+running egg_info
+writing dexa_ai_sdk.egg-info/PKG-INFO
+writing dependency_links to dexa_ai_sdk.egg-info/dependency_links.txt
+writing requirements to dexa_ai_sdk.egg-info/requires.txt
+writing top-level names to dexa_ai_sdk.egg-info/top_level.txt
+reading manifest file 'dexa_ai_sdk.egg-info/SOURCES.txt'
+writing manifest file 'dexa_ai_sdk.egg-info/SOURCES.txt'
+running check
+creating dexa_ai_sdk-0.6.0
+creating dexa_ai_sdk-0.6.0/core
+creating dexa_ai_sdk-0.6.0/core/http_sse
+creating dexa_ai_sdk-0.6.0/errors
+creating dexa_ai_sdk-0.6.0/tasks
+creating dexa_ai_sdk-0.6.0/tasks/types
+creating dexa_ai_sdk-0.6.0/types
+creating dexa_ai_sdk-0.6.0/dexa_ai_sdk.egg-info
+creating dexa_ai_sdk-0.6.0/tests
+copying files to dexa_ai_sdk-0.6.0...
+copying README.md -> dexa_ai_sdk-0.6.0
+copying __init__.py -> dexa_ai_sdk-0.6.0
+copying _default_clients.py -> dexa_ai_sdk-0.6.0
+copying client.py -> dexa_ai_sdk-0.6.0
+copying environment.py -> dexa_ai_sdk-0.6.0
+copying pyproject.toml -> dexa_ai_sdk-0.6.0
+copying ./core/__init__.py -> dexa_ai_sdk-0.6.0/./core
+copying ./core/api_error.py -> dexa_ai_sdk-0.6.0/./core
+copying ./core/client_wrapper.py -> dexa_ai_sdk-0.6.0/./core
+copying ./core/datetime_utils.py -> dexa_ai_sdk-0.6.0/./core
+copying ./core/file.py -> dexa_ai_sdk-0.6.0/./core
+copying ./core/force_multipart.py -> dexa_ai_sdk-0.6.0/./core
+copying ./core/http_client.py -> dexa_ai_sdk-0.6.0/./core
+copying ./core/http_response.py -> dexa_ai_sdk-0.6.0/./core
+copying ./core/jsonable_encoder.py -> dexa_ai_sdk-0.6.0/./core
+copying ./core/logging.py -> dexa_ai_sdk-0.6.0/./core
+copying ./core/parse_error.py -> dexa_ai_sdk-0.6.0/./core
+copying ./core/pydantic_utilities.py -> dexa_ai_sdk-0.6.0/./core
+copying ./core/query_encoder.py -> dexa_ai_sdk-0.6.0/./core
+copying ./core/remove_none_from_dict.py -> dexa_ai_sdk-0.6.0/./core
+copying ./core/request_options.py -> dexa_ai_sdk-0.6.0/./core
+copying ./core/serialization.py -> dexa_ai_sdk-0.6.0/./core
+copying ./core/http_sse/__init__.py -> dexa_ai_sdk-0.6.0/./core/http_sse
+copying ./core/http_sse/_api.py -> dexa_ai_sdk-0.6.0/./core/http_sse
+copying ./core/http_sse/_decoders.py -> dexa_ai_sdk-0.6.0/./core/http_sse
+copying ./core/http_sse/_exceptions.py -> dexa_ai_sdk-0.6.0/./core/http_sse
+copying ./core/http_sse/_models.py -> dexa_ai_sdk-0.6.0/./core/http_sse
+copying ./errors/__init__.py -> dexa_ai_sdk-0.6.0/./errors
+copying ./errors/bad_request_error.py -> dexa_ai_sdk-0.6.0/./errors
+copying ./errors/internal_server_error.py -> dexa_ai_sdk-0.6.0/./errors
+copying ./errors/unprocessable_entity_error.py -> dexa_ai_sdk-0.6.0/./errors
+copying ./tasks/__init__.py -> dexa_ai_sdk-0.6.0/./tasks
+copying ./tasks/client.py -> dexa_ai_sdk-0.6.0/./tasks
+copying ./tasks/raw_client.py -> dexa_ai_sdk-0.6.0/./tasks
+copying ./tasks/types/__init__.py -> dexa_ai_sdk-0.6.0/./tasks/types
+copying ./tasks/types/decide_request_output_language.py -> dexa_ai_sdk-0.6.0/./tasks/types
+copying ./tasks/types/decide_request_response_format.py -> dexa_ai_sdk-0.6.0/./tasks/types
+copying ./tasks/types/decide_request_response_format_type.py -> dexa_ai_sdk-0.6.0/./tasks/types
+copying ./tasks/types/decide_request_target_language.py -> dexa_ai_sdk-0.6.0/./tasks/types
+copying ./tasks/types/extract_request_output_language.py -> dexa_ai_sdk-0.6.0/./tasks/types
+copying ./tasks/types/extract_request_response_format.py -> dexa_ai_sdk-0.6.0/./tasks/types
+copying ./tasks/types/extract_request_response_format_type.py -> dexa_ai_sdk-0.6.0/./tasks/types
+copying ./tasks/types/extract_request_target_language.py -> dexa_ai_sdk-0.6.0/./tasks/types
+copying ./types/__init__.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/audio_input.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/audio_input_type.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/choice.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/choice_finish_reason.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/content_part.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/content_part_language.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/content_part_type.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/decide_response.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/decide_result.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/decide_task.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/decide_task_target_language.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/error_response.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/error_response_error.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/extract_response.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/extract_task.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/extract_task_target_language.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/image_input.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/image_input_type.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/image_url.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/image_url_detail.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/message.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/message_content.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/message_language.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/message_role.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/response_message.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/response_message_language.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/response_message_role.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/run_tasks_request.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/run_tasks_request_output_language.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/run_tasks_request_response_format.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/run_tasks_request_response_format_type.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/run_tasks_request_target_language.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/run_tasks_response.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/task.py -> dexa_ai_sdk-0.6.0/./types
+copying ./types/usage.py -> dexa_ai_sdk-0.6.0/./types
+copying dexa_ai_sdk.egg-info/PKG-INFO -> dexa_ai_sdk-0.6.0/dexa_ai_sdk.egg-info
+copying dexa_ai_sdk.egg-info/SOURCES.txt -> dexa_ai_sdk-0.6.0/dexa_ai_sdk.egg-info
+copying dexa_ai_sdk.egg-info/dependency_links.txt -> dexa_ai_sdk-0.6.0/dexa_ai_sdk.egg-info
+copying dexa_ai_sdk.egg-info/requires.txt -> dexa_ai_sdk-0.6.0/dexa_ai_sdk.egg-info
+copying dexa_ai_sdk.egg-info/top_level.txt -> dexa_ai_sdk-0.6.0/dexa_ai_sdk.egg-info
+copying tests/test_aiohttp_autodetect.py -> dexa_ai_sdk-0.6.0/tests
+Writing dexa_ai_sdk-0.6.0/setup.cfg
+Creating tar archive
+removing 'dexa_ai_sdk-0.6.0' (and everything under it)
+Building wheel from source distribution...
+/home/runner/work/_temp/setup-uv-cache/builds-v0/.tmpu3xt7a/lib/python3.13/site-packages/setuptools/config/_apply_pyprojecttoml.py:82: SetuptoolsDeprecationWarning: `project.license` as a TOML table is deprecated
+!!
+
+        ********************************************************************************
+        Please use a simple string containing a SPDX expression for `project.license`. You can also use `project.license-files`. (Both options available on setuptools>=77.0.0).
+
+        By 2027-Feb-18, you need to update your project and remove deprecated calls
+        or your builds will no longer be supported.
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+  corresp(dist, value, root_dir)
+running egg_info
+writing dexa_ai_sdk.egg-info/PKG-INFO
+writing dependency_links to dexa_ai_sdk.egg-info/dependency_links.txt
+writing requirements to dexa_ai_sdk.egg-info/requires.txt
+writing top-level names to dexa_ai_sdk.egg-info/top_level.txt
+reading manifest file 'dexa_ai_sdk.egg-info/SOURCES.txt'
+writing manifest file 'dexa_ai_sdk.egg-info/SOURCES.txt'
+/home/runner/work/_temp/setup-uv-cache/builds-v0/.tmpu3xt7a/lib/python3.13/site-packages/setuptools/config/_apply_pyprojecttoml.py:82: SetuptoolsDeprecationWarning: `project.license` as a TOML table is deprecated
+!!
+
+        ********************************************************************************
+        Please use a simple string containing a SPDX expression for `project.license`. You can also use `project.license-files`. (Both options available on setuptools>=77.0.0).
+
+        By 2027-Feb-18, you need to update your project and remove deprecated calls
+        or your builds will no longer be supported.
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+  corresp(dist, value, root_dir)
+running bdist_wheel
+running build
+running build_py
+creating build/lib/dexa_ai_sdk
+copying ./_default_clients.py -> build/lib/dexa_ai_sdk
+copying ./client.py -> build/lib/dexa_ai_sdk
+copying ./__init__.py -> build/lib/dexa_ai_sdk
+copying ./environment.py -> build/lib/dexa_ai_sdk
+creating build/lib/dexa_ai_sdk/core
+copying ./core/parse_error.py -> build/lib/dexa_ai_sdk/core
+copying ./core/logging.py -> build/lib/dexa_ai_sdk/core
+copying ./core/pydantic_utilities.py -> build/lib/dexa_ai_sdk/core
+copying ./core/file.py -> build/lib/dexa_ai_sdk/core
+copying ./core/datetime_utils.py -> build/lib/dexa_ai_sdk/core
+copying ./core/http_client.py -> build/lib/dexa_ai_sdk/core
+copying ./core/request_options.py -> build/lib/dexa_ai_sdk/core
+copying ./core/remove_none_from_dict.py -> build/lib/dexa_ai_sdk/core
+copying ./core/http_response.py -> build/lib/dexa_ai_sdk/core
+copying ./core/api_error.py -> build/lib/dexa_ai_sdk/core
+copying ./core/client_wrapper.py -> build/lib/dexa_ai_sdk/core
+copying ./core/force_multipart.py -> build/lib/dexa_ai_sdk/core
+copying ./core/jsonable_encoder.py -> build/lib/dexa_ai_sdk/core
+copying ./core/query_encoder.py -> build/lib/dexa_ai_sdk/core
+copying ./core/__init__.py -> build/lib/dexa_ai_sdk/core
+copying ./core/serialization.py -> build/lib/dexa_ai_sdk/core
+creating build/lib/dexa_ai_sdk/core/http_sse
+copying ./core/http_sse/_api.py -> build/lib/dexa_ai_sdk/core/http_sse
+copying ./core/http_sse/_models.py -> build/lib/dexa_ai_sdk/core/http_sse
+copying ./core/http_sse/_decoders.py -> build/lib/dexa_ai_sdk/core/http_sse
+copying ./core/http_sse/__init__.py -> build/lib/dexa_ai_sdk/core/http_sse
+copying ./core/http_sse/_exceptions.py -> build/lib/dexa_ai_sdk/core/http_sse
+creating build/lib/dexa_ai_sdk/errors
+copying ./errors/bad_request_error.py -> build/lib/dexa_ai_sdk/errors
+copying ./errors/unprocessable_entity_error.py -> build/lib/dexa_ai_sdk/errors
+copying ./errors/internal_server_error.py -> build/lib/dexa_ai_sdk/errors
+copying ./errors/__init__.py -> build/lib/dexa_ai_sdk/errors
+creating build/lib/dexa_ai_sdk/tasks
+copying ./tasks/raw_client.py -> build/lib/dexa_ai_sdk/tasks
+copying ./tasks/client.py -> build/lib/dexa_ai_sdk/tasks
+copying ./tasks/__init__.py -> build/lib/dexa_ai_sdk/tasks
+creating build/lib/dexa_ai_sdk/tasks/types
+copying ./tasks/types/decide_request_response_format_type.py -> build/lib/dexa_ai_sdk/tasks/types
+copying ./tasks/types/extract_request_response_format.py -> build/lib/dexa_ai_sdk/tasks/types
+copying ./tasks/types/extract_request_output_language.py -> build/lib/dexa_ai_sdk/tasks/types
+copying ./tasks/types/decide_request_response_format.py -> build/lib/dexa_ai_sdk/tasks/types
+copying ./tasks/types/extract_request_target_language.py -> build/lib/dexa_ai_sdk/tasks/types
+copying ./tasks/types/decide_request_target_language.py -> build/lib/dexa_ai_sdk/tasks/types
+copying ./tasks/types/extract_request_response_format_type.py -> build/lib/dexa_ai_sdk/tasks/types
+copying ./tasks/types/__init__.py -> build/lib/dexa_ai_sdk/tasks/types
+copying ./tasks/types/decide_request_output_language.py -> build/lib/dexa_ai_sdk/tasks/types
+creating build/lib/dexa_ai_sdk/types
+copying ./types/content_part.py -> build/lib/dexa_ai_sdk/types
+copying ./types/decide_response.py -> build/lib/dexa_ai_sdk/types
+copying ./types/image_input_type.py -> build/lib/dexa_ai_sdk/types
+copying ./types/message_role.py -> build/lib/dexa_ai_sdk/types
+copying ./types/message.py -> build/lib/dexa_ai_sdk/types
+copying ./types/run_tasks_request_response_format.py -> build/lib/dexa_ai_sdk/types
+copying ./types/run_tasks_request_response_format_type.py -> build/lib/dexa_ai_sdk/types
+copying ./types/usage.py -> build/lib/dexa_ai_sdk/types
+copying ./types/message_content.py -> build/lib/dexa_ai_sdk/types
+copying ./types/error_response_error.py -> build/lib/dexa_ai_sdk/types
+copying ./types/choice_finish_reason.py -> build/lib/dexa_ai_sdk/types
+copying ./types/content_part_type.py -> build/lib/dexa_ai_sdk/types
+copying ./types/extract_task.py -> build/lib/dexa_ai_sdk/types
+copying ./types/task.py -> build/lib/dexa_ai_sdk/types
+copying ./types/image_input.py -> build/lib/dexa_ai_sdk/types
+copying ./types/error_response.py -> build/lib/dexa_ai_sdk/types
+copying ./types/run_tasks_response.py -> build/lib/dexa_ai_sdk/types
+copying ./types/run_tasks_request_output_language.py -> build/lib/dexa_ai_sdk/types
+copying ./types/decide_result.py -> build/lib/dexa_ai_sdk/types
+copying ./types/response_message.py -> build/lib/dexa_ai_sdk/types
+copying ./types/run_tasks_request_target_language.py -> build/lib/dexa_ai_sdk/types
+copying ./types/extract_response.py -> build/lib/dexa_ai_sdk/types
+copying ./types/audio_input_type.py -> build/lib/dexa_ai_sdk/types
+copying ./types/decide_task.py -> build/lib/dexa_ai_sdk/types
+copying ./types/run_tasks_request.py -> build/lib/dexa_ai_sdk/types
+copying ./types/response_message_language.py -> build/lib/dexa_ai_sdk/types
+copying ./types/audio_input.py -> build/lib/dexa_ai_sdk/types
+copying ./types/image_url_detail.py -> build/lib/dexa_ai_sdk/types
+copying ./types/decide_task_target_language.py -> build/lib/dexa_ai_sdk/types
+copying ./types/content_part_language.py -> build/lib/dexa_ai_sdk/types
+copying ./types/message_language.py -> build/lib/dexa_ai_sdk/types
+copying ./types/choice.py -> build/lib/dexa_ai_sdk/types
+copying ./types/__init__.py -> build/lib/dexa_ai_sdk/types
+copying ./types/extract_task_target_language.py -> build/lib/dexa_ai_sdk/types
+copying ./types/response_message_role.py -> build/lib/dexa_ai_sdk/types
+copying ./types/image_url.py -> build/lib/dexa_ai_sdk/types
+running egg_info
+writing dexa_ai_sdk.egg-info/PKG-INFO
+writing dependency_links to dexa_ai_sdk.egg-info/dependency_links.txt
+writing requirements to dexa_ai_sdk.egg-info/requires.txt
+writing top-level names to dexa_ai_sdk.egg-info/top_level.txt
+reading manifest file 'dexa_ai_sdk.egg-info/SOURCES.txt'
+writing manifest file 'dexa_ai_sdk.egg-info/SOURCES.txt'
+installing to build/bdist.linux-x86_64/wheel
+running install
+running install_lib
+creating build/bdist.linux-x86_64/wheel
+creating build/bdist.linux-x86_64/wheel/dexa_ai_sdk
+copying build/lib/dexa_ai_sdk/_default_clients.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk
+creating build/bdist.linux-x86_64/wheel/dexa_ai_sdk/errors
+copying build/lib/dexa_ai_sdk/errors/bad_request_error.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/errors
+copying build/lib/dexa_ai_sdk/errors/unprocessable_entity_error.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/errors
+copying build/lib/dexa_ai_sdk/errors/internal_server_error.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/errors
+copying build/lib/dexa_ai_sdk/errors/__init__.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/errors
+creating build/bdist.linux-x86_64/wheel/dexa_ai_sdk/tasks
+copying build/lib/dexa_ai_sdk/tasks/raw_client.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/tasks
+copying build/lib/dexa_ai_sdk/tasks/client.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/tasks
+copying build/lib/dexa_ai_sdk/tasks/__init__.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/tasks
+creating build/bdist.linux-x86_64/wheel/dexa_ai_sdk/tasks/types
+copying build/lib/dexa_ai_sdk/tasks/types/decide_request_response_format_type.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/tasks/types
+copying build/lib/dexa_ai_sdk/tasks/types/extract_request_response_format.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/tasks/types
+copying build/lib/dexa_ai_sdk/tasks/types/extract_request_output_language.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/tasks/types
+copying build/lib/dexa_ai_sdk/tasks/types/decide_request_response_format.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/tasks/types
+copying build/lib/dexa_ai_sdk/tasks/types/extract_request_target_language.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/tasks/types
+copying build/lib/dexa_ai_sdk/tasks/types/decide_request_target_language.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/tasks/types
+copying build/lib/dexa_ai_sdk/tasks/types/extract_request_response_format_type.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/tasks/types
+copying build/lib/dexa_ai_sdk/tasks/types/__init__.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/tasks/types
+copying build/lib/dexa_ai_sdk/tasks/types/decide_request_output_language.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/tasks/types
+creating build/bdist.linux-x86_64/wheel/dexa_ai_sdk/core
+copying build/lib/dexa_ai_sdk/core/parse_error.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/core
+copying build/lib/dexa_ai_sdk/core/logging.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/core
+copying build/lib/dexa_ai_sdk/core/pydantic_utilities.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/core
+copying build/lib/dexa_ai_sdk/core/file.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/core
+copying build/lib/dexa_ai_sdk/core/datetime_utils.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/core
+copying build/lib/dexa_ai_sdk/core/http_client.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/core
+copying build/lib/dexa_ai_sdk/core/request_options.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/core
+copying build/lib/dexa_ai_sdk/core/remove_none_from_dict.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/core
+copying build/lib/dexa_ai_sdk/core/http_response.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/core
+creating build/bdist.linux-x86_64/wheel/dexa_ai_sdk/core/http_sse
+copying build/lib/dexa_ai_sdk/core/http_sse/_api.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/core/http_sse
+copying build/lib/dexa_ai_sdk/core/http_sse/_models.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/core/http_sse
+copying build/lib/dexa_ai_sdk/core/http_sse/_decoders.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/core/http_sse
+copying build/lib/dexa_ai_sdk/core/http_sse/__init__.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/core/http_sse
+copying build/lib/dexa_ai_sdk/core/http_sse/_exceptions.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/core/http_sse
+copying build/lib/dexa_ai_sdk/core/api_error.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/core
+copying build/lib/dexa_ai_sdk/core/client_wrapper.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/core
+copying build/lib/dexa_ai_sdk/core/force_multipart.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/core
+copying build/lib/dexa_ai_sdk/core/jsonable_encoder.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/core
+copying build/lib/dexa_ai_sdk/core/query_encoder.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/core
+copying build/lib/dexa_ai_sdk/core/__init__.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/core
+copying build/lib/dexa_ai_sdk/core/serialization.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/core
+copying build/lib/dexa_ai_sdk/client.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk
+copying build/lib/dexa_ai_sdk/__init__.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk
+copying build/lib/dexa_ai_sdk/environment.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk
+creating build/bdist.linux-x86_64/wheel/dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/content_part.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/decide_response.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/image_input_type.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/message_role.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/message.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/run_tasks_request_response_format.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/run_tasks_request_response_format_type.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/usage.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/message_content.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/error_response_error.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/choice_finish_reason.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/content_part_type.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/extract_task.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/task.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/image_input.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/error_response.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/run_tasks_response.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/run_tasks_request_output_language.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/decide_result.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/response_message.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/run_tasks_request_target_language.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/extract_response.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/audio_input_type.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/decide_task.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/run_tasks_request.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/response_message_language.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/audio_input.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/image_url_detail.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/decide_task_target_language.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/content_part_language.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/message_language.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/choice.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/__init__.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/extract_task_target_language.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/response_message_role.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+copying build/lib/dexa_ai_sdk/types/image_url.py -> build/bdist.linux-x86_64/wheel/./dexa_ai_sdk/types
+running install_egg_info
+Copying dexa_ai_sdk.egg-info to build/bdist.linux-x86_64/wheel/./dexa_ai_sdk-0.6.0-py3.13.egg-info
+running install_scripts
+creating build/bdist.linux-x86_64/wheel/dexa_ai_sdk-0.6.0.dist-info/WHEEL
+creating '/home/runner/work/decide-extract-sdk/decide-extract-sdk/release-artifacts/.tmp-re3avnjc/dexa_ai_sdk-0.6.0-py3-none-any.whl' and adding 'build/bdist.linux-x86_64/wheel' to it
+adding 'dexa_ai_sdk/__init__.py'
+adding 'dexa_ai_sdk/_default_clients.py'
+adding 'dexa_ai_sdk/client.py'
+adding 'dexa_ai_sdk/environment.py'
+adding 'dexa_ai_sdk/core/__init__.py'
+adding 'dexa_ai_sdk/core/api_error.py'
+adding 'dexa_ai_sdk/core/client_wrapper.py'
+adding 'dexa_ai_sdk/core/datetime_utils.py'
+adding 'dexa_ai_sdk/core/file.py'
+adding 'dexa_ai_sdk/core/force_multipart.py'
+adding 'dexa_ai_sdk/core/http_client.py'
+adding 'dexa_ai_sdk/core/http_response.py'
+adding 'dexa_ai_sdk/core/jsonable_encoder.py'
+adding 'dexa_ai_sdk/core/logging.py'
+adding 'dexa_ai_sdk/core/parse_error.py'
+adding 'dexa_ai_sdk/core/pydantic_utilities.py'
+adding 'dexa_ai_sdk/core/query_encoder.py'
+adding 'dexa_ai_sdk/core/remove_none_from_dict.py'
+adding 'dexa_ai_sdk/core/request_options.py'
+adding 'dexa_ai_sdk/core/serialization.py'
+adding 'dexa_ai_sdk/core/http_sse/__init__.py'
+adding 'dexa_ai_sdk/core/http_sse/_api.py'
+adding 'dexa_ai_sdk/core/http_sse/_decoders.py'
+adding 'dexa_ai_sdk/core/http_sse/_exceptions.py'
+adding 'dexa_ai_sdk/core/http_sse/_models.py'
+adding 'dexa_ai_sdk/errors/__init__.py'
+adding 'dexa_ai_sdk/errors/bad_request_error.py'
+adding 'dexa_ai_sdk/errors/internal_server_error.py'
+adding 'dexa_ai_sdk/errors/unprocessable_entity_error.py'
+adding 'dexa_ai_sdk/tasks/__init__.py'
+adding 'dexa_ai_sdk/tasks/client.py'
+adding 'dexa_ai_sdk/tasks/raw_client.py'
+adding 'dexa_ai_sdk/tasks/types/__init__.py'
+adding 'dexa_ai_sdk/tasks/types/decide_request_output_language.py'
+adding 'dexa_ai_sdk/tasks/types/decide_request_response_format.py'
+adding 'dexa_ai_sdk/tasks/types/decide_request_response_format_type.py'
+adding 'dexa_ai_sdk/tasks/types/decide_request_target_language.py'
+adding 'dexa_ai_sdk/tasks/types/extract_request_output_language.py'
+adding 'dexa_ai_sdk/tasks/types/extract_request_response_format.py'
+adding 'dexa_ai_sdk/tasks/types/extract_request_response_format_type.py'
+adding 'dexa_ai_sdk/tasks/types/extract_request_target_language.py'
+adding 'dexa_ai_sdk/types/__init__.py'
+adding 'dexa_ai_sdk/types/audio_input.py'
+adding 'dexa_ai_sdk/types/audio_input_type.py'
+adding 'dexa_ai_sdk/types/choice.py'
+adding 'dexa_ai_sdk/types/choice_finish_reason.py'
+adding 'dexa_ai_sdk/types/content_part.py'
+adding 'dexa_ai_sdk/types/content_part_language.py'
+adding 'dexa_ai_sdk/types/content_part_type.py'
+adding 'dexa_ai_sdk/types/decide_response.py'
+adding 'dexa_ai_sdk/types/decide_result.py'
+adding 'dexa_ai_sdk/types/decide_task.py'
+adding 'dexa_ai_sdk/types/decide_task_target_language.py'
+adding 'dexa_ai_sdk/types/error_response.py'
+adding 'dexa_ai_sdk/types/error_response_error.py'
+adding 'dexa_ai_sdk/types/extract_response.py'
+adding 'dexa_ai_sdk/types/extract_task.py'
+adding 'dexa_ai_sdk/types/extract_task_target_language.py'
+adding 'dexa_ai_sdk/types/image_input.py'
+adding 'dexa_ai_sdk/types/image_input_type.py'
+adding 'dexa_ai_sdk/types/image_url.py'
+adding 'dexa_ai_sdk/types/image_url_detail.py'
+adding 'dexa_ai_sdk/types/message.py'
+adding 'dexa_ai_sdk/types/message_content.py'
+adding 'dexa_ai_sdk/types/message_language.py'
+adding 'dexa_ai_sdk/types/message_role.py'
+adding 'dexa_ai_sdk/types/response_message.py'
+adding 'dexa_ai_sdk/types/response_message_language.py'
+adding 'dexa_ai_sdk/types/response_message_role.py'
+adding 'dexa_ai_sdk/types/run_tasks_request.py'
+adding 'dexa_ai_sdk/types/run_tasks_request_output_language.py'
+adding 'dexa_ai_sdk/types/run_tasks_request_response_format.py'
+adding 'dexa_ai_sdk/types/run_tasks_request_response_format_type.py'
+adding 'dexa_ai_sdk/types/run_tasks_request_target_language.py'
+adding 'dexa_ai_sdk/types/run_tasks_response.py'
+adding 'dexa_ai_sdk/types/task.py'
+adding 'dexa_ai_sdk/types/usage.py'
+adding 'dexa_ai_sdk-0.6.0.dist-info/METADATA'
+adding 'dexa_ai_sdk-0.6.0.dist-info/WHEEL'
+adding 'dexa_ai_sdk-0.6.0.dist-info/top_level.txt'
+adding 'dexa_ai_sdk-0.6.0.dist-info/RECORD'
+removing build/bdist.linux-x86_64/wheel
+Successfully built ../../release-artifacts/dexa_ai_sdk-0.6.0.tar.gz
+Successfully built ../../release-artifacts/dexa_ai_sdk-0.6.0-py3-none-any.whl
+
+ruby
+
+$ gem build dexa-ai-sdk.gemspec   [packages/sdk-ruby]
+WARNING:  You have specified the uri:
+  https://github.com/dsainvg/decide-extract-sdk
+for all of the following keys:
+  homepage_uri
+  source_code_uri
+Only the first one will be shown on rubygems.org
+WARNING:  See https://guides.rubygems.org/specification-reference/ for help
+  Successfully built RubyGem
+  Name: dexa-ai-sdk
+  Version: 0.6.0
+  File: dexa-ai-sdk-0.6.0.gem
+  collected 1 ruby artifact(s)
+
+rust
+
+$ cargo build   [packages/sdk-rust]
+[1m[92m    Updating[0m crates.io index
+[1m[92m     Locking[0m 117 packages to highest compatible versions
+[1m[92m      Adding[0m reqwest v0.12.28 [1m[33m(available: v0.13.5)[0m
+[1m[92m      Adding[0m thiserror v1.0.69 [1m[33m(available: v2.0.21)[0m
+[1m[92m   Compiling[0m proc-macro2 v1.0.107
+[1m[92m   Compiling[0m quote v1.0.47
+[1m[92m   Compiling[0m unicode-ident v1.0.27
+[1m[92m   Compiling[0m libc v0.2.190
+[1m[92m   Compiling[0m stable_deref_trait v1.2.1
+[1m[92m   Compiling[0m smallvec v1.16.3
+[1m[92m   Compiling[0m pin-project-lite v0.2.17
+[1m[92m   Compiling[0m cfg-if v1.0.5
+[1m[92m   Compiling[0m futures-core v0.3.34
+[1m[92m   Compiling[0m bytes v1.12.1
+[1m[92m   Compiling[0m parking_lot_core v0.9.12
+[1m[92m   Compiling[0m scopeguard v1.2.0
+[1m[92m   Compiling[0m memchr v2.8.3
+[1m[92m   Compiling[0m syn v3.0.9
+[1m[92m   Compiling[0m lock_api v0.4.14
+[1m[92m   Compiling[0m writeable v0.6.4
+[1m[92m   Compiling[0m itoa v1.0.18
+[1m[92m   Compiling[0m errno v0.3.14
+[1m[92m   Compiling[0m litemap v0.8.3
+[1m[92m   Compiling[0m futures-sink v0.3.34
+[1m[92m   Compiling[0m signal-hook-registry v1.4.8
+[1m[92m   Compiling[0m parking_lot v0.12.5
+[1m[92m   Compiling[0m mio v1.2.4
+[1m[92m   Compiling[0m socket2 v0.6.5
+[1m[92m   Compiling[0m utf8_iter v1.0.4
+[1m[92m   Compiling[0m icu_properties_data v2.3.0
+[1m[92m   Compiling[0m icu_normalizer_data v2.3.0
+[1m[92m   Compiling[0m futures-channel v0.3.34
+[1m[92m   Compiling[0m futures-io v0.3.34
+[1m[92m   Compiling[0m crc32fast v1.5.2
+[1m[92m   Compiling[0m futures-task v0.3.34
+[1m[92m   Compiling[0m slab v0.4.12
+[1m[92m   Compiling[0m http v1.5.0
+[1m[92m   Compiling[0m adler2 v2.0.1
+[1m[92m   Compiling[0m percent-encoding v2.3.2
+[1m[92m   Compiling[0m serde_core v1.0.229
+[1m[92m   Compiling[0m simd-adler32 v0.3.10
+[1m[92m   Compiling[0m miniz_oxide v0.9.1
+[1m[92m   Compiling[0m httparse v1.10.1
+[1m[92m   Compiling[0m http-body v1.1.0
+[1m[92m   Compiling[0m flate2 v1.1.10
+[1m[92m   Compiling[0m form_urlencoded v1.2.2
+[1m[92m   Compiling[0m tower-service v0.3.3
+[1m[92m   Compiling[0m serde v1.0.229
+[1m[92m   Compiling[0m once_cell v1.21.4
+[1m[92m   Compiling[0m zmij v1.0.23
+[1m[92m   Compiling[0m compression-core v0.4.33
+[1m[92m   Compiling[0m try-lock v0.2.5
+[1m[92m   Compiling[0m want v0.3.2
+[1m[92m   Compiling[0m compression-codecs v0.4.45
+[1m[92m   Compiling[0m tracing-core v0.1.36
+[1m[92m   Compiling[0m synstructure v0.14.0
+[1m[92m   Compiling[0m sync_wrapper v1.0.2
+[1m[92m   Compiling[0m atomic-waker v1.1.2
+[1m[92m   Compiling[0m tower-layer v0.3.3
+[1m[92m   Compiling[0m serde_json v1.0.154
+[1m[92m   Compiling[0m tracing v0.1.44
+[1m[92m   Compiling[0m http-body-util v0.1.5
+[1m[92m   Compiling[0m syn v2.0.119
+[1m[92m   Compiling[0m base64 v0.23.1
+[1m[92m   Compiling[0m bitflags v2.13.2
+[1m[92m   Compiling[0m ipnet v2.12.2
+[1m[92m   Compiling[0m thiserror v1.0.69
+[1m[92m   Compiling[0m zerofrom-derive v0.1.8
+[1m[92m   Compiling[0m yoke-derive v0.8.4
+[1m[92m   Compiling[0m zerovec-derive v0.11.6
+[1m[92m   Compiling[0m displaydoc v0.2.7
+[1m[92m   Compiling[0m zerofrom v0.1.8
+[1m[92m   Compiling[0m yoke v0.8.3
+[1m[92m   Compiling[0m tokio-macros v2.7.2
+[1m[92m   Compiling[0m zerovec v0.11.8
+[1m[92m   Compiling[0m zerotrie v0.2.5
+[1m[92m   Compiling[0m tokio v1.53.3
+[1m[92m   Compiling[0m tinystr v0.8.4
+[1m[92m   Compiling[0m potential_utf v0.1.6
+[1m[92m   Compiling[0m futures-macro v0.3.34
+[1m[92m   Compiling[0m icu_collections v2.3.0
+[1m[92m   Compiling[0m icu_locale_core v2.3.0
+[1m[92m   Compiling[0m serde_derive v1.0.229
+[1m[92m   Compiling[0m futures-util v0.3.34
+[1m[92m   Compiling[0m icu_provider v2.3.1
+[1m[92m   Compiling[0m icu_normalizer v2.3.0
+[1m[92m   Compiling[0m icu_properties v2.3.0
+[1m[92m   Compiling[0m idna_adapter v1.2.2
+[1m[92m   Compiling[0m idna v1.1.0
+[1m[92m   Compiling[0m ryu v1.0.23
+[1m[92m   Compiling[0m url v2.5.8
+[1m[92m   Compiling[0m serde_urlencoded v0.7.1
+[1m[92m   Compiling[0m futures-executor v0.3.34
+[1m[92m   Compiling[0m thiserror-impl v1.0.69
+[1m[92m   Compiling[0m tower v0.5.3
+[1m[92m   Compiling[0m tokio-util v0.7.20
+[1m[92m   Compiling[0m async-compression v0.4.50
+[1m[92m   Compiling[0m hyper v1.12.0
+[1m[92m   Compiling[0m tower-http v0.6.11
+[1m[92m   Compiling[0m log v0.4.34
+[1m[92m   Compiling[0m base64 v0.22.1
+[1m[92m   Compiling[0m futures v0.3.34
+[1m[92m   Compiling[0m hyper-util v0.1.21
+[1m[92m   Compiling[0m reqwest v0.12.28
+[1m[92m   Compiling[0m dexa-ai-sdk v0.6.0 (/home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-rust)
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 11.13s
+
+$ cargo test   [packages/sdk-rust]
+[1m[92m   Compiling[0m tokio v1.53.3
+[1m[92m   Compiling[0m hyper v1.12.0
+[1m[92m   Compiling[0m tokio-util v0.7.20
+[1m[92m   Compiling[0m async-compression v0.4.50
+[1m[92m   Compiling[0m tower v0.5.3
+[1m[92m   Compiling[0m tokio-stream v0.1.19
+[1m[92m   Compiling[0m tower-http v0.6.11
+[1m[92m   Compiling[0m hyper-util v0.1.21
+[1m[92m   Compiling[0m tokio-test v0.4.6
+[1m[92m   Compiling[0m reqwest v0.12.28
+[1m[92m   Compiling[0m dexa-ai-sdk v0.6.0 (/home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-rust)
+[1m[92m    Finished[0m `test` profile [unoptimized + debuginfo] target(s) in 5.11s
+[1m[92m     Running[0m unittests src/lib.rs (target/debug/deps/dexa_ai_sdk-cbaa49d20646d5f4)
+
+running 110 tests
+test client::tests::test_api_key ... ok
+test client::tests::test_build_succeeds ... ok
+test client::tests::test_client_id ... ok
+test client::tests::test_client_secret ... ok
+test client::tests::test_full_builder_chain ... ok
+test client::tests::test_custom_header ... ok
+test client::tests::test_max_retries ... ok
+test client::tests::test_custom_headers_multiple ... ok
+test client::tests::test_new_sets_base_url ... ok
+test client::tests::test_oauth_credentials ... ok
+test client::tests::test_environment ... ok
+test client::tests::test_password ... ok
+test client::tests::test_reqwest_client ... ok
+test client::tests::test_reqwest_client_defaults_to_none ... ok
+test client::tests::test_timeout ... ok
+test client::tests::test_token ... ok
+test client::tests::test_user_agent ... ok
+test client::tests::test_username ... ok
+test core::http_client::tests::test_execute_request_without_body_or_additional_body_params_sends_no_body ... ok
+test core::http_client::tests::test_execute_request_merges_additional_body_params ... ok
+test core::http_client::tests::test_execute_request_creates_body_from_additional_body_params ... ok
+test core::http_client::tests::test_is_retryable_status ... ok
+test core::http_client::tests::test_executor_path_applies_custom_headers ... ok
+test core::http_client::tests::test_oauth_token_request_sends_custom_headers ... ok
+test core::http_client::tests::test_oauth_token_request_form_encodes_when_configured ... ok
+test core::http_client::tests::test_parse_response_still_succeeds_on_2xx ... ok
+test core::http_client::tests::test_parse_response_errors_on_non_2xx_with_a_deserializable_body ... ok
+test core::http_client::tests::test_parse_response_raw_errors_on_non_2xx_with_a_deserializable_body ... ok
+test core::number_serializers::tests::test_deserialize_from_float ... ok
+test core::number_serializers::tests::test_deserialize_from_integer ... ok
+test core::number_serializers::tests::test_fractional_keeps_decimal ... ok
+test core::number_serializers::tests::test_large_whole_number_outside_i64_range ... ok
+test core::number_serializers::tests::test_optional_deserialize_missing ... ok
+test core::number_serializers::tests::test_optional_none ... ok
+test core::number_serializers::tests::test_optional_some_whole ... ok
+test core::number_serializers::tests::test_roundtrip ... ok
+test core::number_serializers::tests::test_negative_whole ... ok
+test core::number_serializers::tests::test_whole_number_no_decimal ... ok
+test core::number_serializers::tests::test_zero ... ok
+test core::http_client::tests::test_parse_response_raw_still_exposes_status_on_2xx ... ok
+test core::oauth_token_provider::tests::test_expired_token ... ok
+test core::oauth_token_provider::tests::test_get_or_fetch ... ok
+test core::http_client::tests::test_supplied_reqwest_client_is_used_and_keeps_sdk_headers ... ok
+test core::oauth_token_provider::tests::test_set_and_get_token ... ok
+test core::oauth_token_provider::tests::test_new_provider ... ok
+test core::oauth_token_provider::tests::test_reset ... ok
+test core::pagination::tests::test_offset_paginated_default_page_size ... ok
+test core::pagination::tests::test_paginated_trait ... ok
+test core::pagination::tests::test_pagination_result_fields ... ok
+test core::pagination::tests::test_sync_paginator_collect_all ... ok
+test core::pagination::tests::test_sync_paginator_error_propagation ... ok
+test core::pagination::tests::test_sync_paginator_exhausted_returns_empty ... ok
+test core::pagination::tests::test_sync_paginator_iterator_error ... ok
+test core::pagination::tests::test_sync_paginator_has_next_page_initially ... ok
+test core::pagination::tests::test_sync_paginator_iterator ... ok
+test core::pagination::tests::test_sync_paginator_with_initial_cursor ... ok
+test core::query_parameter_builder::tests::test_bool_array ... ok
+test core::query_parameter_builder::tests::test_bool_param ... ok
+test core::pagination::tests::test_sync_paginator_multiple_pages ... ok
+test core::query_parameter_builder::tests::test_float_array ... ok
+test core::query_parameter_builder::tests::test_float_param ... ok
+test core::pagination::tests::test_sync_paginator_single_page ... ok
+test core::query_parameter_builder::tests::test_int_param ... ok
+test core::query_parameter_builder::tests::test_int_param_none_skipped ... ok
+test core::query_parameter_builder::tests::test_method_chaining ... ok
+test core::query_parameter_builder::tests::test_parse_bare_word_returns_error ... ok
+test core::query_parameter_builder::tests::test_parse_comma_separated_values ... ok
+test core::query_parameter_builder::tests::test_parse_multiple_terms ... ok
+test core::query_parameter_builder::tests::test_empty_builder_returns_none ... ok
+test core::query_parameter_builder::tests::test_parse_quoted_value ... ok
+test core::query_parameter_builder::tests::test_int_array ... ok
+test core::query_parameter_builder::tests::test_parse_simple_key_value ... ok
+test core::query_parameter_builder::tests::test_serialize_array_skips_null ... ok
+test core::query_parameter_builder::tests::test_serialize_none_skipped ... ok
+test core::query_parameter_builder::tests::test_serialize_numeric_no_quotes ... ok
+test core::query_parameter_builder::tests::test_serialize_strips_json_quotes ... ok
+test core::query_parameter_builder::tests::test_string_array_multiple_entries ... ok
+test core::query_parameter_builder::tests::test_string_param_none_skipped ... ok
+test core::query_parameter_builder::tests::test_string_param_some ... ok
+test core::query_parameter_builder::tests::test_structured_query_builder_fallback ... ok
+test core::query_parameter_builder::tests::test_structured_query_builder_parses ... ok
+test core::query_parameter_builder::tests::test_structured_query_none_skipped ... ok
+test core::request_options::tests::test_additional_body_param ... ok
+test core::request_options::tests::test_additional_body_params_accumulate ... ok
+test core::request_options::tests::test_additional_header ... ok
+test core::request_options::tests::test_additional_headers_accumulate ... ok
+test core::request_options::tests::test_additional_query_param ... ok
+test core::request_options::tests::test_additional_query_params_accumulate ... ok
+test core::request_options::tests::test_api_key ... ok
+test core::request_options::tests::test_full_method_chaining ... ok
+test core::request_options::tests::test_max_retries ... ok
+test core::request_options::tests::test_default_has_no_values ... ok
+test core::request_options::tests::test_merge_creates_body_when_none ... ok
+test core::request_options::tests::test_merge_creates_body_when_null ... ok
+test core::request_options::tests::test_merge_additional_body_param_overrides_generated_field ... ok
+test core::request_options::tests::test_merge_adds_properties_to_object_body ... ok
+test core::request_options::tests::test_merge_leaves_non_object_body_unchanged ... ok
+test core::request_options::tests::test_merge_nested_values ... ok
+test core::request_options::tests::test_merge_without_additional_body_params_leaves_body_unchanged ... ok
+test core::request_options::tests::test_new_equals_default ... ok
+test core::request_options::tests::test_timeout_seconds ... ok
+test core::request_options::tests::test_token ... ok
+test core::utils::tests::test_join_url_both_slashes ... ok
+test core::utils::tests::test_join_url_empty_base ... ok
+test core::utils::tests::test_join_url_empty_path ... ok
+test core::utils::tests::test_join_url_leading_slash_on_path ... ok
+test core::utils::tests::test_join_url_multi_segment_path ... ok
+test core::utils::tests::test_join_url_no_slashes ... ok
+test core::utils::tests::test_join_url_trailing_slash_on_base ... ok
+test core::oauth_token_provider::tests::test_concurrent_access ... ok
+
+test result: ok. 110 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+$ cargo package --allow-dirty --no-verify   [packages/sdk-rust]
+[1m[92m   Packaging[0m dexa-ai-sdk v0.6.0 (/home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-rust)
+[1m[92m    Updating[0m crates.io index
+[1m[92m    Packaged[0m 72 files, 293.9KiB (48.7KiB compressed)
+  collected 2 rust artifact(s)
+
+java
+
+$ mvn -q package   [packages/sdk-java]
+
+$ mvn -q dependency:copy-dependencies -DoutputDirectory=../../release-artifacts/java   [packages/sdk-java]
+  collected 2 java artifact(s)
+
+csharp
+
+$ dotnet build -c Release   [packages/sdk-csharp]
+  Determining projects to restore...
+  Restored /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk.Test/DexaAiSdk.Test.csproj (in 313 ms).
+  Restored /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk/DexaAiSdk.csproj (in 312 ms).
+  DexaAiSdk -> /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk/bin/Release/net462/DexaAiSdk.dll
+  DexaAiSdk -> /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk/bin/Release/net8.0/DexaAiSdk.dll
+  DexaAiSdk -> /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk/bin/Release/net9.0/DexaAiSdk.dll
+  DexaAiSdk -> /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk/bin/Release/netstandard2.0/DexaAiSdk.dll
+/home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk.Test/Core/RawClientTests/RetriesTests.cs(356,55): warning CS8602: Dereference of a possibly null reference. [/home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk.Test/DexaAiSdk.Test.csproj]
+/home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk.Test/Core/RawClientTests/RetriesTests.cs(395,25): warning CS8602: Dereference of a possibly null reference. [/home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk.Test/DexaAiSdk.Test.csproj]
+/home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk.Test/Core/RawClientTests/RetriesTests.cs(445,55): warning CS8602: Dereference of a possibly null reference. [/home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk.Test/DexaAiSdk.Test.csproj]
+/home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk.Test/Core/RawClientTests/RetriesTests.cs(509,59): warning CS8602: Dereference of a possibly null reference. [/home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk.Test/DexaAiSdk.Test.csproj]
+/home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk.Test/Unit/MockServer/BaseMockServerTest.cs(9,14): warning NUnit1034: Class BaseMockServerTest is used as a base class and should be abstract (https://github.com/nunit/nunit.analyzers/tree/master/documentation/NUnit1034.md) [/home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk.Test/DexaAiSdk.Test.csproj]
+  DexaAiSdk.Test -> /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk.Test/bin/Release/net9.0/DexaAiSdk.Test.dll
+
+Build succeeded.
+
+/home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk.Test/Core/RawClientTests/RetriesTests.cs(356,55): warning CS8602: Dereference of a possibly null reference. [/home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk.Test/DexaAiSdk.Test.csproj]
+/home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk.Test/Core/RawClientTests/RetriesTests.cs(395,25): warning CS8602: Dereference of a possibly null reference. [/home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk.Test/DexaAiSdk.Test.csproj]
+/home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk.Test/Core/RawClientTests/RetriesTests.cs(445,55): warning CS8602: Dereference of a possibly null reference. [/home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk.Test/DexaAiSdk.Test.csproj]
+/home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk.Test/Core/RawClientTests/RetriesTests.cs(509,59): warning CS8602: Dereference of a possibly null reference. [/home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk.Test/DexaAiSdk.Test.csproj]
+/home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk.Test/Unit/MockServer/BaseMockServerTest.cs(9,14): warning NUnit1034: Class BaseMockServerTest is used as a base class and should be abstract (https://github.com/nunit/nunit.analyzers/tree/master/documentation/NUnit1034.md) [/home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk.Test/DexaAiSdk.Test.csproj]
+    5 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:03.59
+
+$ dotnet pack -c Release -o ../../release-artifacts   [packages/sdk-csharp]
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  DexaAiSdk -> /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk/bin/Release/net462/DexaAiSdk.dll
+  DexaAiSdk -> /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk/bin/Release/net9.0/DexaAiSdk.dll
+  DexaAiSdk -> /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk/bin/Release/netstandard2.0/DexaAiSdk.dll
+  DexaAiSdk -> /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp/src/DexaAiSdk/bin/Release/net8.0/DexaAiSdk.dll
+  Successfully created package '/home/runner/work/decide-extract-sdk/decide-extract-sdk/release-artifacts/DexaAiSdk.0.6.0.nupkg'.
+
+6 package(s) built, 0 skipped, 11 artifact(s) in release-artifacts (1133.6 KiB)

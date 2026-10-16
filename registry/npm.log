@@ -1,0 +1,269 @@
+
+up to date in 143ms
+
+> @dsainvg/dexa-ai-sdk@0.6.0 build
+> tsc --project tsconfig.build.json
+
+publishing 
+
+> @dsainvg/dexa-ai-sdk@0.6.0 prepublishOnly
+> npm run clean && npm run build
+
+
+> @dsainvg/dexa-ai-sdk@0.6.0 clean
+> rimraf dist
+
+
+> @dsainvg/dexa-ai-sdk@0.6.0 build
+> tsc --project tsconfig.build.json
+
+npm warn publish npm auto-corrected some errors in your package.json when publishing.  Please run "npm pkg fix" to address these errors.
+npm warn publish errors corrected:
+npm warn publish "repository.url" was normalized to "git+https://github.com/dsainvg/decide-extract-sdk.git"
+npm notice
+npm notice 📦  @dsainvg/dexa-ai-sdk@0.6.0
+npm notice Tarball Contents
+npm notice 8.9kB README.md
+npm notice 386B dist/api/errors/BadRequestError.d.ts
+npm notice 630B dist/api/errors/BadRequestError.js
+npm notice 604B dist/api/errors/BadRequestError.js.map
+npm notice 162B dist/api/errors/index.d.ts
+npm notice 160B dist/api/errors/index.js
+npm notice 182B dist/api/errors/index.js.map
+npm notice 394B dist/api/errors/InternalServerError.d.ts
+npm notice 646B dist/api/errors/InternalServerError.js
+npm notice 613B dist/api/errors/InternalServerError.js.map
+npm notice 404B dist/api/errors/UnprocessableEntityError.d.ts
+npm notice 666B dist/api/errors/UnprocessableEntityError.js
+npm notice 623B dist/api/errors/UnprocessableEntityError.js.map
+npm notice 142B dist/api/index.d.ts
+npm notice 140B dist/api/index.js
+npm notice 172B dist/api/index.js.map
+npm notice 128B dist/api/resources/index.d.ts
+npm notice 126B dist/api/resources/index.js
+npm notice 177B dist/api/resources/index.js.map
+npm notice 3.8kB dist/api/resources/tasks/client/Client.d.ts
+npm notice 12.3kB dist/api/resources/tasks/client/Client.js
+npm notice 8.5kB dist/api/resources/tasks/client/Client.js.map
+npm notice 72B dist/api/resources/tasks/client/index.d.ts
+npm notice 70B dist/api/resources/tasks/client/index.js
+npm notice 158B dist/api/resources/tasks/client/index.js.map
+npm notice 2.5kB dist/api/resources/tasks/client/requests/DecideRequest.d.ts
+npm notice 1.2kB dist/api/resources/tasks/client/requests/DecideRequest.js
+npm notice 1.3kB dist/api/resources/tasks/client/requests/DecideRequest.js.map
+npm notice 2.4kB dist/api/resources/tasks/client/requests/ExtractRequest.d.ts
+npm notice 1.3kB dist/api/resources/tasks/client/requests/ExtractRequest.js
+npm notice 1.3kB dist/api/resources/tasks/client/requests/ExtractRequest.js.map
+npm notice 141B dist/api/resources/tasks/client/requests/index.d.ts
+npm notice 139B dist/api/resources/tasks/client/requests/index.js
+npm notice 233B dist/api/resources/tasks/client/requests/index.js.map
+npm notice 122B dist/api/resources/tasks/exports.d.ts
+npm notice 185B dist/api/resources/tasks/exports.js
+npm notice 208B dist/api/resources/tasks/exports.js.map
+npm notice 70B dist/api/resources/tasks/index.d.ts
+npm notice 68B dist/api/resources/tasks/index.js
+npm notice 148B dist/api/resources/tasks/index.js.map
+npm notice 441B dist/api/types/AudioInput.d.ts
+npm notice 265B dist/api/types/AudioInput.js
+npm notice 281B dist/api/types/AudioInput.js.map
+npm notice 450B dist/api/types/Choice.d.ts
+npm notice 292B dist/api/types/Choice.js
+npm notice 298B dist/api/types/Choice.js.map
+npm notice 1.4kB dist/api/types/ContentPart.d.ts
+npm notice 757B dist/api/types/ContentPart.js
+npm notice 777B dist/api/types/ContentPart.js.map
+npm notice 342B dist/api/types/DecideResponse.d.ts
+npm notice 118B dist/api/types/DecideResponse.js
+npm notice 143B dist/api/types/DecideResponse.js.map
+npm notice 303B dist/api/types/DecideResult.d.ts
+npm notice 116B dist/api/types/DecideResult.js
+npm notice 139B dist/api/types/DecideResult.js.map
+npm notice 1.3kB dist/api/types/DecideTask.d.ts
+npm notice 589B dist/api/types/DecideTask.js
+npm notice 646B dist/api/types/DecideTask.js.map
+npm notice 301B dist/api/types/ErrorResponse.d.ts
+npm notice 117B dist/api/types/ErrorResponse.js
+npm notice 141B dist/api/types/ErrorResponse.js.map
+npm notice 417B dist/api/types/ExtractResponse.d.ts
+npm notice 119B dist/api/types/ExtractResponse.js
+npm notice 145B dist/api/types/ExtractResponse.js.map
+npm notice 1.2kB dist/api/types/ExtractTask.d.ts
+npm notice 595B dist/api/types/ExtractTask.js
+npm notice 648B dist/api/types/ExtractTask.js.map
+npm notice 441B dist/api/types/ImageInput.d.ts
+npm notice 265B dist/api/types/ImageInput.js
+npm notice 281B dist/api/types/ImageInput.js.map
+npm notice 339B dist/api/types/ImageUrl.d.ts
+npm notice 273B dist/api/types/ImageUrl.js
+npm notice 297B dist/api/types/ImageUrl.js.map
+npm notice 608B dist/api/types/index.d.ts
+npm notice 606B dist/api/types/index.js
+npm notice 493B dist/api/types/index.js.map
+npm notice 1.1kB dist/api/types/Message.d.ts
+npm notice 673B dist/api/types/Message.js
+npm notice 728B dist/api/types/Message.js.map
+npm notice 980B dist/api/types/ResponseMessage.d.ts
+npm notice 681B dist/api/types/ResponseMessage.js
+npm notice 704B dist/api/types/ResponseMessage.js.map
+npm notice 2.4kB dist/api/types/RunTasksRequest.d.ts
+npm notice 1.3kB dist/api/types/RunTasksRequest.js
+npm notice 1.2kB dist/api/types/RunTasksRequest.js.map
+npm notice 363B dist/api/types/RunTasksResponse.d.ts
+npm notice 120B dist/api/types/RunTasksResponse.js
+npm notice 147B dist/api/types/RunTasksResponse.js.map
+npm notice 349B dist/api/types/Task.d.ts
+npm notice 108B dist/api/types/Task.js
+npm notice 123B dist/api/types/Task.js.map
+npm notice 146B dist/api/types/Usage.d.ts
+npm notice 109B dist/api/types/Usage.js
+npm notice 125B dist/api/types/Usage.js.map
+npm notice 2.4kB dist/BaseClient.d.ts
+npm notice 568B dist/BaseClient.js
+npm notice 534B dist/BaseClient.js.map
+npm notice 1.5kB dist/Client.d.ts
+npm notice 1.6kB dist/Client.js
+npm notice 919B dist/Client.js.map
+npm notice 75B dist/core/exports.d.ts
+npm notice 73B dist/core/exports.js
+npm notice 131B dist/core/exports.js.map
+npm notice 580B dist/core/fetcher/APIResponse.d.ts
+npm notice 50B dist/core/fetcher/APIResponse.js
+npm notice 129B dist/core/fetcher/APIResponse.js.map
+npm notice 947B dist/core/fetcher/BinaryResponse.d.ts
+npm notice 505B dist/core/fetcher/BinaryResponse.js
+npm notice 598B dist/core/fetcher/BinaryResponse.js.map
+npm notice 156B dist/core/fetcher/createRequestUrl.d.ts
+npm notice 300B dist/core/fetcher/createRequestUrl.js
+npm notice 390B dist/core/fetcher/createRequestUrl.js.map
+npm notice 647B dist/core/fetcher/EndpointMetadata.d.ts
+npm notice 55B dist/core/fetcher/EndpointMetadata.js
+npm notice 139B dist/core/fetcher/EndpointMetadata.js.map
+npm notice 500B dist/core/fetcher/EndpointSupplier.d.ts
+npm notice 268B dist/core/fetcher/EndpointSupplier.js
+npm notice 373B dist/core/fetcher/EndpointSupplier.js.map
+npm notice 2.1kB dist/core/fetcher/Fetcher.d.ts
+npm notice 9.5kB dist/core/fetcher/Fetcher.js
+npm notice 8.1kB dist/core/fetcher/Fetcher.js.map
+npm notice 134B dist/core/fetcher/getErrorResponseBody.d.ts
+npm notice 1.7kB dist/core/fetcher/getErrorResponseBody.js
+npm notice 1.5kB dist/core/fetcher/getErrorResponseBody.js.map
+npm notice 101B dist/core/fetcher/getFetchFn.d.ts
+npm notice 95B dist/core/fetcher/getFetchFn.js
+npm notice 188B dist/core/fetcher/getFetchFn.js.map
+npm notice 140B dist/core/fetcher/getHeader.d.ts
+npm notice 288B dist/core/fetcher/getHeader.js
+npm notice 390B dist/core/fetcher/getHeader.js.map
+npm notice 306B dist/core/fetcher/getRequestBody.d.ts
+npm notice 398B dist/core/fetcher/getRequestBody.js
+npm notice 559B dist/core/fetcher/getRequestBody.js.map
+npm notice 648B dist/core/fetcher/getResponseBody.d.ts
+npm notice 2.5kB dist/core/fetcher/getResponseBody.js
+npm notice 2.0kB dist/core/fetcher/getResponseBody.js.map
+npm notice 105B dist/core/fetcher/Headers.d.ts
+npm notice 2.8kB dist/core/fetcher/Headers.js
+npm notice 3.0kB dist/core/fetcher/Headers.js.map
+npm notice 2.9kB dist/core/fetcher/HttpResponsePromise.d.ts
+npm notice 3.0kB dist/core/fetcher/HttpResponsePromise.js
+npm notice 1.7kB dist/core/fetcher/HttpResponsePromise.js.map
+npm notice 817B dist/core/fetcher/index.d.ts
+npm notice 439B dist/core/fetcher/index.js
+npm notice 442B dist/core/fetcher/index.js.map
+npm notice 2.4kB dist/core/fetcher/makePassthroughRequest.d.ts
+npm notice 6.7kB dist/core/fetcher/makePassthroughRequest.js
+npm notice 5.2kB dist/core/fetcher/makePassthroughRequest.js.map
+npm notice 853B dist/core/fetcher/makeRequest.d.ts
+npm notice 2.8kB dist/core/fetcher/makeRequest.js
+npm notice 2.3kB dist/core/fetcher/makeRequest.js.map
+npm notice 1.0kB dist/core/fetcher/RawResponse.d.ts
+npm notice 1.1kB dist/core/fetcher/RawResponse.js
+npm notice 810B dist/core/fetcher/RawResponse.js.map
+npm notice 153B dist/core/fetcher/redactUrl.d.ts
+npm notice 3.0kB dist/core/fetcher/redactUrl.js
+npm notice 3.2kB dist/core/fetcher/redactUrl.js.map
+npm notice 195B dist/core/fetcher/requestWithRetries.d.ts
+npm notice 3.0kB dist/core/fetcher/requestWithRetries.js
+npm notice 3.0kB dist/core/fetcher/requestWithRetries.js.map
+npm notice 304B dist/core/fetcher/signals.d.ts
+npm notice 1.2kB dist/core/fetcher/signals.js
+npm notice 1.2kB dist/core/fetcher/signals.js.map
+npm notice 192B dist/core/fetcher/Supplier.d.ts
+npm notice 244B dist/core/fetcher/Supplier.js
+npm notice 334B dist/core/fetcher/Supplier.js.map
+npm notice 304B dist/core/headers.d.ts
+npm notice 902B dist/core/headers.js
+npm notice 1.1kB dist/core/headers.js.map
+npm notice 193B dist/core/index.d.ts
+npm notice 191B dist/core/index.js
+npm notice 226B dist/core/index.js.map
+npm notice 1.0kB dist/core/json.d.ts
+npm notice 910B dist/core/json.js
+npm notice 397B dist/core/json.js.map
+npm notice 592B dist/core/logging/exports.d.ts
+npm notice 319B dist/core/logging/exports.js
+npm notice 326B dist/core/logging/exports.js.map
+npm notice 64B dist/core/logging/index.d.ts
+npm notice 62B dist/core/logging/index.js
+npm notice 136B dist/core/logging/index.js.map
+npm notice 3.8kB dist/core/logging/logger.d.ts
+npm notice 3.7kB dist/core/logging/logger.js
+npm notice 2.9kB dist/core/logging/logger.js.map
+npm notice 885B dist/core/requestBody.d.ts
+npm notice 1.1kB dist/core/requestBody.js
+npm notice 509B dist/core/requestBody.js.map
+npm notice 89B dist/core/runtime/index.d.ts
+npm notice 87B dist/core/runtime/index.js
+npm notice 166B dist/core/runtime/index.js.map
+npm notice 1.2kB dist/core/runtime/runtime.d.ts
+npm notice 6.6kB dist/core/runtime/runtime.js
+npm notice 3.8kB dist/core/runtime/runtime.js.map
+npm notice 110B dist/core/url/encodePathParam.d.ts
+npm notice 468B dist/core/url/encodePathParam.js
+npm notice 508B dist/core/url/encodePathParam.js.map
+npm notice 222B dist/core/url/index.d.ts
+npm notice 220B dist/core/url/index.js
+npm notice 279B dist/core/url/index.js.map
+npm notice 109B dist/core/url/join.d.ts
+npm notice 1.9kB dist/core/url/join.js
+npm notice 2.3kB dist/core/url/join.js.map
+npm notice 271B dist/core/url/qs.d.ts
+npm notice 2.9kB dist/core/url/qs.js
+npm notice 3.1kB dist/core/url/qs.js.map
+npm notice 1.7kB dist/core/url/QueryStringBuilder.d.ts
+npm notice 2.7kB dist/core/url/QueryStringBuilder.js
+npm notice 1.7kB dist/core/url/QueryStringBuilder.js.map
+npm notice 209B dist/environments.d.ts
+npm notice 184B dist/environments.js
+npm notice 190B dist/environments.js.map
+npm notice 546B dist/errors/DexaAiSdkError.d.ts
+npm notice 1.2kB dist/errors/DexaAiSdkError.js
+npm notice 1.4kB dist/errors/DexaAiSdkError.js.map
+npm notice 241B dist/errors/DexaAiSdkTimeoutError.d.ts
+npm notice 564B dist/errors/DexaAiSdkTimeoutError.js
+npm notice 575B dist/errors/DexaAiSdkTimeoutError.js.map
+npm notice 246B dist/errors/handleNonStatusCodeError.d.ts
+npm notice 1.2kB dist/errors/handleNonStatusCodeError.js
+npm notice 973B dist/errors/handleNonStatusCodeError.js.map
+npm notice 157B dist/errors/index.d.ts
+npm notice 155B dist/errors/index.js
+npm notice 194B dist/errors/index.js.map
+npm notice 72B dist/exports.d.ts
+npm notice 70B dist/exports.js
+npm notice 123B dist/exports.js.map
+npm notice 368B dist/index.d.ts
+npm notice 288B dist/index.js
+npm notice 296B dist/index.js.map
+npm notice 1.4kB package.json
+npm notice Tarball Details
+npm notice name: @dsainvg/dexa-ai-sdk
+npm notice version: 0.6.0
+npm notice filename: dsainvg-dexa-ai-sdk-0.6.0.tgz
+npm notice package size: 53.9 kB
+npm notice unpacked size: 237.9 kB
+npm notice shasum: c5852301c0d31e679819eb1d74fc06476010e978
+npm notice integrity: sha512-okaElOVEssFMX[...]Nq/AcX6MoEZ2A==
+npm notice total files: 230
+npm notice
+npm notice npm tokens that bypass 2FA are being restricted for account changes and direct publishing. Learn how to prepare: https://gh.io/npm-gat-bypass2fa-deprecation
+npm notice Publishing to https://registry.npmjs.org/ with tag latest and public access
+npm notice Your package is being processed and may take a few minutes to become available.
++ @dsainvg/dexa-ai-sdk@0.6.0

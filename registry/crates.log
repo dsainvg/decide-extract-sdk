@@ -1,0 +1,13 @@
+[1m[33mwarning[0m: `cargo publish --token` is deprecated in favor of using `cargo login` and environment variables
+[1m[92m    Updating[0m crates.io index
+[1m[92m   Packaging[0m dexa-ai-sdk v0.6.0 (/home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-rust)
+[1m[92m    Updating[0m crates.io index
+[1m[92m    Packaged[0m 72 files, 293.9KiB (48.7KiB compressed)
+[1m[92m   Verifying[0m dexa-ai-sdk v0.6.0 (/home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-rust)
+[1m[92m   Compiling[0m dexa-ai-sdk v0.6.0 (/home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-rust/target/package/dexa-ai-sdk-0.6.0)
+[1m[92m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.99s
+[1m[92m   Uploading[0m dexa-ai-sdk v0.6.0 (/home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-rust)
+[1m[92m    Uploaded[0m dexa-ai-sdk v0.6.0 to registry `crates-io`
+[1m[92mnote[0m: waiting for dexa-ai-sdk v0.6.0 to be available at registry `crates-io`
+[1m[96mhelp[0m: you may press ctrl-c to skip waiting; the crate should be available shortly
+[1m[92m   Published[0m dexa-ai-sdk v0.6.0 at registry `crates-io`
