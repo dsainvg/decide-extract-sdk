@@ -13,6 +13,9 @@ pub struct ExtractResponse {
     /// Backward-compatible alias for result
     #[serde(skip_serializing_if = "Option::is_none")]
     pub data: Option<HashMap<String, serde_json::Value>>,
+    /// Extracted value
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub value: Option<String>,
     #[serde(default)]
     pub usage: Usage,
 }
@@ -31,6 +34,7 @@ pub struct ExtractResponseBuilder {
     choices: Option<Vec<Choice>>,
     result: Option<HashMap<String, serde_json::Value>>,
     data: Option<HashMap<String, serde_json::Value>>,
+    value: Option<String>,
     usage: Option<Usage>,
 }
 
@@ -60,6 +64,11 @@ impl ExtractResponseBuilder {
         self
     }
 
+    pub fn value(mut self, value: impl Into<String>) -> Self {
+        self.value = Some(value.into());
+        self
+    }
+
     pub fn usage(mut self, value: Usage) -> Self {
         self.usage = Some(value);
         self
@@ -85,6 +94,7 @@ impl ExtractResponseBuilder {
                 .result
                 .ok_or_else(|| BuildError::missing_field("result"))?,
             data: self.data,
+            value: self.value,
             usage: self
                 .usage
                 .ok_or_else(|| BuildError::missing_field("usage"))?,

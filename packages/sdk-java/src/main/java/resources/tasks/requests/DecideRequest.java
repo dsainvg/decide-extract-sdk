@@ -120,11 +120,17 @@ public final class DecideRequest {
     return question;
   }
 
+  /**
+   * @return Options to decide between. Defaults to ['yes', 'no'] for boolean decisions; can specify more than 2 options.
+   */
   @JsonProperty("choices")
   public Optional<List<String>> getChoices() {
     return choices;
   }
 
+  /**
+   * @return Alias for choices. Defaults to ['yes', 'no'].
+   */
   @JsonProperty("options")
   public Optional<List<String>> getOptions() {
     return options;
@@ -222,10 +228,16 @@ public final class DecideRequest {
 
     _FinalStage audio(List<AudioInput> audio);
 
+    /**
+     * <p>Options to decide between. Defaults to ['yes', 'no'] for boolean decisions; can specify more than 2 options.</p>
+     */
     _FinalStage choices(Optional<List<String>> choices);
 
     _FinalStage choices(List<String> choices);
 
+    /**
+     * <p>Alias for choices. Defaults to ['yes', 'no'].</p>
+     */
     _FinalStage options(Optional<List<String>> options);
 
     _FinalStage options(List<String> options);
@@ -422,12 +434,19 @@ public final class DecideRequest {
       return this;
     }
 
+    /**
+     * <p>Alias for choices. Defaults to ['yes', 'no'].</p>
+     * @return Reference to {@code this} so that method calls can be chained together.
+     */
     @java.lang.Override
     public _FinalStage options(List<String> options) {
       this.options = Optional.ofNullable(options);
       return this;
     }
 
+    /**
+     * <p>Alias for choices. Defaults to ['yes', 'no'].</p>
+     */
     @java.lang.Override
     @JsonSetter(
         value = "options",
@@ -438,12 +457,19 @@ public final class DecideRequest {
       return this;
     }
 
+    /**
+     * <p>Options to decide between. Defaults to ['yes', 'no'] for boolean decisions; can specify more than 2 options.</p>
+     * @return Reference to {@code this} so that method calls can be chained together.
+     */
     @java.lang.Override
     public _FinalStage choices(List<String> choices) {
       this.choices = Optional.ofNullable(choices);
       return this;
     }
 
+    /**
+     * <p>Options to decide between. Defaults to ['yes', 'no'] for boolean decisions; can specify more than 2 options.</p>
+     */
     @java.lang.Override
     @JsonSetter(
         value = "choices",

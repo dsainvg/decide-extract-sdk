@@ -599,9 +599,7 @@ public partial class TasksClient : ITasksClient
     }
 
     /// <example><code>
-    /// await client.Tasks.ExtractAsync(
-    ///     new ExtractRequest { Model = "model", Instruction = "instruction" }
-    /// );
+    /// await client.Tasks.ExtractAsync(new ExtractRequest { Model = "model", Question = "question" });
     /// </code></example>
     public WithRawResponseTask<ExtractResponse> ExtractAsync(
         ExtractRequest request,

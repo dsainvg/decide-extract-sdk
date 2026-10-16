@@ -24,9 +24,15 @@ public record DecideRequest
     [JsonPropertyName("question")]
     public required string Question { get; set; }
 
+    /// <summary>
+    /// Options to decide between. Defaults to ['yes', 'no'] for boolean decisions; can specify more than 2 options.
+    /// </summary>
     [JsonPropertyName("choices")]
     public IEnumerable<string>? Choices { get; set; }
 
+    /// <summary>
+    /// Alias for choices. Defaults to ['yes', 'no'].
+    /// </summary>
     [JsonPropertyName("options")]
     public IEnumerable<string>? Options { get; set; }
 

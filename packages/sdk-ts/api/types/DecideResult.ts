@@ -2,6 +2,7 @@
 
 export interface DecideResult {
     value: string;
+    /** Probabilities for each option. These may not add up to 1.0; any remaining probability represents 'not sure' / uncertain. */
     probabilities: Record<string, number>;
     reason?: string | undefined;
 }

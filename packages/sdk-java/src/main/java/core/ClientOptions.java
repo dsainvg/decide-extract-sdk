@@ -57,7 +57,7 @@ public final class ClientOptions {
     this.environment = environment;
     this.headers = new HashMap<>();
     this.headers.putAll(headers);
-    this.headers.putAll(new HashMap<String,String>() {{put("User-Agent", "org.dsainvg.dexa_ai_sdk/0.5.0");put("X-Fern-Language", "JAVA");put("X-Fern-SDK-Name", "com.dsainvg.dexa:api-sdk");}});
+    this.headers.putAll(new HashMap<String,String>() {{put("User-Agent", "org.dsainvg.dexa_ai_sdk/0.6.0");put("X-Fern-Language", "JAVA");put("X-Fern-SDK-Name", "com.dsainvg.dexa:api-sdk");}});
     this.headerSuppliers = headerSuppliers;
     this.httpClient = httpClient;
     this.ownsHttpClient = ownsHttpClient;

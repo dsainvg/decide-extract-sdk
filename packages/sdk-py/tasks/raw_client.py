@@ -339,8 +339,10 @@ class RawTasksClient:
         audio : typing.Optional[typing.Sequence[AudioInput]]
 
         choices : typing.Optional[typing.Sequence[str]]
+            Options to decide between. Defaults to ['yes', 'no'] for boolean decisions; can specify more than 2 options.
 
         options : typing.Optional[typing.Sequence[str]]
+            Alias for choices. Defaults to ['yes', 'no'].
 
         instruction : typing.Optional[str]
 
@@ -451,14 +453,12 @@ class RawTasksClient:
         self,
         *,
         model: str,
-        question: typing.Optional[str] = OMIT,
-        instruction: typing.Optional[str] = OMIT,
+        question: str,
         context: typing.Optional[str] = OMIT,
         messages: typing.Optional[typing.Sequence[Message]] = OMIT,
         images: typing.Optional[typing.Sequence[ImageInput]] = OMIT,
         audio: typing.Optional[typing.Sequence[AudioInput]] = OMIT,
-        fields: typing.Optional[typing.Sequence[str]] = OMIT,
-        keys: typing.Optional[typing.Sequence[str]] = OMIT,
+        instruction: typing.Optional[str] = OMIT,
         schema: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         temperature: typing.Optional[float] = OMIT,
         max_output_tokens: typing.Optional[int] = OMIT,
@@ -472,9 +472,8 @@ class RawTasksClient:
         ----------
         model : str
 
-        question : typing.Optional[str]
-
-        instruction : typing.Optional[str]
+        question : str
+            Question or extraction prompt
 
         context : typing.Optional[str]
 
@@ -484,9 +483,8 @@ class RawTasksClient:
 
         audio : typing.Optional[typing.Sequence[AudioInput]]
 
-        fields : typing.Optional[typing.Sequence[str]]
-
-        keys : typing.Optional[typing.Sequence[str]]
+        instruction : typing.Optional[str]
+            Backward-compatible alias for question
 
         schema : typing.Optional[typing.Dict[str, typing.Any]]
 
@@ -508,7 +506,6 @@ class RawTasksClient:
         HttpResponse[ExtractResponse]
             Success
         """
-        _effective_question = question if question is not OMIT else instruction
         _response = self._client_wrapper.httpx_client.request(
             "extract",
             method="POST",
@@ -524,8 +521,8 @@ class RawTasksClient:
                 "audio": convert_and_respect_annotation_metadata(
                     object_=audio, annotation=typing.Sequence[AudioInput], direction="write"
                 ),
-                "question": _effective_question,
-                "instruction": instruction if instruction is not OMIT else _effective_question,
+                "question": question,
+                "instruction": instruction,
                 "schema": schema,
                 "temperature": temperature,
                 "max_output_tokens": max_output_tokens,
@@ -897,8 +894,10 @@ class AsyncRawTasksClient:
         audio : typing.Optional[typing.Sequence[AudioInput]]
 
         choices : typing.Optional[typing.Sequence[str]]
+            Options to decide between. Defaults to ['yes', 'no'] for boolean decisions; can specify more than 2 options.
 
         options : typing.Optional[typing.Sequence[str]]
+            Alias for choices. Defaults to ['yes', 'no'].
 
         instruction : typing.Optional[str]
 
@@ -1009,14 +1008,12 @@ class AsyncRawTasksClient:
         self,
         *,
         model: str,
-        question: typing.Optional[str] = OMIT,
-        instruction: typing.Optional[str] = OMIT,
+        question: str,
         context: typing.Optional[str] = OMIT,
         messages: typing.Optional[typing.Sequence[Message]] = OMIT,
         images: typing.Optional[typing.Sequence[ImageInput]] = OMIT,
         audio: typing.Optional[typing.Sequence[AudioInput]] = OMIT,
-        fields: typing.Optional[typing.Sequence[str]] = OMIT,
-        keys: typing.Optional[typing.Sequence[str]] = OMIT,
+        instruction: typing.Optional[str] = OMIT,
         schema: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         temperature: typing.Optional[float] = OMIT,
         max_output_tokens: typing.Optional[int] = OMIT,
@@ -1030,9 +1027,8 @@ class AsyncRawTasksClient:
         ----------
         model : str
 
-        question : typing.Optional[str]
-
-        instruction : typing.Optional[str]
+        question : str
+            Question or extraction prompt
 
         context : typing.Optional[str]
 
@@ -1042,9 +1038,8 @@ class AsyncRawTasksClient:
 
         audio : typing.Optional[typing.Sequence[AudioInput]]
 
-        fields : typing.Optional[typing.Sequence[str]]
-
-        keys : typing.Optional[typing.Sequence[str]]
+        instruction : typing.Optional[str]
+            Backward-compatible alias for question
 
         schema : typing.Optional[typing.Dict[str, typing.Any]]
 
@@ -1066,7 +1061,6 @@ class AsyncRawTasksClient:
         AsyncHttpResponse[ExtractResponse]
             Success
         """
-        _effective_question = question if question is not OMIT else instruction
         _response = await self._client_wrapper.httpx_client.request(
             "extract",
             method="POST",
@@ -1082,8 +1076,8 @@ class AsyncRawTasksClient:
                 "audio": convert_and_respect_annotation_metadata(
                     object_=audio, annotation=typing.Sequence[AudioInput], direction="write"
                 ),
-                "question": _effective_question,
-                "instruction": instruction if instruction is not OMIT else _effective_question,
+                "question": question,
+                "instruction": instruction,
                 "schema": schema,
                 "temperature": temperature,
                 "max_output_tokens": max_output_tokens,

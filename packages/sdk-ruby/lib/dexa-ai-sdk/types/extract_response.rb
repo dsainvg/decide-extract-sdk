@@ -13,6 +13,8 @@ module DexaAiSdk
 
       field :data, -> { Internal::Types::Hash[String, Object] }, optional: true, nullable: false
 
+      field :value, -> { String }, optional: true, nullable: false
+
       field :usage, -> { DexaAiSdk::Types::Usage }, optional: false, nullable: false
     end
   end

@@ -7,11 +7,9 @@ module DexaAiSdk
 
       field :id, -> { String }, optional: true, nullable: false
 
-      field :instruction, -> { String }, optional: false, nullable: false
+      field :question, -> { String }, optional: false, nullable: false
 
-      field :fields, -> { Internal::Types::Array[String] }, optional: true, nullable: false
-
-      field :keys, -> { Internal::Types::Array[String] }, optional: true, nullable: false
+      field :instruction, -> { String }, optional: true, nullable: false
 
       field :schema, -> { Internal::Types::Hash[String, Object] }, optional: true, nullable: false
 

@@ -8,7 +8,11 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 class DecideResult(UniversalBaseModel):
     value: str
-    probabilities: typing.Dict[str, float] = pydantic.Field(default_factory=dict)
+    probabilities: typing.Dict[str, float] = pydantic.Field()
+    """
+    Probabilities for each option. These may not add up to 1.0; any remaining probability represents 'not sure' / uncertain.
+    """
+
     reason: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:

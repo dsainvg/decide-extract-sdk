@@ -14,6 +14,13 @@ public record DecideResult : IJsonOnDeserialized
     [JsonPropertyName("value")]
     public required string Value { get; set; }
 
+    /// <summary>
+    /// Probabilities for each option. These may not add up to 1.0; any remaining probability represents 'not sure' / uncertain.
+    /// </summary>
+    [JsonPropertyName("probabilities")]
+    public Dictionary<string, double> Probabilities { get; set; } =
+        new Dictionary<string, double>();
+
     [JsonPropertyName("reason")]
     public string? Reason { get; set; }
 

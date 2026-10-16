@@ -284,7 +284,7 @@ export class TasksClient {
      * @example
      *     await client.tasks.extract({
      *         model: "model",
-     *         instruction: "instruction"
+     *         question: "question"
      *     })
      */
     public extract(

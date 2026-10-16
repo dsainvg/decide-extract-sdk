@@ -15,7 +15,7 @@ public class ExtractTest : BaseMockServerTest
         const string requestJson = """
             {
               "model": "model",
-              "instruction": "instruction"
+              "question": "question"
             }
             """;
 
@@ -51,6 +51,7 @@ public class ExtractTest : BaseMockServerTest
                   "key": "value"
                 }
               },
+              "value": "value",
               "usage": {
                 "prompt_tokens": 1,
                 "completion_tokens": 1,
@@ -83,9 +84,8 @@ public class ExtractTest : BaseMockServerTest
                 Messages = null,
                 Images = null,
                 Audio = null,
-                Instruction = "instruction",
-                Fields = null,
-                Keys = null,
+                Question = "question",
+                Instruction = null,
                 Schema = null,
                 Temperature = null,
                 MaxOutputTokens = null,
@@ -103,7 +103,7 @@ public class ExtractTest : BaseMockServerTest
         const string requestJson = """
             {
               "model": "model",
-              "instruction": "instruction"
+              "question": "question"
             }
             """;
 
@@ -126,6 +126,7 @@ public class ExtractTest : BaseMockServerTest
               "data": {
                 "key": "value"
               },
+              "value": "value",
               "usage": {
                 "prompt_tokens": 1,
                 "completion_tokens": 1,
@@ -151,7 +152,7 @@ public class ExtractTest : BaseMockServerTest
             );
 
         var response = await Client.Tasks.ExtractAsync(
-            new ExtractRequest { Model = "model", Instruction = "instruction" }
+            new ExtractRequest { Model = "model", Question = "question" }
         );
         JsonAssert.AreEqual(response, mockResponse);
     }

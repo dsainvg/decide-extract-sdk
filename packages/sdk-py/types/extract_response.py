@@ -19,6 +19,10 @@ class ExtractResponse(UniversalBaseModel):
     """
 
     value: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Extracted value
+    """
+
     usage: Usage
 
     if IS_PYDANTIC_V2:

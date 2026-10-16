@@ -21,14 +21,17 @@ public record ExtractRequest
     [JsonPropertyName("audio")]
     public IEnumerable<AudioInput>? Audio { get; set; }
 
+    /// <summary>
+    /// Question or extraction prompt
+    /// </summary>
+    [JsonPropertyName("question")]
+    public required string Question { get; set; }
+
+    /// <summary>
+    /// Backward-compatible alias for question
+    /// </summary>
     [JsonPropertyName("instruction")]
-    public required string Instruction { get; set; }
-
-    [JsonPropertyName("fields")]
-    public IEnumerable<string>? Fields { get; set; }
-
-    [JsonPropertyName("keys")]
-    public IEnumerable<string>? Keys { get; set; }
+    public string? Instruction { get; set; }
 
     [JsonPropertyName("schema")]
     public Dictionary<string, object?>? Schema { get; set; }

@@ -16,7 +16,9 @@ export interface DecideRequest {
     images?: DexaAiSdk.ImageInput[];
     audio?: DexaAiSdk.AudioInput[];
     question: string;
+    /** Options to decide between. Defaults to ['yes', 'no'] for boolean decisions; can specify more than 2 options. */
     choices?: string[];
+    /** Alias for choices. Defaults to ['yes', 'no']. */
     options?: string[];
     instruction?: string;
     temperature?: number;

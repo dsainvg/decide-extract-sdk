@@ -215,7 +215,7 @@ client.tasks.decide(
 <dl>
 <dd>
 
-**choices:** `typing.Optional[typing.List[str]]` 
+**choices:** `typing.Optional[typing.List[str]]` — Options to decide between. Defaults to ['yes', 'no'] for boolean decisions; can specify more than 2 options.
     
 </dd>
 </dl>
@@ -223,7 +223,7 @@ client.tasks.decide(
 <dl>
 <dd>
 
-**options:** `typing.Optional[typing.List[str]]` 
+**options:** `typing.Optional[typing.List[str]]` — Alias for choices. Defaults to ['yes', 'no'].
     
 </dd>
 </dl>
@@ -313,7 +313,7 @@ client = DexaAiSdk(
 
 client.tasks.extract(
     model="model",
-    instruction="instruction",
+    question="question",
 )
 
 ```
@@ -338,7 +338,7 @@ client.tasks.extract(
 <dl>
 <dd>
 
-**instruction:** `str` 
+**question:** `str` — Question or extraction prompt
     
 </dd>
 </dl>
@@ -378,15 +378,7 @@ client.tasks.extract(
 <dl>
 <dd>
 
-**fields:** `typing.Optional[typing.List[str]]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**keys:** `typing.Optional[typing.List[str]]` 
+**instruction:** `typing.Optional[str]` — Backward-compatible alias for question
     
 </dd>
 </dl>

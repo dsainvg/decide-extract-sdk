@@ -13,9 +13,11 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import core.ObjectMappers;
+import java.lang.Double;
 import java.lang.Object;
 import java.lang.String;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -28,13 +30,16 @@ import org.jetbrains.annotations.NotNull;
 public final class DecideResult {
   private final String value;
 
+  private final Map<String, Double> probabilities;
+
   private final Optional<String> reason;
 
   private final Map<String, Object> additionalProperties;
 
-  private DecideResult(String value, Optional<String> reason,
+  private DecideResult(String value, Map<String, Double> probabilities, Optional<String> reason,
       Map<String, Object> additionalProperties) {
     this.value = value;
+    this.probabilities = probabilities;
     this.reason = reason;
     this.additionalProperties = additionalProperties;
   }
@@ -42,6 +47,14 @@ public final class DecideResult {
   @JsonProperty("value")
   public String getValue() {
     return value;
+  }
+
+  /**
+   * @return Probabilities for each option. These may not add up to 1.0; any remaining probability represents 'not sure' / uncertain.
+   */
+  @JsonProperty("probabilities")
+  public Map<String, Double> getProbabilities() {
+    return probabilities;
   }
 
   @JsonProperty("reason")
@@ -61,12 +74,12 @@ public final class DecideResult {
   }
 
   private boolean equalTo(DecideResult other) {
-    return value.equals(other.value) && reason.equals(other.reason);
+    return value.equals(other.value) && probabilities.equals(other.probabilities) && reason.equals(other.reason);
   }
 
   @java.lang.Override
   public int hashCode() {
-    return Objects.hash(this.value, this.reason);
+    return Objects.hash(this.value, this.probabilities, this.reason);
   }
 
   @java.lang.Override
@@ -91,6 +104,15 @@ public final class DecideResult {
 
     _FinalStage additionalProperties(Map<String, Object> additionalProperties);
 
+    /**
+     * <p>Probabilities for each option. These may not add up to 1.0; any remaining probability represents 'not sure' / uncertain.</p>
+     */
+    _FinalStage probabilities(Map<String, Double> probabilities);
+
+    _FinalStage putAllProbabilities(Map<String, Double> probabilities);
+
+    _FinalStage probabilities(String key, Double value);
+
     _FinalStage reason(Optional<String> reason);
 
     _FinalStage reason(String reason);
@@ -104,6 +126,8 @@ public final class DecideResult {
 
     private Optional<String> reason = Optional.empty();
 
+    private Map<String, Double> probabilities = new LinkedHashMap<>();
+
     @JsonAnySetter
     private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -113,6 +137,7 @@ public final class DecideResult {
     @java.lang.Override
     public Builder from(DecideResult other) {
       value(other.getValue());
+      probabilities(other.getProbabilities());
       reason(other.getReason());
       return this;
     }
@@ -140,9 +165,47 @@ public final class DecideResult {
       return this;
     }
 
+    /**
+     * <p>Probabilities for each option. These may not add up to 1.0; any remaining probability represents 'not sure' / uncertain.</p>
+     * @return Reference to {@code this} so that method calls can be chained together.
+     */
+    @java.lang.Override
+    public _FinalStage probabilities(String key, Double value) {
+      this.probabilities.put(key, value);
+      return this;
+    }
+
+    /**
+     * <p>Probabilities for each option. These may not add up to 1.0; any remaining probability represents 'not sure' / uncertain.</p>
+     * @return Reference to {@code this} so that method calls can be chained together.
+     */
+    @java.lang.Override
+    public _FinalStage putAllProbabilities(Map<String, Double> probabilities) {
+      if (probabilities != null) {
+        this.probabilities.putAll(probabilities);
+      }
+      return this;
+    }
+
+    /**
+     * <p>Probabilities for each option. These may not add up to 1.0; any remaining probability represents 'not sure' / uncertain.</p>
+     */
+    @java.lang.Override
+    @JsonSetter(
+        value = "probabilities",
+        nulls = Nulls.SKIP
+    )
+    public _FinalStage probabilities(Map<String, Double> probabilities) {
+      this.probabilities.clear();
+      if (probabilities != null) {
+        this.probabilities.putAll(probabilities);
+      }
+      return this;
+    }
+
     @java.lang.Override
     public DecideResult build() {
-      return new DecideResult(value, reason, additionalProperties);
+      return new DecideResult(value, probabilities, reason, additionalProperties);
     }
 
     @java.lang.Override

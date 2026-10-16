@@ -155,9 +155,7 @@ await client.Tasks.DecideAsync(new DecideRequest { Model = "model", Question = "
 <dd>
 
 ```csharp
-await client.Tasks.ExtractAsync(
-    new ExtractRequest { Model = "model", Instruction = "instruction" }
-);
+await client.Tasks.ExtractAsync(new ExtractRequest { Model = "model", Question = "question" });
 ```
 </dd>
 </dl>

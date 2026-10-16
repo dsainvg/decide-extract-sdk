@@ -12,12 +12,12 @@ pub struct ExtractRequest {
     pub images: Option<Vec<ImageInput>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub audio: Option<Vec<AudioInput>>,
+    /// Question or extraction prompt
     #[serde(default)]
-    pub instruction: String,
+    pub question: String,
+    /// Backward-compatible alias for question
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub fields: Option<Vec<String>>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub keys: Option<Vec<String>>,
+    pub instruction: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub schema: Option<HashMap<String, serde_json::Value>>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -48,9 +48,8 @@ pub struct ExtractRequestBuilder {
     messages: Option<Vec<Message>>,
     images: Option<Vec<ImageInput>>,
     audio: Option<Vec<AudioInput>>,
+    question: Option<String>,
     instruction: Option<String>,
-    fields: Option<Vec<String>>,
-    keys: Option<Vec<String>>,
     schema: Option<HashMap<String, serde_json::Value>>,
     temperature: Option<f64>,
     max_output_tokens: Option<i64>,
@@ -85,18 +84,13 @@ impl ExtractRequestBuilder {
         self
     }
 
+    pub fn question(mut self, value: impl Into<String>) -> Self {
+        self.question = Some(value.into());
+        self
+    }
+
     pub fn instruction(mut self, value: impl Into<String>) -> Self {
         self.instruction = Some(value.into());
-        self
-    }
-
-    pub fn fields(mut self, value: Vec<String>) -> Self {
-        self.fields = Some(value);
-        self
-    }
-
-    pub fn keys(mut self, value: Vec<String>) -> Self {
-        self.keys = Some(value);
         self
     }
 
@@ -133,7 +127,7 @@ impl ExtractRequestBuilder {
     /// Consumes the builder and constructs a [`ExtractRequest`].
     /// This method will fail if any of the following fields are not set:
     /// - [`model`](ExtractRequestBuilder::model)
-    /// - [`instruction`](ExtractRequestBuilder::instruction)
+    /// - [`question`](ExtractRequestBuilder::question)
     pub fn build(self) -> Result<ExtractRequest, BuildError> {
         Ok(ExtractRequest {
             model: self
@@ -143,11 +137,10 @@ impl ExtractRequestBuilder {
             messages: self.messages,
             images: self.images,
             audio: self.audio,
-            instruction: self
-                .instruction
-                .ok_or_else(|| BuildError::missing_field("instruction"))?,
-            fields: self.fields,
-            keys: self.keys,
+            question: self
+                .question
+                .ok_or_else(|| BuildError::missing_field("question"))?,
+            instruction: self.instruction,
             schema: self.schema,
             temperature: self.temperature,
             max_output_tokens: self.max_output_tokens,

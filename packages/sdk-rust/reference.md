@@ -206,7 +206,7 @@ async fn main() {
 <dl>
 <dd>
 
-**choices:** `Option<Vec<String>>` 
+**choices:** `Option<Vec<String>>` — Options to decide between. Defaults to ['yes', 'no'] for boolean decisions; can specify more than 2 options.
     
 </dd>
 </dl>
@@ -214,7 +214,7 @@ async fn main() {
 <dl>
 <dd>
 
-**options:** `Option<Vec<String>>` 
+**options:** `Option<Vec<String>>` — Alias for choices. Defaults to ['yes', 'no'].
     
 </dd>
 </dl>
@@ -300,13 +300,12 @@ async fn main() {
         .extract(
             &ExtractRequest {
                 model: "model".to_string(),
-                instruction: "instruction".to_string(),
+                question: "question".to_string(),
                 context: None,
                 messages: None,
                 images: None,
                 audio: None,
-                fields: None,
-                keys: None,
+                instruction: None,
                 schema: None,
                 temperature: None,
                 max_output_tokens: None,
@@ -372,7 +371,7 @@ async fn main() {
 <dl>
 <dd>
 
-**instruction:** `String` 
+**question:** `String` — Question or extraction prompt
     
 </dd>
 </dl>
@@ -380,15 +379,7 @@ async fn main() {
 <dl>
 <dd>
 
-**fields:** `Option<Vec<String>>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**keys:** `Option<Vec<String>>` 
+**instruction:** `Option<String>` — Backward-compatible alias for question
     
 </dd>
 </dl>

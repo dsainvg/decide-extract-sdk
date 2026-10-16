@@ -8,11 +8,23 @@ from .decide_task_target_language import DecideTaskTargetLanguage
 
 
 class DecideTask(UniversalBaseModel):
-    name: str
+    name: str = pydantic.Field()
+    """
+    Unique task name used as key in results. Has no effect on LLM inference.
+    """
+
     id: typing.Optional[str] = None
     question: str
-    choices: typing.Optional[typing.List[str]] = None
-    options: typing.Optional[typing.List[str]] = None
+    choices: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    """
+    Allowed decision options. Defaults to ['yes', 'no'] for boolean decisions; can specify more than 2 options.
+    """
+
+    options: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    """
+    Alias for choices. Defaults to ['yes', 'no'].
+    """
+
     instruction: typing.Optional[str] = None
     target_language: typing.Optional[DecideTaskTargetLanguage] = None
 

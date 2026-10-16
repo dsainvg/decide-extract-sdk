@@ -14,8 +14,10 @@ pub struct DecideRequest {
     pub audio: Option<Vec<AudioInput>>,
     #[serde(default)]
     pub question: String,
+    /// Options to decide between. Defaults to ['yes', 'no'] for boolean decisions; can specify more than 2 options.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub choices: Option<Vec<String>>,
+    /// Alias for choices. Defaults to ['yes', 'no'].
     #[serde(skip_serializing_if = "Option::is_none")]
     pub options: Option<Vec<String>>,
     #[serde(skip_serializing_if = "Option::is_none")]

@@ -45,11 +45,9 @@ public final class ExtractRequest {
 
   private final Optional<List<AudioInput>> audio;
 
-  private final String instruction;
+  private final String question;
 
-  private final Optional<List<String>> fields;
-
-  private final Optional<List<String>> keys;
+  private final Optional<String> instruction;
 
   private final Optional<Map<String, Object>> schema;
 
@@ -66,10 +64,10 @@ public final class ExtractRequest {
   private final Map<String, Object> additionalProperties;
 
   private ExtractRequest(String model, Optional<String> context, Optional<List<Message>> messages,
-      Optional<List<ImageInput>> images, Optional<List<AudioInput>> audio, String instruction,
-      Optional<List<String>> fields, Optional<List<String>> keys,
-      Optional<Map<String, Object>> schema, Optional<Double> temperature,
-      Optional<Integer> maxOutputTokens, Optional<ExtractRequestResponseFormat> responseFormat,
+      Optional<List<ImageInput>> images, Optional<List<AudioInput>> audio, String question,
+      Optional<String> instruction, Optional<Map<String, Object>> schema,
+      Optional<Double> temperature, Optional<Integer> maxOutputTokens,
+      Optional<ExtractRequestResponseFormat> responseFormat,
       Optional<ExtractRequestTargetLanguage> targetLanguage,
       Optional<ExtractRequestOutputLanguage> outputLanguage,
       Map<String, Object> additionalProperties) {
@@ -78,9 +76,8 @@ public final class ExtractRequest {
     this.messages = messages;
     this.images = images;
     this.audio = audio;
+    this.question = question;
     this.instruction = instruction;
-    this.fields = fields;
-    this.keys = keys;
     this.schema = schema;
     this.temperature = temperature;
     this.maxOutputTokens = maxOutputTokens;
@@ -115,19 +112,20 @@ public final class ExtractRequest {
     return audio;
   }
 
+  /**
+   * @return Question or extraction prompt
+   */
+  @JsonProperty("question")
+  public String getQuestion() {
+    return question;
+  }
+
+  /**
+   * @return Backward-compatible alias for question
+   */
   @JsonProperty("instruction")
-  public String getInstruction() {
+  public Optional<String> getInstruction() {
     return instruction;
-  }
-
-  @JsonProperty("fields")
-  public Optional<List<String>> getFields() {
-    return fields;
-  }
-
-  @JsonProperty("keys")
-  public Optional<List<String>> getKeys() {
-    return keys;
   }
 
   @JsonProperty("schema")
@@ -172,12 +170,12 @@ public final class ExtractRequest {
   }
 
   private boolean equalTo(ExtractRequest other) {
-    return model.equals(other.model) && context.equals(other.context) && messages.equals(other.messages) && images.equals(other.images) && audio.equals(other.audio) && instruction.equals(other.instruction) && fields.equals(other.fields) && keys.equals(other.keys) && schema.equals(other.schema) && temperature.equals(other.temperature) && maxOutputTokens.equals(other.maxOutputTokens) && responseFormat.equals(other.responseFormat) && targetLanguage.equals(other.targetLanguage) && outputLanguage.equals(other.outputLanguage);
+    return model.equals(other.model) && context.equals(other.context) && messages.equals(other.messages) && images.equals(other.images) && audio.equals(other.audio) && question.equals(other.question) && instruction.equals(other.instruction) && schema.equals(other.schema) && temperature.equals(other.temperature) && maxOutputTokens.equals(other.maxOutputTokens) && responseFormat.equals(other.responseFormat) && targetLanguage.equals(other.targetLanguage) && outputLanguage.equals(other.outputLanguage);
   }
 
   @java.lang.Override
   public int hashCode() {
-    return Objects.hash(this.model, this.context, this.messages, this.images, this.audio, this.instruction, this.fields, this.keys, this.schema, this.temperature, this.maxOutputTokens, this.responseFormat, this.targetLanguage, this.outputLanguage);
+    return Objects.hash(this.model, this.context, this.messages, this.images, this.audio, this.question, this.instruction, this.schema, this.temperature, this.maxOutputTokens, this.responseFormat, this.targetLanguage, this.outputLanguage);
   }
 
   @java.lang.Override
@@ -190,13 +188,16 @@ public final class ExtractRequest {
   }
 
   public interface ModelStage {
-    InstructionStage model(@NotNull String model);
+    QuestionStage model(@NotNull String model);
 
     Builder from(ExtractRequest other);
   }
 
-  public interface InstructionStage {
-    _FinalStage instruction(@NotNull String instruction);
+  public interface QuestionStage {
+    /**
+     * <p>Question or extraction prompt</p>
+     */
+    _FinalStage question(@NotNull String question);
   }
 
   public interface _FinalStage {
@@ -222,13 +223,12 @@ public final class ExtractRequest {
 
     _FinalStage audio(List<AudioInput> audio);
 
-    _FinalStage fields(Optional<List<String>> fields);
+    /**
+     * <p>Backward-compatible alias for question</p>
+     */
+    _FinalStage instruction(Optional<String> instruction);
 
-    _FinalStage fields(List<String> fields);
-
-    _FinalStage keys(Optional<List<String>> keys);
-
-    _FinalStage keys(List<String> keys);
+    _FinalStage instruction(String instruction);
 
     _FinalStage schema(Optional<Map<String, Object>> schema);
 
@@ -258,10 +258,10 @@ public final class ExtractRequest {
   @JsonIgnoreProperties(
       ignoreUnknown = true
   )
-  public static final class Builder implements ModelStage, InstructionStage, _FinalStage {
+  public static final class Builder implements ModelStage, QuestionStage, _FinalStage {
     private String model;
 
-    private String instruction;
+    private String question;
 
     private Optional<ExtractRequestOutputLanguage> outputLanguage = Optional.empty();
 
@@ -275,9 +275,7 @@ public final class ExtractRequest {
 
     private Optional<Map<String, Object>> schema = Optional.empty();
 
-    private Optional<List<String>> keys = Optional.empty();
-
-    private Optional<List<String>> fields = Optional.empty();
+    private Optional<String> instruction = Optional.empty();
 
     private Optional<List<AudioInput>> audio = Optional.empty();
 
@@ -300,9 +298,8 @@ public final class ExtractRequest {
       messages(other.getMessages());
       images(other.getImages());
       audio(other.getAudio());
+      question(other.getQuestion());
       instruction(other.getInstruction());
-      fields(other.getFields());
-      keys(other.getKeys());
       schema(other.getSchema());
       temperature(other.getTemperature());
       maxOutputTokens(other.getMaxOutputTokens());
@@ -314,15 +311,19 @@ public final class ExtractRequest {
 
     @java.lang.Override
     @JsonSetter("model")
-    public InstructionStage model(@NotNull String model) {
+    public QuestionStage model(@NotNull String model) {
       this.model = Objects.requireNonNull(model, "model must not be null");
       return this;
     }
 
+    /**
+     * <p>Question or extraction prompt</p>
+     * @return Reference to {@code this} so that method calls can be chained together.
+     */
     @java.lang.Override
-    @JsonSetter("instruction")
-    public _FinalStage instruction(@NotNull String instruction) {
-      this.instruction = Objects.requireNonNull(instruction, "instruction must not be null");
+    @JsonSetter("question")
+    public _FinalStage question(@NotNull String question) {
+      this.question = Objects.requireNonNull(question, "question must not be null");
       return this;
     }
 
@@ -422,35 +423,26 @@ public final class ExtractRequest {
       return this;
     }
 
+    /**
+     * <p>Backward-compatible alias for question</p>
+     * @return Reference to {@code this} so that method calls can be chained together.
+     */
     @java.lang.Override
-    public _FinalStage keys(List<String> keys) {
-      this.keys = Optional.ofNullable(keys);
+    public _FinalStage instruction(String instruction) {
+      this.instruction = Optional.ofNullable(instruction);
       return this;
     }
 
+    /**
+     * <p>Backward-compatible alias for question</p>
+     */
     @java.lang.Override
     @JsonSetter(
-        value = "keys",
+        value = "instruction",
         nulls = Nulls.SKIP
     )
-    public _FinalStage keys(Optional<List<String>> keys) {
-      this.keys = keys;
-      return this;
-    }
-
-    @java.lang.Override
-    public _FinalStage fields(List<String> fields) {
-      this.fields = Optional.ofNullable(fields);
-      return this;
-    }
-
-    @java.lang.Override
-    @JsonSetter(
-        value = "fields",
-        nulls = Nulls.SKIP
-    )
-    public _FinalStage fields(Optional<List<String>> fields) {
-      this.fields = fields;
+    public _FinalStage instruction(Optional<String> instruction) {
+      this.instruction = instruction;
       return this;
     }
 
@@ -520,7 +512,7 @@ public final class ExtractRequest {
 
     @java.lang.Override
     public ExtractRequest build() {
-      return new ExtractRequest(model, context, messages, images, audio, instruction, fields, keys, schema, temperature, maxOutputTokens, responseFormat, targetLanguage, outputLanguage, additionalProperties);
+      return new ExtractRequest(model, context, messages, images, audio, question, instruction, schema, temperature, maxOutputTokens, responseFormat, targetLanguage, outputLanguage, additionalProperties);
     }
 
     @java.lang.Override

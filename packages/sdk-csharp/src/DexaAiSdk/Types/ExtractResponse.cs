@@ -29,6 +29,12 @@ public record ExtractResponse : IJsonOnDeserialized
     [JsonPropertyName("data")]
     public Dictionary<string, object?>? Data { get; set; }
 
+    /// <summary>
+    /// Extracted value
+    /// </summary>
+    [JsonPropertyName("value")]
+    public string? Value { get; set; }
+
     [JsonPropertyName("usage")]
     public required Usage Usage { get; set; }
 

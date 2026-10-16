@@ -153,7 +153,7 @@ module DexaAiSdk
       # @example
       #   client.tasks.extract(
       #     model: "model",
-      #     instruction: "instruction"
+      #     question: "question"
       #   )
       #
       # @return [DexaAiSdk::Types::ExtractResponse]

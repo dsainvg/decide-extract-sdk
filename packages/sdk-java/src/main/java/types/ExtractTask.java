@@ -16,7 +16,6 @@ import core.ObjectMappers;
 import java.lang.Object;
 import java.lang.String;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -31,11 +30,9 @@ public final class ExtractTask {
 
   private final Optional<String> id;
 
-  private final String instruction;
+  private final String question;
 
-  private final Optional<List<String>> fields;
-
-  private final Optional<List<String>> keys;
+  private final Optional<String> instruction;
 
   private final Optional<Map<String, Object>> schema;
 
@@ -43,20 +40,22 @@ public final class ExtractTask {
 
   private final Map<String, Object> additionalProperties;
 
-  private ExtractTask(String name, Optional<String> id, String instruction,
-      Optional<List<String>> fields, Optional<List<String>> keys,
-      Optional<Map<String, Object>> schema, Optional<ExtractTaskTargetLanguage> targetLanguage,
+  private ExtractTask(String name, Optional<String> id, String question,
+      Optional<String> instruction, Optional<Map<String, Object>> schema,
+      Optional<ExtractTaskTargetLanguage> targetLanguage,
       Map<String, Object> additionalProperties) {
     this.name = name;
     this.id = id;
+    this.question = question;
     this.instruction = instruction;
-    this.fields = fields;
-    this.keys = keys;
     this.schema = schema;
     this.targetLanguage = targetLanguage;
     this.additionalProperties = additionalProperties;
   }
 
+  /**
+   * @return Unique task name used as key in results. Has no effect on LLM inference.
+   */
   @JsonProperty("name")
   public String getName() {
     return name;
@@ -67,19 +66,20 @@ public final class ExtractTask {
     return id;
   }
 
+  /**
+   * @return Question or extraction prompt
+   */
+  @JsonProperty("question")
+  public String getQuestion() {
+    return question;
+  }
+
+  /**
+   * @return Backward-compatible alias for question
+   */
   @JsonProperty("instruction")
-  public String getInstruction() {
+  public Optional<String> getInstruction() {
     return instruction;
-  }
-
-  @JsonProperty("fields")
-  public Optional<List<String>> getFields() {
-    return fields;
-  }
-
-  @JsonProperty("keys")
-  public Optional<List<String>> getKeys() {
-    return keys;
   }
 
   @JsonProperty("schema")
@@ -104,12 +104,12 @@ public final class ExtractTask {
   }
 
   private boolean equalTo(ExtractTask other) {
-    return name.equals(other.name) && id.equals(other.id) && instruction.equals(other.instruction) && fields.equals(other.fields) && keys.equals(other.keys) && schema.equals(other.schema) && targetLanguage.equals(other.targetLanguage);
+    return name.equals(other.name) && id.equals(other.id) && question.equals(other.question) && instruction.equals(other.instruction) && schema.equals(other.schema) && targetLanguage.equals(other.targetLanguage);
   }
 
   @java.lang.Override
   public int hashCode() {
-    return Objects.hash(this.name, this.id, this.instruction, this.fields, this.keys, this.schema, this.targetLanguage);
+    return Objects.hash(this.name, this.id, this.question, this.instruction, this.schema, this.targetLanguage);
   }
 
   @java.lang.Override
@@ -122,13 +122,19 @@ public final class ExtractTask {
   }
 
   public interface NameStage {
-    InstructionStage name(@NotNull String name);
+    /**
+     * <p>Unique task name used as key in results. Has no effect on LLM inference.</p>
+     */
+    QuestionStage name(@NotNull String name);
 
     Builder from(ExtractTask other);
   }
 
-  public interface InstructionStage {
-    _FinalStage instruction(@NotNull String instruction);
+  public interface QuestionStage {
+    /**
+     * <p>Question or extraction prompt</p>
+     */
+    _FinalStage question(@NotNull String question);
   }
 
   public interface _FinalStage {
@@ -142,13 +148,12 @@ public final class ExtractTask {
 
     _FinalStage id(String id);
 
-    _FinalStage fields(Optional<List<String>> fields);
+    /**
+     * <p>Backward-compatible alias for question</p>
+     */
+    _FinalStage instruction(Optional<String> instruction);
 
-    _FinalStage fields(List<String> fields);
-
-    _FinalStage keys(Optional<List<String>> keys);
-
-    _FinalStage keys(List<String> keys);
+    _FinalStage instruction(String instruction);
 
     _FinalStage schema(Optional<Map<String, Object>> schema);
 
@@ -162,18 +167,16 @@ public final class ExtractTask {
   @JsonIgnoreProperties(
       ignoreUnknown = true
   )
-  public static final class Builder implements NameStage, InstructionStage, _FinalStage {
+  public static final class Builder implements NameStage, QuestionStage, _FinalStage {
     private String name;
 
-    private String instruction;
+    private String question;
 
     private Optional<ExtractTaskTargetLanguage> targetLanguage = Optional.empty();
 
     private Optional<Map<String, Object>> schema = Optional.empty();
 
-    private Optional<List<String>> keys = Optional.empty();
-
-    private Optional<List<String>> fields = Optional.empty();
+    private Optional<String> instruction = Optional.empty();
 
     private Optional<String> id = Optional.empty();
 
@@ -187,25 +190,32 @@ public final class ExtractTask {
     public Builder from(ExtractTask other) {
       name(other.getName());
       id(other.getId());
+      question(other.getQuestion());
       instruction(other.getInstruction());
-      fields(other.getFields());
-      keys(other.getKeys());
       schema(other.getSchema());
       targetLanguage(other.getTargetLanguage());
       return this;
     }
 
+    /**
+     * <p>Unique task name used as key in results. Has no effect on LLM inference.</p>
+     * @return Reference to {@code this} so that method calls can be chained together.
+     */
     @java.lang.Override
     @JsonSetter("name")
-    public InstructionStage name(@NotNull String name) {
+    public QuestionStage name(@NotNull String name) {
       this.name = Objects.requireNonNull(name, "name must not be null");
       return this;
     }
 
+    /**
+     * <p>Question or extraction prompt</p>
+     * @return Reference to {@code this} so that method calls can be chained together.
+     */
     @java.lang.Override
-    @JsonSetter("instruction")
-    public _FinalStage instruction(@NotNull String instruction) {
-      this.instruction = Objects.requireNonNull(instruction, "instruction must not be null");
+    @JsonSetter("question")
+    public _FinalStage question(@NotNull String question) {
+      this.question = Objects.requireNonNull(question, "question must not be null");
       return this;
     }
 
@@ -241,35 +251,26 @@ public final class ExtractTask {
       return this;
     }
 
+    /**
+     * <p>Backward-compatible alias for question</p>
+     * @return Reference to {@code this} so that method calls can be chained together.
+     */
     @java.lang.Override
-    public _FinalStage keys(List<String> keys) {
-      this.keys = Optional.ofNullable(keys);
+    public _FinalStage instruction(String instruction) {
+      this.instruction = Optional.ofNullable(instruction);
       return this;
     }
 
+    /**
+     * <p>Backward-compatible alias for question</p>
+     */
     @java.lang.Override
     @JsonSetter(
-        value = "keys",
+        value = "instruction",
         nulls = Nulls.SKIP
     )
-    public _FinalStage keys(Optional<List<String>> keys) {
-      this.keys = keys;
-      return this;
-    }
-
-    @java.lang.Override
-    public _FinalStage fields(List<String> fields) {
-      this.fields = Optional.ofNullable(fields);
-      return this;
-    }
-
-    @java.lang.Override
-    @JsonSetter(
-        value = "fields",
-        nulls = Nulls.SKIP
-    )
-    public _FinalStage fields(Optional<List<String>> fields) {
-      this.fields = fields;
+    public _FinalStage instruction(Optional<String> instruction) {
+      this.instruction = instruction;
       return this;
     }
 
@@ -291,7 +292,7 @@ public final class ExtractTask {
 
     @java.lang.Override
     public ExtractTask build() {
-      return new ExtractTask(name, id, instruction, fields, keys, schema, targetLanguage, additionalProperties);
+      return new ExtractTask(name, id, question, instruction, schema, targetLanguage, additionalProperties);
     }
 
     @java.lang.Override

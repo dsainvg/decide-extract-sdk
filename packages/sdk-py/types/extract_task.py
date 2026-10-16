@@ -10,10 +10,22 @@ from .extract_task_target_language import ExtractTaskTargetLanguage
 
 
 class ExtractTask(UniversalBaseModel):
-    name: str
+    name: str = pydantic.Field()
+    """
+    Unique task name used as key in results. Has no effect on LLM inference.
+    """
+
     id: typing.Optional[str] = None
-    question: str
-    instruction: typing.Optional[str] = None
+    question: str = pydantic.Field()
+    """
+    Question or extraction prompt
+    """
+
+    instruction: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Backward-compatible alias for question
+    """
+
     schema_: typing_extensions.Annotated[
         typing.Optional[typing.Dict[str, typing.Any]], FieldMetadata(alias="schema"), pydantic.Field(alias="schema")
     ] = None

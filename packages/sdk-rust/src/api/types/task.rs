@@ -31,11 +31,9 @@ pub enum Task {
         #[serde(skip_serializing_if = "Option::is_none")]
         id: Option<String>,
         #[serde(default)]
-        instruction: String,
+        question: String,
         #[serde(skip_serializing_if = "Option::is_none")]
-        fields: Option<Vec<String>>,
-        #[serde(skip_serializing_if = "Option::is_none")]
-        keys: Option<Vec<String>>,
+        instruction: Option<String>,
         #[serde(skip_serializing_if = "Option::is_none")]
         schema: Option<HashMap<String, serde_json::Value>>,
         #[serde(skip_serializing_if = "Option::is_none")]
@@ -62,13 +60,12 @@ impl Task {
         }
     }
 
-    pub fn extract(name: String, instruction: String) -> Self {
+    pub fn extract(name: String, question: String) -> Self {
         Self::Extract {
             name,
             id: None,
-            instruction,
-            fields: None,
-            keys: None,
+            question,
+            instruction: None,
             schema: None,
             target_language: None,
         }
@@ -177,58 +174,34 @@ impl Task {
     pub fn extract_with_id(
         name: String,
         id: String,
-        instruction: String,
-        fields: Option<Vec<String>>,
-        keys: Option<Vec<String>>,
+        question: String,
+        instruction: Option<String>,
         schema: Option<HashMap<String, serde_json::Value>>,
         target_language: Option<ExtractTaskTargetLanguage>,
     ) -> Self {
         Self::Extract {
             name,
             id: Some(id),
+            question,
             instruction,
-            fields,
-            keys,
             schema,
             target_language,
         }
     }
 
-    pub fn extract_with_fields(
+    pub fn extract_with_instruction(
         name: String,
         id: Option<String>,
+        question: String,
         instruction: String,
-        fields: Vec<String>,
-        keys: Option<Vec<String>>,
         schema: Option<HashMap<String, serde_json::Value>>,
         target_language: Option<ExtractTaskTargetLanguage>,
     ) -> Self {
         Self::Extract {
             name,
             id,
-            instruction,
-            fields: Some(fields),
-            keys,
-            schema,
-            target_language,
-        }
-    }
-
-    pub fn extract_with_keys(
-        name: String,
-        id: Option<String>,
-        instruction: String,
-        fields: Option<Vec<String>>,
-        keys: Vec<String>,
-        schema: Option<HashMap<String, serde_json::Value>>,
-        target_language: Option<ExtractTaskTargetLanguage>,
-    ) -> Self {
-        Self::Extract {
-            name,
-            id,
-            instruction,
-            fields,
-            keys: Some(keys),
+            question,
+            instruction: Some(instruction),
             schema,
             target_language,
         }
@@ -237,18 +210,16 @@ impl Task {
     pub fn extract_with_schema(
         name: String,
         id: Option<String>,
-        instruction: String,
-        fields: Option<Vec<String>>,
-        keys: Option<Vec<String>>,
+        question: String,
+        instruction: Option<String>,
         schema: HashMap<String, serde_json::Value>,
         target_language: Option<ExtractTaskTargetLanguage>,
     ) -> Self {
         Self::Extract {
             name,
             id,
+            question,
             instruction,
-            fields,
-            keys,
             schema: Some(schema),
             target_language,
         }
@@ -257,18 +228,16 @@ impl Task {
     pub fn extract_with_target_language(
         name: String,
         id: Option<String>,
-        instruction: String,
-        fields: Option<Vec<String>>,
-        keys: Option<Vec<String>>,
+        question: String,
+        instruction: Option<String>,
         schema: Option<HashMap<String, serde_json::Value>>,
         target_language: ExtractTaskTargetLanguage,
     ) -> Self {
         Self::Extract {
             name,
             id,
+            question,
             instruction,
-            fields,
-            keys,
             schema,
             target_language: Some(target_language),
         }

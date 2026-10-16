@@ -56,6 +56,9 @@ public final class DecideTask {
     this.additionalProperties = additionalProperties;
   }
 
+  /**
+   * @return Unique task name used as key in results. Has no effect on LLM inference.
+   */
   @JsonProperty("name")
   public String getName() {
     return name;
@@ -71,11 +74,17 @@ public final class DecideTask {
     return question;
   }
 
+  /**
+   * @return Allowed decision options. Defaults to ['yes', 'no'] for boolean decisions; can specify more than 2 options.
+   */
   @JsonProperty("choices")
   public Optional<List<String>> getChoices() {
     return choices;
   }
 
+  /**
+   * @return Alias for choices. Defaults to ['yes', 'no'].
+   */
   @JsonProperty("options")
   public Optional<List<String>> getOptions() {
     return options;
@@ -121,6 +130,9 @@ public final class DecideTask {
   }
 
   public interface NameStage {
+    /**
+     * <p>Unique task name used as key in results. Has no effect on LLM inference.</p>
+     */
     QuestionStage name(@NotNull String name);
 
     Builder from(DecideTask other);
@@ -141,10 +153,16 @@ public final class DecideTask {
 
     _FinalStage id(String id);
 
+    /**
+     * <p>Allowed decision options. Defaults to ['yes', 'no'] for boolean decisions; can specify more than 2 options.</p>
+     */
     _FinalStage choices(Optional<List<String>> choices);
 
     _FinalStage choices(List<String> choices);
 
+    /**
+     * <p>Alias for choices. Defaults to ['yes', 'no'].</p>
+     */
     _FinalStage options(Optional<List<String>> options);
 
     _FinalStage options(List<String> options);
@@ -194,6 +212,10 @@ public final class DecideTask {
       return this;
     }
 
+    /**
+     * <p>Unique task name used as key in results. Has no effect on LLM inference.</p>
+     * @return Reference to {@code this} so that method calls can be chained together.
+     */
     @java.lang.Override
     @JsonSetter("name")
     public QuestionStage name(@NotNull String name) {
@@ -240,12 +262,19 @@ public final class DecideTask {
       return this;
     }
 
+    /**
+     * <p>Alias for choices. Defaults to ['yes', 'no'].</p>
+     * @return Reference to {@code this} so that method calls can be chained together.
+     */
     @java.lang.Override
     public _FinalStage options(List<String> options) {
       this.options = Optional.ofNullable(options);
       return this;
     }
 
+    /**
+     * <p>Alias for choices. Defaults to ['yes', 'no'].</p>
+     */
     @java.lang.Override
     @JsonSetter(
         value = "options",
@@ -256,12 +285,19 @@ public final class DecideTask {
       return this;
     }
 
+    /**
+     * <p>Allowed decision options. Defaults to ['yes', 'no'] for boolean decisions; can specify more than 2 options.</p>
+     * @return Reference to {@code this} so that method calls can be chained together.
+     */
     @java.lang.Override
     public _FinalStage choices(List<String> choices) {
       this.choices = Optional.ofNullable(choices);
       return this;
     }
 
+    /**
+     * <p>Allowed decision options. Defaults to ['yes', 'no'] for boolean decisions; can specify more than 2 options.</p>
+     */
     @java.lang.Override
     @JsonSetter(
         value = "choices",

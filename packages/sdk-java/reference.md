@@ -194,7 +194,7 @@ client.tasks().decide(
 <dl>
 <dd>
 
-**choices:** `Optional<List<String>>` 
+**choices:** `Optional<List<String>>` — Options to decide between. Defaults to ['yes', 'no'] for boolean decisions; can specify more than 2 options.
     
 </dd>
 </dl>
@@ -202,7 +202,7 @@ client.tasks().decide(
 <dl>
 <dd>
 
-**options:** `Optional<List<String>>` 
+**options:** `Optional<List<String>>` — Alias for choices. Defaults to ['yes', 'no'].
     
 </dd>
 </dl>
@@ -279,7 +279,7 @@ client.tasks().extract(
     ExtractRequest
         .builder()
         .model("model")
-        .instruction("instruction")
+        .question("question")
         .build()
 );
 ```
@@ -336,7 +336,7 @@ client.tasks().extract(
 <dl>
 <dd>
 
-**instruction:** `String` 
+**question:** `String` — Question or extraction prompt
     
 </dd>
 </dl>
@@ -344,15 +344,7 @@ client.tasks().extract(
 <dl>
 <dd>
 
-**fields:** `Optional<List<String>>` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**keys:** `Optional<List<String>>` 
+**instruction:** `Optional<String>` — Backward-compatible alias for question
     
 </dd>
 </dl>

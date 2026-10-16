@@ -43,10 +43,16 @@ public class DecideTest : BaseMockServerTest
               ],
               "result": {
                 "value": "value",
+                "probabilities": {
+                  "probabilities": 1.1
+                },
                 "reason": "reason"
               },
               "decision": {
                 "value": "value",
+                "probabilities": {
+                  "probabilities": 1.1
+                },
                 "reason": "reason"
               },
               "value": "value",
@@ -121,10 +127,16 @@ public class DecideTest : BaseMockServerTest
               ],
               "result": {
                 "value": "value",
+                "probabilities": {
+                  "key": 1.1
+                },
                 "reason": "reason"
               },
               "decision": {
                 "value": "value",
+                "probabilities": {
+                  "key": 1.1
+                },
                 "reason": "reason"
               },
               "value": "value",

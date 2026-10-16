@@ -172,13 +172,12 @@ impl TasksClient {
     ///         .extract(
     ///             &ExtractRequest {
     ///                 model: "model".to_string(),
-    ///                 instruction: "instruction".to_string(),
+    ///                 question: "question".to_string(),
     ///                 context: None,
     ///                 messages: None,
     ///                 images: None,
     ///                 audio: None,
-    ///                 fields: None,
-    ///                 keys: None,
+    ///                 instruction: None,
     ///                 schema: None,
     ///                 temperature: None,
     ///                 max_output_tokens: None,

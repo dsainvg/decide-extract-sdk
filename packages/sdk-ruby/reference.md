@@ -181,7 +181,7 @@ client.tasks.decide(
 <dl>
 <dd>
 
-**choices:** `Internal::Types::Array[String]` 
+**choices:** `Internal::Types::Array[String]` — Options to decide between. Defaults to ['yes', 'no'] for boolean decisions; can specify more than 2 options.
     
 </dd>
 </dl>
@@ -189,7 +189,7 @@ client.tasks.decide(
 <dl>
 <dd>
 
-**options:** `Internal::Types::Array[String]` 
+**options:** `Internal::Types::Array[String]` — Alias for choices. Defaults to ['yes', 'no'].
     
 </dd>
 </dl>
@@ -272,7 +272,7 @@ client.tasks.decide(
 ```ruby
 client.tasks.extract(
   model: "model",
-  instruction: "instruction"
+  question: "question"
 )
 ```
 </dd>
@@ -328,7 +328,7 @@ client.tasks.extract(
 <dl>
 <dd>
 
-**instruction:** `String` 
+**question:** `String` — Question or extraction prompt
     
 </dd>
 </dl>
@@ -336,15 +336,7 @@ client.tasks.extract(
 <dl>
 <dd>
 
-**fields:** `Internal::Types::Array[String]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**keys:** `Internal::Types::Array[String]` 
+**instruction:** `String` — Backward-compatible alias for question
     
 </dd>
 </dl>

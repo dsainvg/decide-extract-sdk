@@ -240,8 +240,10 @@ class TasksClient:
         audio : typing.Optional[typing.Sequence[AudioInput]]
 
         choices : typing.Optional[typing.Sequence[str]]
+            Options to decide between. Defaults to ['yes', 'no'] for boolean decisions; can specify more than 2 options.
 
         options : typing.Optional[typing.Sequence[str]]
+            Alias for choices. Defaults to ['yes', 'no'].
 
         instruction : typing.Optional[str]
 
@@ -296,14 +298,12 @@ class TasksClient:
         self,
         *,
         model: str,
-        question: typing.Optional[str] = OMIT,
-        instruction: typing.Optional[str] = OMIT,
+        question: str,
         context: typing.Optional[str] = OMIT,
         messages: typing.Optional[typing.Sequence[Message]] = OMIT,
         images: typing.Optional[typing.Sequence[ImageInput]] = OMIT,
         audio: typing.Optional[typing.Sequence[AudioInput]] = OMIT,
-        fields: typing.Optional[typing.Sequence[str]] = OMIT,
-        keys: typing.Optional[typing.Sequence[str]] = OMIT,
+        instruction: typing.Optional[str] = OMIT,
         schema: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         temperature: typing.Optional[float] = OMIT,
         max_output_tokens: typing.Optional[int] = OMIT,
@@ -317,7 +317,8 @@ class TasksClient:
         ----------
         model : str
 
-        instruction : str
+        question : str
+            Question or extraction prompt
 
         context : typing.Optional[str]
 
@@ -327,9 +328,8 @@ class TasksClient:
 
         audio : typing.Optional[typing.Sequence[AudioInput]]
 
-        fields : typing.Optional[typing.Sequence[str]]
-
-        keys : typing.Optional[typing.Sequence[str]]
+        instruction : typing.Optional[str]
+            Backward-compatible alias for question
 
         schema : typing.Optional[typing.Dict[str, typing.Any]]
 
@@ -358,19 +358,17 @@ class TasksClient:
         client = DexaAiSdk()
         client.tasks.extract(
             model="model",
-            instruction="instruction",
+            question="question",
         )
         """
         _response = self._raw_client.extract(
             model=model,
             question=question,
-            instruction=instruction,
             context=context,
             messages=messages,
             images=images,
             audio=audio,
-            fields=fields,
-            keys=keys,
+            instruction=instruction,
             schema=schema,
             temperature=temperature,
             max_output_tokens=max_output_tokens,
@@ -612,8 +610,10 @@ class AsyncTasksClient:
         audio : typing.Optional[typing.Sequence[AudioInput]]
 
         choices : typing.Optional[typing.Sequence[str]]
+            Options to decide between. Defaults to ['yes', 'no'] for boolean decisions; can specify more than 2 options.
 
         options : typing.Optional[typing.Sequence[str]]
+            Alias for choices. Defaults to ['yes', 'no'].
 
         instruction : typing.Optional[str]
 
@@ -676,14 +676,12 @@ class AsyncTasksClient:
         self,
         *,
         model: str,
-        question: typing.Optional[str] = OMIT,
-        instruction: typing.Optional[str] = OMIT,
+        question: str,
         context: typing.Optional[str] = OMIT,
         messages: typing.Optional[typing.Sequence[Message]] = OMIT,
         images: typing.Optional[typing.Sequence[ImageInput]] = OMIT,
         audio: typing.Optional[typing.Sequence[AudioInput]] = OMIT,
-        fields: typing.Optional[typing.Sequence[str]] = OMIT,
-        keys: typing.Optional[typing.Sequence[str]] = OMIT,
+        instruction: typing.Optional[str] = OMIT,
         schema: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         temperature: typing.Optional[float] = OMIT,
         max_output_tokens: typing.Optional[int] = OMIT,
@@ -697,9 +695,8 @@ class AsyncTasksClient:
         ----------
         model : str
 
-        question : typing.Optional[str]
-
-        instruction : typing.Optional[str]
+        question : str
+            Question or extraction prompt
 
         context : typing.Optional[str]
 
@@ -709,9 +706,8 @@ class AsyncTasksClient:
 
         audio : typing.Optional[typing.Sequence[AudioInput]]
 
-        fields : typing.Optional[typing.Sequence[str]]
-
-        keys : typing.Optional[typing.Sequence[str]]
+        instruction : typing.Optional[str]
+            Backward-compatible alias for question
 
         schema : typing.Optional[typing.Dict[str, typing.Any]]
 
@@ -745,7 +741,7 @@ class AsyncTasksClient:
         async def main() -> None:
             await client.tasks.extract(
                 model="model",
-                question="Extract customer details",
+                question="question",
             )
 
 
@@ -754,13 +750,11 @@ class AsyncTasksClient:
         _response = await self._raw_client.extract(
             model=model,
             question=question,
-            instruction=instruction,
             context=context,
             messages=messages,
             images=images,
             audio=audio,
-            fields=fields,
-            keys=keys,
+            instruction=instruction,
             schema=schema,
             temperature=temperature,
             max_output_tokens=max_output_tokens,

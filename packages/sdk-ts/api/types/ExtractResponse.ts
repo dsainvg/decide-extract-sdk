@@ -9,6 +9,7 @@ export interface ExtractResponse {
     result: Record<string, unknown>;
     /** Backward-compatible alias for result */
     data?: Record<string, unknown> | undefined;
+    /** Extracted value */
     value?: string | undefined;
     usage: DexaAiSdk.Usage;
 }

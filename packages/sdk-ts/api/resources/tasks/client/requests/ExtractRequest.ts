@@ -6,7 +6,7 @@ import type * as DexaAiSdk from "../../../../index.js";
  * @example
  *     {
  *         model: "model",
- *         instruction: "instruction"
+ *         question: "question"
  *     }
  */
 export interface ExtractRequest {
@@ -14,7 +14,10 @@ export interface ExtractRequest {
     context?: string;
     messages?: DexaAiSdk.Message[];
     images?: DexaAiSdk.ImageInput[];
+    audio?: DexaAiSdk.AudioInput[];
+    /** Question or extraction prompt */
     question: string;
+    /** Backward-compatible alias for question */
     instruction?: string;
     schema?: Record<string, unknown>;
     temperature?: number;

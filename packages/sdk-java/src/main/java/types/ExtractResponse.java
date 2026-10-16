@@ -39,17 +39,21 @@ public final class ExtractResponse {
 
   private final Optional<Map<String, Object>> data;
 
+  private final Optional<String> value;
+
   private final Usage usage;
 
   private final Map<String, Object> additionalProperties;
 
   private ExtractResponse(String id, String model, List<Choice> choices, Map<String, Object> result,
-      Optional<Map<String, Object>> data, Usage usage, Map<String, Object> additionalProperties) {
+      Optional<Map<String, Object>> data, Optional<String> value, Usage usage,
+      Map<String, Object> additionalProperties) {
     this.id = id;
     this.model = model;
     this.choices = choices;
     this.result = result;
     this.data = data;
+    this.value = value;
     this.usage = usage;
     this.additionalProperties = additionalProperties;
   }
@@ -82,6 +86,14 @@ public final class ExtractResponse {
     return data;
   }
 
+  /**
+   * @return Extracted value
+   */
+  @JsonProperty("value")
+  public Optional<String> getValue() {
+    return value;
+  }
+
   @JsonProperty("usage")
   public Usage getUsage() {
     return usage;
@@ -99,12 +111,12 @@ public final class ExtractResponse {
   }
 
   private boolean equalTo(ExtractResponse other) {
-    return id.equals(other.id) && model.equals(other.model) && choices.equals(other.choices) && result.equals(other.result) && data.equals(other.data) && usage.equals(other.usage);
+    return id.equals(other.id) && model.equals(other.model) && choices.equals(other.choices) && result.equals(other.result) && data.equals(other.data) && value.equals(other.value) && usage.equals(other.usage);
   }
 
   @java.lang.Override
   public int hashCode() {
-    return Objects.hash(this.id, this.model, this.choices, this.result, this.data, this.usage);
+    return Objects.hash(this.id, this.model, this.choices, this.result, this.data, this.value, this.usage);
   }
 
   @java.lang.Override
@@ -155,6 +167,13 @@ public final class ExtractResponse {
     _FinalStage data(Optional<Map<String, Object>> data);
 
     _FinalStage data(Map<String, Object> data);
+
+    /**
+     * <p>Extracted value</p>
+     */
+    _FinalStage value(Optional<String> value);
+
+    _FinalStage value(String value);
   }
 
   @JsonIgnoreProperties(
@@ -166,6 +185,8 @@ public final class ExtractResponse {
     private String model;
 
     private Usage usage;
+
+    private Optional<String> value = Optional.empty();
 
     private Optional<Map<String, Object>> data = Optional.empty();
 
@@ -186,6 +207,7 @@ public final class ExtractResponse {
       choices(other.getChoices());
       result(other.getResult());
       data(other.getData());
+      value(other.getValue());
       usage(other.getUsage());
       return this;
     }
@@ -208,6 +230,29 @@ public final class ExtractResponse {
     @JsonSetter("usage")
     public _FinalStage usage(@NotNull Usage usage) {
       this.usage = Objects.requireNonNull(usage, "usage must not be null");
+      return this;
+    }
+
+    /**
+     * <p>Extracted value</p>
+     * @return Reference to {@code this} so that method calls can be chained together.
+     */
+    @java.lang.Override
+    public _FinalStage value(String value) {
+      this.value = Optional.ofNullable(value);
+      return this;
+    }
+
+    /**
+     * <p>Extracted value</p>
+     */
+    @java.lang.Override
+    @JsonSetter(
+        value = "value",
+        nulls = Nulls.SKIP
+    )
+    public _FinalStage value(Optional<String> value) {
+      this.value = value;
       return this;
     }
 
@@ -290,7 +335,7 @@ public final class ExtractResponse {
 
     @java.lang.Override
     public ExtractResponse build() {
-      return new ExtractResponse(id, model, choices, result, data, usage, additionalProperties);
+      return new ExtractResponse(id, model, choices, result, data, value, usage, additionalProperties);
     }
 
     @java.lang.Override

@@ -11,6 +11,9 @@ public record DecideTask : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    /// <summary>
+    /// Unique task name used as key in results. Has no effect on LLM inference.
+    /// </summary>
     [JsonPropertyName("name")]
     public required string Name { get; set; }
 
@@ -20,9 +23,15 @@ public record DecideTask : IJsonOnDeserialized
     [JsonPropertyName("question")]
     public required string Question { get; set; }
 
+    /// <summary>
+    /// Allowed decision options. Defaults to ['yes', 'no'] for boolean decisions; can specify more than 2 options.
+    /// </summary>
     [JsonPropertyName("choices")]
     public IEnumerable<string>? Choices { get; set; }
 
+    /// <summary>
+    /// Alias for choices. Defaults to ['yes', 'no'].
+    /// </summary>
     [JsonPropertyName("options")]
     public IEnumerable<string>? Options { get; set; }
 

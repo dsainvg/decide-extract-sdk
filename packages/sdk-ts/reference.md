@@ -179,7 +179,7 @@ await client.tasks.decide({
 ```typescript
 await client.tasks.extract({
     model: "model",
-    instruction: "instruction"
+    question: "question"
 });
 
 ```

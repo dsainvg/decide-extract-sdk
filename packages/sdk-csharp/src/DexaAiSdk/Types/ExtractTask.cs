@@ -11,20 +11,26 @@ public record ExtractTask : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    /// <summary>
+    /// Unique task name used as key in results. Has no effect on LLM inference.
+    /// </summary>
     [JsonPropertyName("name")]
     public required string Name { get; set; }
 
     [JsonPropertyName("id")]
     public string? Id { get; set; }
 
+    /// <summary>
+    /// Question or extraction prompt
+    /// </summary>
+    [JsonPropertyName("question")]
+    public required string Question { get; set; }
+
+    /// <summary>
+    /// Backward-compatible alias for question
+    /// </summary>
     [JsonPropertyName("instruction")]
-    public required string Instruction { get; set; }
-
-    [JsonPropertyName("fields")]
-    public IEnumerable<string>? Fields { get; set; }
-
-    [JsonPropertyName("keys")]
-    public IEnumerable<string>? Keys { get; set; }
+    public string? Instruction { get; set; }
 
     [JsonPropertyName("schema")]
     public Dictionary<string, object?>? Schema { get; set; }
