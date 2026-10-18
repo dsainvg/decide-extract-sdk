@@ -35,7 +35,7 @@
     "docs:serve": "node scripts/serve-docs.mjs"
   },
   "devDependencies": {
-    "fern-api": "5.152.2",
+    "fern-api": "5.159.0",
     "highlight.js": "^11.12.0",
     "marked": "^18.1.0"
   }
