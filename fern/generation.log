@@ -1,0 +1,92 @@
+
+> decide-extract-sdk@0.0.0 fern:generate
+> node scripts/generate.mjs
+
+generating 6 SDKs at version 0.6.0, one at a time
+
+[1/6] fern-typescript-sdk
+[api]: Using default group 'sdk' from generators.yml
+[api]: sdk Started.
+[api]: sdk fernapi/fern-typescript-sdk Started.
+[api]: sdk ✓ All checks passed
+[api]: sdk fernapi/fern-typescript-sdk Executing generator fernapi/fern-typescript-sdk using container image: fernapi/fern-typescript-sdk:3.105.1
+[api]: sdk fernapi/fern-typescript-sdk Generator logs here: /tmp/tmp-2400-8C2MEZkO80xi
+[api]: sdk fernapi/fern-typescript-sdk Wrote files to /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-ts
+[api]: sdk fernapi/fern-typescript-sdk Finished.
+[api]: sdk Finished.
+  packages/sdk-ts: 82 -> 79 files
+[2/6] fern-python-sdk
+[api]: Using default group 'sdk' from generators.yml
+[api]: sdk Started.
+[api]: sdk fernapi/fern-python-sdk Started.
+[api]: sdk ✓ All checks passed
+[api]: sdk fernapi/fern-python-sdk Executing generator fernapi/fern-python-sdk using container image: fernapi/fern-python-sdk:5.41.0
+[api]: sdk fernapi/fern-python-sdk Generator logs here: /tmp/tmp-2700-YOHUQW0Dpt1K
+[api]: sdk fernapi/fern-python-sdk Wrote files to /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-py
+[api]: sdk fernapi/fern-python-sdk Finished.
+[api]: sdk Finished.
+  packages/sdk-py: 83 -> 83 files
+[3/6] fern-ruby-sdk
+[api]: Using default group 'sdk' from generators.yml
+[api]: sdk Started.
+[api]: sdk fernapi/fern-ruby-sdk Started.
+[api]: sdk ✓ All checks passed
+[api]: sdk fernapi/fern-ruby-sdk Executing generator fernapi/fern-ruby-sdk using container image: fernapi/fern-ruby-sdk:1.38.1
+[api]: sdk fernapi/fern-ruby-sdk Generator logs here: /tmp/tmp-3056-5APZRsT20ZWM
+[api]: sdk fernapi/fern-ruby-sdk Wrote files to /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-ruby
+[api]: sdk fernapi/fern-ruby-sdk Finished.
+[api]: sdk Finished.
+  packages/sdk-ruby: 108 -> 109 files
+[4/6] fern-rust-sdk
+[api]: Using default group 'sdk' from generators.yml
+[api]: sdk Started.
+[api]: sdk fernapi/fern-rust-sdk Started.
+[api]: sdk ✓ All checks passed
+[api]: sdk fernapi/fern-rust-sdk Executing generator fernapi/fern-rust-sdk using container image: fernapi/fern-rust-sdk:0.53.1
+[api]: sdk fernapi/fern-rust-sdk Generator logs here: /tmp/tmp-3277-Q3J4KYXIq57m
+[api]: sdk fernapi/fern-rust-sdk Wrote files to /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-rust
+[api]: sdk fernapi/fern-rust-sdk Finished.
+[api]: sdk Finished.
+  packages/sdk-rust: 69 -> 70 files
+[5/6] fern-java-sdk
+[api]: Using default group 'sdk' from generators.yml
+[api]: sdk Started.
+[api]: sdk fernapi/fern-java-sdk Started.
+[api]: sdk ✓ All checks passed
+[api]: sdk fernapi/fern-java-sdk Executing generator fernapi/fern-java-sdk using container image: fernapi/fern-java-sdk:4.32.0
+[api]: sdk fernapi/fern-java-sdk Generator logs here: /tmp/tmp-3577-REr9WzbeKOTM
+[api]: sdk fernapi/fern-java-sdk Wrote files to /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-java
+[api]: sdk fernapi/fern-java-sdk Finished.
+[api]: sdk Finished.
+  packages/sdk-java: 92 -> 92 files
+[6/6] fern-csharp-sdk
+[api]: Using default group 'sdk' from generators.yml
+[api]: sdk Started.
+[api]: sdk fernapi/fern-csharp-sdk Started.
+[api]: sdk ✓ All checks passed
+[api]: sdk fernapi/fern-csharp-sdk Executing generator fernapi/fern-csharp-sdk using container image: fernapi/fern-csharp-sdk:2.92.1
+[api]: sdk fernapi/fern-csharp-sdk Generator logs here: /tmp/tmp-3879-wU3OG5RC9TEE
+[api]: sdk fernapi/fern-csharp-sdk Wrote files to /home/runner/work/decide-extract-sdk/decide-extract-sdk/packages/sdk-csharp
+[api]: sdk fernapi/fern-csharp-sdk Finished.
+[api]: sdk Finished.
+  packages/sdk-csharp: 135 -> 136 files
+
+wrote packages/sdk-ts/package.json at 0.6.0
+wrote packages/sdk-ts/tsconfig.json at 0.6.0
+wrote packages/sdk-ts/tsconfig.build.json at 0.6.0
+wrote packages/sdk-py/pyproject.toml at 0.6.0
+wrote packages/sdk-java/pom.xml at 0.6.0
+ruby version already at 0.6.0
+stamped packages/sdk-rust/Cargo.toml at 0.6.0
+dotnet version already at 0.6.0
+dotnet version constant already at 0.6.0
+6 manifest(s) written
+  sdk-ts: renamed in 26 file(s) or path(s)
+  sdk-py: renamed in 6 file(s) or path(s)
+  sdk-ruby: renamed in 101 file(s) or path(s)
+  sdk-rust: renamed in 7 file(s) or path(s)
+  sdk-java: renamed in 22 file(s) or path(s)
+  sdk-csharp: renamed in 138 file(s) or path(s)
+
+300 file(s) or path(s) renamed to dexa-ai-sdk
+fern exit status: 0
