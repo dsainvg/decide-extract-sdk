@@ -1,0 +1,981 @@
+# what the generators actually wrote
+packages/sdk-csharp/.editorconfig
+packages/sdk-csharp/.fern/metadata.json
+packages/sdk-csharp/.github/workflows/ci.yml
+packages/sdk-csharp/.gitignore
+packages/sdk-csharp/CONTRIBUTING.md
+packages/sdk-csharp/DexaAiSdk.slnx
+packages/sdk-csharp/README.md
+packages/sdk-csharp/reference.md
+packages/sdk-csharp/src/DexaAiSdk.Test/Core/HeadersBuilderTests.cs
+packages/sdk-csharp/src/DexaAiSdk.Test/Core/Json/AdditionalPropertiesTests.cs
+packages/sdk-csharp/src/DexaAiSdk.Test/Core/Json/DateOnlyJsonTests.cs
+packages/sdk-csharp/src/DexaAiSdk.Test/Core/Json/DateTimeJsonTests.cs
+packages/sdk-csharp/src/DexaAiSdk.Test/Core/Json/JsonAccessAttributeTests.cs
+packages/sdk-csharp/src/DexaAiSdk.Test/Core/Json/SerializeWithAdditionalPropertiesTests.cs
+packages/sdk-csharp/src/DexaAiSdk.Test/Core/QueryStringBuilderTests.cs
+packages/sdk-csharp/src/DexaAiSdk.Test/Core/QueryStringConverterTests.cs
+packages/sdk-csharp/src/DexaAiSdk.Test/Core/RawClientTests/GzipResponseTests.cs
+packages/sdk-csharp/src/DexaAiSdk.Test/Core/RawClientTests/MultipartFormTests.cs
+packages/sdk-csharp/src/DexaAiSdk.Test/Core/RawClientTests/QueryParameterTests.cs
+packages/sdk-csharp/src/DexaAiSdk.Test/Core/RawClientTests/RetriesTests.cs
+packages/sdk-csharp/src/DexaAiSdk.Test/Core/WithRawResponseTests.cs
+packages/sdk-csharp/src/DexaAiSdk.Test/DexaAiSdk.Test.Custom.props
+packages/sdk-csharp/src/DexaAiSdk.Test/DexaAiSdk.Test.csproj
+packages/sdk-csharp/src/DexaAiSdk.Test/TestClient.cs
+packages/sdk-csharp/src/DexaAiSdk.Test/Unit/MockServer/BaseMockServerTest.cs
+packages/sdk-csharp/src/DexaAiSdk.Test/Unit/MockServer/Tasks/DecideExtractTest.cs
+packages/sdk-csharp/src/DexaAiSdk.Test/Unit/MockServer/Tasks/DecideTest.cs
+packages/sdk-csharp/src/DexaAiSdk.Test/Unit/MockServer/Tasks/ExtractTest.cs
+packages/sdk-csharp/src/DexaAiSdk.Test/Unit/MockServer/Tasks/RunTasksTest.cs
+packages/sdk-csharp/src/DexaAiSdk.Test/Utils/AdditionalPropertiesComparer.cs
+packages/sdk-csharp/src/DexaAiSdk.Test/Utils/JsonAssert.cs
+packages/sdk-csharp/src/DexaAiSdk.Test/Utils/JsonElementComparer.cs
+packages/sdk-csharp/src/DexaAiSdk.Test/Utils/NUnitExtensions.cs
+packages/sdk-csharp/src/DexaAiSdk.Test/Utils/OneOfComparer.cs
+packages/sdk-csharp/src/DexaAiSdk.Test/Utils/OptionalComparer.cs
+packages/sdk-csharp/src/DexaAiSdk.Test/Utils/ReadOnlyMemoryComparer.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/ApiResponse.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/BaseRequest.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/CollectionItemSerializer.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/Constants.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/DateOnlyConverter.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/DateTimeSerializer.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/DefaultHttpClientFactory.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/EmptyRequest.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/EncodingCache.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/Extensions.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/FormUrlEncoder.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/HeaderValue.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/Headers.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/HeadersBuilder.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/HttpContentExtensions.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/HttpMethodExtensions.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/IIsRetryableContent.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/IRequestOptions.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/JsonAccessAttribute.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/JsonConfiguration.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/JsonRequest.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/MultipartFormRequest.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/NullableAttribute.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/OneOfSerializer.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/Optional.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/OptionalAttribute.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/Public/AdditionalProperties.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/Public/ClientOptions.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/Public/DexaAiSdkApiException.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/Public/DexaAiSdkEnvironment.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/Public/DexaAiSdkException.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/Public/FileParameter.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/Public/RawResponse.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/Public/RequestOptions.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/Public/Version.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/Public/WithRawResponse.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/Public/WithRawResponseStream.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/Public/WithRawResponseTask.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/QueryStringBuilder.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/QueryStringConverter.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/RawClient.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/RawResponse.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/ResponseHeaders.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/StreamRequest.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/StringEnum.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/StringEnumExtensions.cs
+packages/sdk-csharp/src/DexaAiSdk/Core/ValueConvert.cs
+packages/sdk-csharp/src/DexaAiSdk/DexaAiSdk.Custom.props
+packages/sdk-csharp/src/DexaAiSdk/DexaAiSdk.csproj
+packages/sdk-csharp/src/DexaAiSdk/DexaAiSdkClient.cs
+packages/sdk-csharp/src/DexaAiSdk/Exceptions/BadRequestError.cs
+packages/sdk-csharp/src/DexaAiSdk/Exceptions/InternalServerError.cs
+packages/sdk-csharp/src/DexaAiSdk/Exceptions/UnprocessableEntityError.cs
+packages/sdk-csharp/src/DexaAiSdk/IDexaAiSdkClient.cs
+packages/sdk-csharp/src/DexaAiSdk/Tasks/ITasksClient.cs
+packages/sdk-csharp/src/DexaAiSdk/Tasks/Requests/DecideRequest.cs
+packages/sdk-csharp/src/DexaAiSdk/Tasks/Requests/ExtractRequest.cs
+packages/sdk-csharp/src/DexaAiSdk/Tasks/TasksClient.cs
+packages/sdk-csharp/src/DexaAiSdk/Tasks/Types/DecideRequestOutputLanguage.cs
+packages/sdk-csharp/src/DexaAiSdk/Tasks/Types/DecideRequestResponseFormat.cs
+packages/sdk-csharp/src/DexaAiSdk/Tasks/Types/DecideRequestResponseFormatType.cs
+packages/sdk-csharp/src/DexaAiSdk/Tasks/Types/DecideRequestTargetLanguage.cs
+packages/sdk-csharp/src/DexaAiSdk/Tasks/Types/ExtractRequestOutputLanguage.cs
+packages/sdk-csharp/src/DexaAiSdk/Tasks/Types/ExtractRequestResponseFormat.cs
+packages/sdk-csharp/src/DexaAiSdk/Tasks/Types/ExtractRequestResponseFormatType.cs
+packages/sdk-csharp/src/DexaAiSdk/Tasks/Types/ExtractRequestTargetLanguage.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/AudioInput.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/AudioInputType.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/Choice.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/ChoiceFinishReason.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/ContentPart.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/ContentPartLanguage.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/ContentPartType.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/DecideResponse.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/DecideResult.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/DecideTask.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/DecideTaskTargetLanguage.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/ErrorResponse.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/ErrorResponseError.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/ExtractResponse.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/ExtractTask.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/ExtractTaskTargetLanguage.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/ImageInput.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/ImageInputType.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/ImageUrl.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/ImageUrlDetail.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/Message.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/MessageLanguage.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/MessageRole.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/ResponseMessage.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/ResponseMessageLanguage.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/ResponseMessageRole.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/RunTasksRequest.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/RunTasksRequestOutputLanguage.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/RunTasksRequestResponseFormat.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/RunTasksRequestResponseFormatType.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/RunTasksRequestTargetLanguage.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/RunTasksResponse.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/Task.cs
+packages/sdk-csharp/src/DexaAiSdk/Types/Usage.cs
+packages/sdk-java/.fern/metadata.json
+packages/sdk-java/CONTRIBUTING.md
+packages/sdk-java/README.md
+packages/sdk-java/pom.xml
+packages/sdk-java/reference.md
+packages/sdk-java/src/main/java/AsyncDexaAiSdkClient.java
+packages/sdk-java/src/main/java/AsyncDexaAiSdkClientBuilder.java
+packages/sdk-java/src/main/java/DexaAiSdkClient.java
+packages/sdk-java/src/main/java/DexaAiSdkClientBuilder.java
+packages/sdk-java/src/main/java/core/BodyProperties.java
+packages/sdk-java/src/main/java/core/ClientOptions.java
+packages/sdk-java/src/main/java/core/ConsoleLogger.java
+packages/sdk-java/src/main/java/core/DateTimeDeserializer.java
+packages/sdk-java/src/main/java/core/DexaAiSdkApiException.java
+packages/sdk-java/src/main/java/core/DexaAiSdkException.java
+packages/sdk-java/src/main/java/core/DexaAiSdkHttpResponse.java
+packages/sdk-java/src/main/java/core/DoubleSerializer.java
+packages/sdk-java/src/main/java/core/Environment.java
+packages/sdk-java/src/main/java/core/FileStream.java
+packages/sdk-java/src/main/java/core/ILogger.java
+packages/sdk-java/src/main/java/core/InputStreamRequestBody.java
+packages/sdk-java/src/main/java/core/LogConfig.java
+packages/sdk-java/src/main/java/core/LogLevel.java
+packages/sdk-java/src/main/java/core/Logger.java
+packages/sdk-java/src/main/java/core/LoggingInterceptor.java
+packages/sdk-java/src/main/java/core/MediaTypes.java
+packages/sdk-java/src/main/java/core/Nullable.java
+packages/sdk-java/src/main/java/core/NullableNonemptyFilter.java
+packages/sdk-java/src/main/java/core/ObjectMappers.java
+packages/sdk-java/src/main/java/core/QueryStringMapper.java
+packages/sdk-java/src/main/java/core/RequestOptions.java
+packages/sdk-java/src/main/java/core/ResponseBodyInputStream.java
+packages/sdk-java/src/main/java/core/ResponseBodyReader.java
+packages/sdk-java/src/main/java/core/ResponseDecompressionInterceptor.java
+packages/sdk-java/src/main/java/core/RetryInterceptor.java
+packages/sdk-java/src/main/java/core/Rfc2822DateTimeDeserializer.java
+packages/sdk-java/src/main/java/core/SseEvent.java
+packages/sdk-java/src/main/java/core/SseEventParser.java
+packages/sdk-java/src/main/java/core/Stream.java
+packages/sdk-java/src/main/java/core/Suppliers.java
+packages/sdk-java/src/main/java/errors/BadRequestError.java
+packages/sdk-java/src/main/java/errors/InternalServerError.java
+packages/sdk-java/src/main/java/errors/UnprocessableEntityError.java
+packages/sdk-java/src/main/java/resources/tasks/AsyncRawTasksClient.java
+packages/sdk-java/src/main/java/resources/tasks/AsyncTasksClient.java
+packages/sdk-java/src/main/java/resources/tasks/RawTasksClient.java
+packages/sdk-java/src/main/java/resources/tasks/TasksClient.java
+packages/sdk-java/src/main/java/resources/tasks/requests/DecideRequest.java
+packages/sdk-java/src/main/java/resources/tasks/requests/ExtractRequest.java
+packages/sdk-java/src/main/java/resources/tasks/types/DecideRequestOutputLanguage.java
+packages/sdk-java/src/main/java/resources/tasks/types/DecideRequestResponseFormat.java
+packages/sdk-java/src/main/java/resources/tasks/types/DecideRequestResponseFormatType.java
+packages/sdk-java/src/main/java/resources/tasks/types/DecideRequestTargetLanguage.java
+packages/sdk-java/src/main/java/resources/tasks/types/ExtractRequestOutputLanguage.java
+packages/sdk-java/src/main/java/resources/tasks/types/ExtractRequestResponseFormat.java
+packages/sdk-java/src/main/java/resources/tasks/types/ExtractRequestResponseFormatType.java
+packages/sdk-java/src/main/java/resources/tasks/types/ExtractRequestTargetLanguage.java
+packages/sdk-java/src/main/java/types/AudioInput.java
+packages/sdk-java/src/main/java/types/AudioInputType.java
+packages/sdk-java/src/main/java/types/Choice.java
+packages/sdk-java/src/main/java/types/ChoiceFinishReason.java
+packages/sdk-java/src/main/java/types/ContentPart.java
+packages/sdk-java/src/main/java/types/ContentPartLanguage.java
+packages/sdk-java/src/main/java/types/ContentPartType.java
+packages/sdk-java/src/main/java/types/DecideResponse.java
+packages/sdk-java/src/main/java/types/DecideResult.java
+packages/sdk-java/src/main/java/types/DecideTask.java
+packages/sdk-java/src/main/java/types/DecideTaskTargetLanguage.java
+packages/sdk-java/src/main/java/types/ErrorResponse.java
+packages/sdk-java/src/main/java/types/ErrorResponseError.java
+packages/sdk-java/src/main/java/types/ExtractResponse.java
+packages/sdk-java/src/main/java/types/ExtractTask.java
+packages/sdk-java/src/main/java/types/ExtractTaskTargetLanguage.java
+packages/sdk-java/src/main/java/types/ImageInput.java
+packages/sdk-java/src/main/java/types/ImageInputType.java
+packages/sdk-java/src/main/java/types/ImageUrl.java
+packages/sdk-java/src/main/java/types/ImageUrlDetail.java
+packages/sdk-java/src/main/java/types/Message.java
+packages/sdk-java/src/main/java/types/MessageContent.java
+packages/sdk-java/src/main/java/types/MessageLanguage.java
+packages/sdk-java/src/main/java/types/MessageRole.java
+packages/sdk-java/src/main/java/types/ResponseMessage.java
+packages/sdk-java/src/main/java/types/ResponseMessageLanguage.java
+packages/sdk-java/src/main/java/types/ResponseMessageRole.java
+packages/sdk-java/src/main/java/types/RunTasksRequest.java
+packages/sdk-java/src/main/java/types/RunTasksRequestOutputLanguage.java
+packages/sdk-java/src/main/java/types/RunTasksRequestResponseFormat.java
+packages/sdk-java/src/main/java/types/RunTasksRequestResponseFormatType.java
+packages/sdk-java/src/main/java/types/RunTasksRequestTargetLanguage.java
+packages/sdk-java/src/main/java/types/RunTasksResponse.java
+packages/sdk-java/src/main/java/types/Task.java
+packages/sdk-java/src/main/java/types/Usage.java
+packages/sdk-java/src/test/java/core/QueryStringMapperTest.java
+packages/sdk-py/.fern/metadata.json
+packages/sdk-py/CONTRIBUTING.md
+packages/sdk-py/README.md
+packages/sdk-py/__init__.py
+packages/sdk-py/_default_clients.py
+packages/sdk-py/client.py
+packages/sdk-py/core/__init__.py
+packages/sdk-py/core/api_error.py
+packages/sdk-py/core/client_wrapper.py
+packages/sdk-py/core/datetime_utils.py
+packages/sdk-py/core/file.py
+packages/sdk-py/core/force_multipart.py
+packages/sdk-py/core/http_client.py
+packages/sdk-py/core/http_response.py
+packages/sdk-py/core/http_sse/__init__.py
+packages/sdk-py/core/http_sse/_api.py
+packages/sdk-py/core/http_sse/_decoders.py
+packages/sdk-py/core/http_sse/_exceptions.py
+packages/sdk-py/core/http_sse/_models.py
+packages/sdk-py/core/jsonable_encoder.py
+packages/sdk-py/core/logging.py
+packages/sdk-py/core/parse_error.py
+packages/sdk-py/core/pydantic_utilities.py
+packages/sdk-py/core/query_encoder.py
+packages/sdk-py/core/remove_none_from_dict.py
+packages/sdk-py/core/request_options.py
+packages/sdk-py/core/serialization.py
+packages/sdk-py/environment.py
+packages/sdk-py/errors/__init__.py
+packages/sdk-py/errors/bad_request_error.py
+packages/sdk-py/errors/internal_server_error.py
+packages/sdk-py/errors/unprocessable_entity_error.py
+packages/sdk-py/pyproject.toml
+packages/sdk-py/reference.md
+packages/sdk-py/tasks/__init__.py
+packages/sdk-py/tasks/client.py
+packages/sdk-py/tasks/raw_client.py
+packages/sdk-py/tasks/types/__init__.py
+packages/sdk-py/tasks/types/decide_request_output_language.py
+packages/sdk-py/tasks/types/decide_request_response_format.py
+packages/sdk-py/tasks/types/decide_request_response_format_type.py
+packages/sdk-py/tasks/types/decide_request_target_language.py
+packages/sdk-py/tasks/types/extract_request_output_language.py
+packages/sdk-py/tasks/types/extract_request_response_format.py
+packages/sdk-py/tasks/types/extract_request_response_format_type.py
+packages/sdk-py/tasks/types/extract_request_target_language.py
+packages/sdk-py/tests/conftest.py
+packages/sdk-py/tests/test_aiohttp_autodetect.py
+packages/sdk-py/types/__init__.py
+packages/sdk-py/types/audio_input.py
+packages/sdk-py/types/audio_input_type.py
+packages/sdk-py/types/choice.py
+packages/sdk-py/types/choice_finish_reason.py
+packages/sdk-py/types/content_part.py
+packages/sdk-py/types/content_part_language.py
+packages/sdk-py/types/content_part_type.py
+packages/sdk-py/types/decide_response.py
+packages/sdk-py/types/decide_result.py
+packages/sdk-py/types/decide_task.py
+packages/sdk-py/types/decide_task_target_language.py
+packages/sdk-py/types/error_response.py
+packages/sdk-py/types/error_response_error.py
+packages/sdk-py/types/extract_response.py
+packages/sdk-py/types/extract_task.py
+packages/sdk-py/types/extract_task_target_language.py
+packages/sdk-py/types/image_input.py
+packages/sdk-py/types/image_input_type.py
+packages/sdk-py/types/image_url.py
+packages/sdk-py/types/image_url_detail.py
+packages/sdk-py/types/message.py
+packages/sdk-py/types/message_content.py
+packages/sdk-py/types/message_language.py
+packages/sdk-py/types/message_role.py
+packages/sdk-py/types/response_message.py
+packages/sdk-py/types/response_message_language.py
+packages/sdk-py/types/response_message_role.py
+packages/sdk-py/types/run_tasks_request.py
+packages/sdk-py/types/run_tasks_request_output_language.py
+packages/sdk-py/types/run_tasks_request_response_format.py
+packages/sdk-py/types/run_tasks_request_response_format_type.py
+packages/sdk-py/types/run_tasks_request_target_language.py
+packages/sdk-py/types/run_tasks_response.py
+packages/sdk-py/types/task.py
+packages/sdk-py/types/usage.py
+packages/sdk-ruby/.fern/metadata.json
+packages/sdk-ruby/.fernignore
+packages/sdk-ruby/.github/workflows/ci.yml
+packages/sdk-ruby/.gitignore
+packages/sdk-ruby/.rubocop.yml
+packages/sdk-ruby/CONTRIBUTING.md
+packages/sdk-ruby/Gemfile
+packages/sdk-ruby/Gemfile.custom
+packages/sdk-ruby/README.md
+packages/sdk-ruby/Rakefile
+packages/sdk-ruby/custom.gemspec.rb
+packages/sdk-ruby/dexa-ai-sdk.gemspec
+packages/sdk-ruby/lib/dexa-ai-sdk.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/client.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/environment.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/errors/api_error.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/errors/client_error.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/errors/connection_error.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/errors/redirect_error.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/errors/response_error.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/errors/server_error.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/errors/timeout_error.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/internal/errors/constraint_error.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/internal/errors/type_error.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/internal/http/base_request.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/internal/http/raw_client.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/internal/iterators/cursor_item_iterator.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/internal/iterators/cursor_page_iterator.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/internal/iterators/item_iterator.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/internal/iterators/offset_item_iterator.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/internal/iterators/offset_page_iterator.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/internal/json/request.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/internal/json/serializable.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/internal/multipart/multipart_encoder.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/internal/multipart/multipart_form_data.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/internal/multipart/multipart_form_data_part.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/internal/multipart/multipart_request.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/internal/types/array.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/internal/types/boolean.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/internal/types/enum.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/internal/types/hash.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/internal/types/model.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/internal/types/model/field.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/internal/types/type.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/internal/types/union.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/internal/types/unknown.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/internal/types/utils.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/tasks/client.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/tasks/types/decide_request.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/tasks/types/decide_request_output_language.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/tasks/types/decide_request_response_format.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/tasks/types/decide_request_response_format_type.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/tasks/types/decide_request_target_language.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/tasks/types/extract_request.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/tasks/types/extract_request_output_language.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/tasks/types/extract_request_response_format.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/tasks/types/extract_request_response_format_type.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/tasks/types/extract_request_target_language.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/types/audio_input.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/types/audio_input_type.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/types/choice.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/types/choice_finish_reason.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/types/content_part.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/types/content_part_language.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/types/content_part_type.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/types/decide_response.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/types/decide_result.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/types/decide_task.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/types/decide_task_target_language.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/types/error_response.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/types/error_response_error.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/types/extract_response.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/types/extract_task.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/types/extract_task_target_language.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/types/image_input.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/types/image_input_type.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/types/image_url.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/types/image_url_detail.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/types/message.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/types/message_content.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/types/message_language.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/types/message_role.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/types/response_message.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/types/response_message_language.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/types/response_message_role.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/types/run_tasks_request.rb
+packages/sdk-ruby/lib/dexa-ai-sdk/types/run_tasks_request_output_language.rb
+
+# every .gitignore under packages, which git always honours
+--- packages/sdk-ruby/.gitignore
+*.gem
+--- packages/sdk-csharp/.gitignore
+## Ignore Visual Studio temporary files, build results, and
+## files generated by popular Visual Studio add-ons.
+
+## This is based on `dotnet new gitignore` and customized by Fern
+
+# dotenv files
+.env
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# User-specific files (MonoDevelop/Xamarin Studio)
+*.userprefs
+
+# Mono auto generated files
+mono_crash.*
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+# [Rr]elease/ (Ignored by Fern)
+# [Rr]eleases/ (Ignored by Fern)
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+# [Ll]og/ (Ignored by Fern)
+# [Ll]ogs/ (Ignored by Fern)
+
+# Visual Studio 2015/2017 cache/options directory
+.vs/
+# Uncomment if you have tasks that create the project's static files in wwwroot
+#wwwroot/
+
+# Visual Studio 2017 auto generated files
+Generated\ Files/
+
+# MSTest test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# NUnit
+*.VisualState.xml
+TestResult.xml
+nunit-*.xml
+
+# Build Results of an ATL Project
+[Dd]ebugPS/
+[Rr]eleasePS/
+dlldata.c
+
+# Benchmark Results
+BenchmarkDotNet.Artifacts/
+
+# .NET
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Tye
+.tye/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# StyleCop
+StyleCopReport.xml
+
+# Files built by Visual Studio
+*_i.c
+*_p.c
+*_h.h
+*.ilk
+*.meta
+*.obj
+*.iobj
+*.pch
+*.pdb
+*.ipdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*_wpftmp.csproj
+*.log
+*.tlog
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.svclog
+*.scc
+
+# Chutzpah Test files
+_Chutzpah*
+
+# Visual C++ cache files
+ipch/
+*.aps
+*.ncb
+*.opendb
+*.opensdf
+*.sdf
+*.cachefile
+*.VC.db
+*.VC.VC.opendb
+
+# Visual Studio profiler
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+# Visual Studio Trace Files
+*.e2e
+
+# TFS 2012 Local Workspace
+$tf/
+
+# Guidance Automation Toolkit
+*.gpState
+
+# ReSharper is a .NET coding add-in
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# TeamCity is a build add-in
+_TeamCity*
+
+# DotCover is a Code Coverage Tool
+*.dotCover
+
+# AxoCover is a Code Coverage Tool
+.axoCover/*
+!.axoCover/settings.json
+
+# Coverlet is a free, cross platform Code Coverage Tool
+coverage*.json
+coverage*.xml
+coverage*.info
+
+# Visual Studio code coverage results
+*.coverage
+*.coveragexml
+
+# NCrunch
+_NCrunch_*
+.*crunch*.local.xml
+nCrunchTemp_*
+
+# MightyMoose
+*.mm.*
+AutoTest.Net/
+
+# Web workbench (sass)
+.sass-cache/
+
+# Installshield output folder
+[Ee]xpress/
+
+# DocProject is a documentation generator add-in
+DocProject/buildhelp/
+DocProject/Help/*.HxT
+DocProject/Help/*.HxC
+DocProject/Help/*.hhc
+DocProject/Help/*.hhk
+DocProject/Help/*.hhp
+DocProject/Help/Html2
+DocProject/Help/html
+
+# Click-Once directory
+publish/
+
+# Publish Web Output
+*.[Pp]ublish.xml
+*.azurePubxml
+# Note: Comment the next line if you want to checkin your web deploy settings,
+# but database connection strings (with potential passwords) will be unencrypted
+*.pubxml
+*.publishproj
+
+# Microsoft Azure Web App publish settings. Comment the next line if you want to
+# checkin your Azure Web App publish settings, but sensitive information contained
+# in these scripts will be unencrypted
+PublishScripts/
+
+# NuGet Packages
+*.nupkg
+# NuGet Symbol Packages
+*.snupkg
+# The packages folder can be ignored because of Package Restore
+**/[Pp]ackages/*
+# except build/, which is used as an MSBuild target.
+!**/[Pp]ackages/build/
+# Uncomment if necessary however generally it will be regenerated when needed
+#!**/[Pp]ackages/repositories.config
+# NuGet v3's project.json files produces more ignorable files
+*.nuget.props
+*.nuget.targets
+
+# Microsoft Azure Build Output
+csx/
+*.build.csdef
+
+# Microsoft Azure Emulator
+ecf/
+rcf/
+
+# Windows Store app package directories and files
+AppPackages/
+BundleArtifacts/
+Package.StoreAssociation.xml
+_pkginfo.txt
+*.appx
+*.appxbundle
+*.appxupload
+
+# Visual Studio cache files
+# files ending in .cache can be ignored
+*.[Cc]ache
+# but keep track of directories ending in .cache
+!?*.[Cc]ache/
+
+# Others
+ClientBin/
+~$*
+*~
+*.dbmdl
+*.dbproj.schemaview
+*.jfm
+*.pfx
+*.publishsettings
+orleans.codegen.cs
+
+# Including strong name files can present a security risk
+# (https://github.com/github/gitignore/pull/2483#issue-259490424)
+#*.snk
+
+# Since there are multiple workflows, uncomment next line to ignore bower_components
+# (https://github.com/github/gitignore/pull/1529#issuecomment-104372622)
+#bower_components/
+
+# RIA/Silverlight projects
+Generated_Code/
+
+# Backup & report files from converting an old project file
+# to a newer Visual Studio version. Backup files are not needed,
+# because we have git ;-)
+_UpgradeReport_Files/
+Backup*/
+UpgradeLog*.XML
+UpgradeLog*.htm
+ServiceFabricBackup/
+*.rptproj.bak
+
+# SQL Server files
+*.mdf
+*.ldf
+*.ndf
+
+# Business Intelligence projects
+*.rdl.data
+*.bim.layout
+*.bim_*.settings
+*.rptproj.rsuser
+*- [Bb]ackup.rdl
+*- [Bb]ackup ([0-9]).rdl
+*- [Bb]ackup ([0-9][0-9]).rdl
+
+# Microsoft Fakes
+FakesAssemblies/
+
+# GhostDoc plugin setting file
+*.GhostDoc.xml
+
+# Node.js Tools for Visual Studio
+.ntvs_analysis.dat
+node_modules/
+
+# Visual Studio 6 build log
+*.plg
+
+# Visual Studio 6 workspace options file
+*.opt
+
+# Visual Studio 6 auto-generated workspace file (contains which files were open etc.)
+*.vbw
+
+# Visual Studio 6 auto-generated project file (contains which files were open etc.)
+*.vbp
+
+# Visual Studio 6 workspace and project file (working project files containing files to include in project)
+*.dsw
+*.dsp
+
+# Visual Studio 6 technical files
+*.ncb
+*.aps
+
+# Visual Studio LightSwitch build output
+**/*.HTMLClient/GeneratedArtifacts
+**/*.DesktopClient/GeneratedArtifacts
+**/*.DesktopClient/ModelManifest.xml
+**/*.Server/GeneratedArtifacts
+**/*.Server/ModelManifest.xml
+_Pvt_Extensions
+
+# Paket dependency manager
+.paket/paket.exe
+paket-files/
+
+# FAKE - F# Make
+.fake/
+
+# CodeRush personal settings
+.cr/personal
+
+# Python Tools for Visual Studio (PTVS)
+__pycache__/
+*.pyc
+
+# Cake - Uncomment if you are using it
+# tools/**
+# !tools/packages.config
+
+# Tabs Studio
+*.tss
+
+# Telerik's JustMock configuration file
+*.jmconfig
+
+# BizTalk build output
+*.btp.cs
+*.btm.cs
+*.odx.cs
+*.xsd.cs
+
+# OpenCover UI analysis results
+OpenCover/
+
+# Azure Stream Analytics local run output
+ASALocalRun/
+
+# MSBuild Binary and Structured Log
+*.binlog
+
+# NVidia Nsight GPU debugger configuration file
+*.nvuser
+
+# MFractors (Xamarin productivity tool) working folder
+.mfractor/
+
+# Local History for Visual Studio
+.localhistory/
+
+# Visual Studio History (VSHistory) files
+.vshistory/
+
+# BeatPulse healthcheck temp database
+healthchecksdb
+
+# Backup folder for Package Reference Convert tool in Visual Studio 2017
+MigrationBackup/
+
+# Ionide (cross platform F# VS Code tools) working folder
+.ionide/
+
+# Fody - auto-generated XML schema
+FodyWeavers.xsd
+
+# VS Code files for those working on multiple tools
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# Local History for Visual Studio Code
+.history/
+
+# Windows Installer files from build outputs
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# JetBrains Rider
+*.sln.iml
+.idea
+
+##
+## Visual studio for Mac
+##
+
+
+# globs
+Makefile.in
+*.userprefs
+*.usertasks
+config.make
+config.status
+aclocal.m4
+install-sh
+autom4te.cache/
+*.tar.gz
+tarballs/
+test-results/
+
+# Mac bundle stuff
+*.dmg
+*.app
+
+# content below from: https://github.com/github/gitignore/blob/master/Global/macOS.gitignore
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# content below from: https://github.com/github/gitignore/blob/master/Global/Windows.gitignore
+# Windows thumbnail cache files
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+
+# Dump file
+*.stackdump
+
+# Folder config file
+[Dd]esktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# Vim temporary swap files
+*.swp
+--- packages/sdk-rust/.gitignore
+/target
+**/*.rs.bk
+Cargo.lock
+.DS_Store
+*.swp
+# untracked files anywhere in the workspace, in case a generator wrote outside packages/
+ M fern/generation.log
+?? .push/
+
+# directories in the workspace
+.
+./.push
+./.push/fern
+./.push/packages
+./.push/packages/sdk-csharp
+./.push/packages/sdk-csharp/.fern
+./.push/packages/sdk-csharp/.github
+./.push/packages/sdk-csharp/src
+./.push/packages/sdk-java
+./.push/packages/sdk-java/.fern
+./.push/packages/sdk-java/src
+./.push/packages/sdk-py
+./.push/packages/sdk-py/.fern
+./.push/packages/sdk-py/core
+./.push/packages/sdk-py/errors
+./.push/packages/sdk-py/tasks
+./.push/packages/sdk-py/tests
+./.push/packages/sdk-py/types
+./.push/packages/sdk-ruby
+./.push/packages/sdk-ruby/.fern
+./.push/packages/sdk-ruby/.github
+./.push/packages/sdk-ruby/lib
+./.push/packages/sdk-ruby/test
+./.push/packages/sdk-rust
+./.push/packages/sdk-rust/.fern
+./.push/packages/sdk-rust/.github
+./.push/packages/sdk-rust/src
+./.push/packages/sdk-ts
+./.push/packages/sdk-ts/api
+./.push/packages/sdk-ts/core
+./.push/packages/sdk-ts/errors
+./docs
+./docs/api-reference
+./docs/getting-started
+./docs/guides
+./docs/operations
+./fern
+./fern/openapi
+./packages
+./packages/sdk-csharp
+./packages/sdk-csharp/.fern
+./packages/sdk-csharp/.github
+./packages/sdk-csharp/.github/workflows
+./packages/sdk-csharp/src
+./packages/sdk-csharp/src/DexaAiSdk
+./packages/sdk-csharp/src/DexaAiSdk.Test
+./packages/sdk-java
+./packages/sdk-java/.fern
+./packages/sdk-java/src
+./packages/sdk-java/src/main
+./packages/sdk-java/src/test
+./packages/sdk-py
+./packages/sdk-py/.fern
+./packages/sdk-py/core
+./packages/sdk-py/core/http_sse
+./packages/sdk-py/errors
+./packages/sdk-py/tasks
+./packages/sdk-py/tasks/types
+./packages/sdk-py/tests
+./packages/sdk-py/types
+./packages/sdk-ruby
+./packages/sdk-ruby/.fern
+./packages/sdk-ruby/.github
+./packages/sdk-ruby/.github/workflows
+./packages/sdk-ruby/lib
+./packages/sdk-ruby/lib/dexa-ai-sdk
+./packages/sdk-ruby/test
+./packages/sdk-ruby/test/unit
+./packages/sdk-rust
+./packages/sdk-rust/.fern
+./packages/sdk-rust/.github
+./packages/sdk-rust/.github/workflows
+./packages/sdk-rust/src
+./packages/sdk-rust/src/api
+./packages/sdk-rust/src/core
+./packages/sdk-ts
+./packages/sdk-ts/api
+./packages/sdk-ts/api/errors
+./packages/sdk-ts/api/resources
+./packages/sdk-ts/api/types
