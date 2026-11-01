@@ -41,7 +41,7 @@ jobs:
         run: npm run fern:generate
       - name: Fail if committed SDKs drifted from the contract
         run: npm run fern:check:drift
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: generated-sdks
           path: packages/
@@ -211,7 +211,7 @@ jobs:
         run: npm run docs:build
       - name: Fail on broken links
         run: node scripts/check-docs.mjs
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: docs-site
           path: sites/

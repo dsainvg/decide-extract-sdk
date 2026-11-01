@@ -100,7 +100,7 @@ jobs:
           npm run build:artifacts
           echo "outcome=$?" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: release-artifacts
