@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/DexaAiSdk.Test/DexaAiSdk.Test.csproj" />
+  <Project Path="src/DexaAiSdk/DexaAiSdk.csproj" />
+</Solution>
