@@ -1,0 +1,5 @@
+# Fern overwrites these on every generation, which would undo the gem's identity.
+# custom.gemspec.rb is the documented hook for setting the gem name, authors,
+# licence and links, because the Fern API has no name of its own and the
+# generator otherwise falls back to the organization name.
+custom.gemspec.rb
